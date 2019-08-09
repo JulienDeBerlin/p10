@@ -1,7 +1,0 @@
-com/berthoud/p7/webserviceapp/consumer/contract/LoanDAO.class
-com/berthoud/p7/webserviceapp/consumer/contract/BookDAO.class
-com/berthoud/p7/webserviceapp/consumer/contract/AddressDAO.class
-com/berthoud/p7/webserviceapp/consumer/contract/CustomerDAO.class
-com/berthoud/p7/webserviceapp/consumer/contract/LibrairyDAO.class
-com/berthoud/p7/webserviceapp/consumer/contract/BookReferenceDAO.class
-com/berthoud/p7/webserviceapp/consumer/contract/TagDAO.class

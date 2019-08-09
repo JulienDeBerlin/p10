@@ -1,6 +1,0 @@
-com/berthoud/p7/webserviceapp/business/BookResearchManager.class
-com/berthoud/p7/webserviceapp/business/CustomerManager.class
-com/berthoud/p7/webserviceapp/business/LoanManager.class
-com/berthoud/p7/webserviceapp/business/exceptions/ServiceStatus.class
-com/berthoud/p7/webserviceapp/business/exceptions/DetailSoapFaultDefinitionExceptionResolver.class
-com/berthoud/p7/webserviceapp/business/exceptions/ServiceFaultException.class

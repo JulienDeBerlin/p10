@@ -1,7 +1,0 @@
-/Users/admin/Documents/PROGRAMMING/OPENCLASSROOMS/P7/Apps_P7/WebserviceApp/p7-webservice-app-consumer-jpa/src/main/java/com/berthoud/p7/webserviceapp/consumer/repositories/SpringDataJPA/BookRepository.java
-/Users/admin/Documents/PROGRAMMING/OPENCLASSROOMS/P7/Apps_P7/WebserviceApp/p7-webservice-app-consumer-jpa/src/main/java/com/berthoud/p7/webserviceapp/consumer/repositories/SpringDataJPA/BookReferenceRepository.java
-/Users/admin/Documents/PROGRAMMING/OPENCLASSROOMS/P7/Apps_P7/WebserviceApp/p7-webservice-app-consumer-jpa/src/main/java/com/berthoud/p7/webserviceapp/consumer/repositories/SpringDataJPA/LibrairyRepository.java
-/Users/admin/Documents/PROGRAMMING/OPENCLASSROOMS/P7/Apps_P7/WebserviceApp/p7-webservice-app-consumer-jpa/src/main/java/com/berthoud/p7/webserviceapp/consumer/repositories/SpringDataJPA/CustomerRepository.java
-/Users/admin/Documents/PROGRAMMING/OPENCLASSROOMS/P7/Apps_P7/WebserviceApp/p7-webservice-app-consumer-jpa/src/main/java/com/berthoud/p7/webserviceapp/consumer/repositories/SpringDataJPA/LoanRepository.java
-/Users/admin/Documents/PROGRAMMING/OPENCLASSROOMS/P7/Apps_P7/WebserviceApp/p7-webservice-app-consumer-jpa/src/main/java/com/berthoud/p7/webserviceapp/consumer/repositories/SpringDataJPA/TagRepository.java
-/Users/admin/Documents/PROGRAMMING/OPENCLASSROOMS/P7/Apps_P7/WebserviceApp/p7-webservice-app-consumer-jpa/src/main/java/com/berthoud/p7/webserviceapp/consumer/repositories/SpringDataJPA/AddressRepository.java
