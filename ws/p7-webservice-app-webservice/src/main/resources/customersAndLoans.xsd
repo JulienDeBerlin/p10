@@ -1,0 +1,239 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://com.berthoud.p7"
+           targetNamespace="http://com.berthoud.p7" elementFormDefault="qualified">
+
+
+<!--customer management-->
+
+    <xs:element name="loginCustomerRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="email" type="xs:string"/>
+                <xs:element name="password" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="loginCustomerResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="customer" type="tns:customerWs"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!--customer management-->
+
+    <xs:element name="refreshCustomerRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="email" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="refreshCustomerResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="customer" type="tns:customerWs"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+<!--loan management-->
+
+    <!--loan extension-->
+    <xs:element name="extendLoanRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="loanId" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="extendLoanResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name = "resultCode" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <!--register new loan-->
+    <xs:element name="registerLoanRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="customerId" type="xs:int"/>
+                <xs:element name="bookId" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="registerLoanResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name = "resultCode" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <!--register book return-->
+    <xs:element name="registerBookReturnRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="bookId" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="registerBookReturnResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name = "resultCode" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <!--monitoring loans (all open)-->
+    <xs:element name="getAllOpenLoansRequest">
+        <xs:complexType>
+            <xs:sequence>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllOpenLoansResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="loans" type="tns:loanWs" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!--monitoring loans (in time)-->
+    <xs:element name="getOpenLoansInTimeRequest">
+        <xs:complexType>
+            <xs:sequence>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getOpenLoansInTimeResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="loans" type="tns:loanWs" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!--monitoring loans (late)-->
+    <xs:element name="getOpenLoansLateRequest">
+        <xs:complexType>
+            <xs:sequence>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getOpenLoansLateResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="loans" type="tns:loanWs" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!--monitoring loans (extended)-->
+    <xs:element name="getOpenLoansExtendedRequest">
+        <xs:complexType>
+            <xs:sequence>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getOpenLoansExtendedResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="loans" type="tns:loanWs" maxOccurs="unbounded" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+
+<!--definition complexe types-->
+
+    <xs:complexType name="customerWs">
+        <xs:sequence>
+            <xs:element name="id" type="xs:int"/>
+            <xs:element name="firstName" type="xs:string"/>
+            <xs:element name="surname" type="xs:string"/>
+            <xs:element name="sex" type="xs:string"/>
+            <xs:element name="dateExpirationMembership" type="xs:date"/>
+            <xs:element name="phone" type="xs:string"/>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="password" type="xs:string"/>
+            <xs:element name="loans" type="tns:loanWs" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="loanWs">
+        <xs:sequence>
+            <xs:element name="id" type="xs:int"/>
+            <xs:element name="dateBegin" type="xs:date"/>
+            <xs:element name="dateEnd" type="xs:date"/>
+            <xs:element name="dateBack" type="xs:date"/>
+            <xs:element name="numberExtensions" type="xs:int"/>
+            <xs:element name="book" type="tns:bookWs"/>
+            <xs:element name="customerWs" type="tns:customerWs"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="bookWs">
+        <xs:sequence>
+            <xs:element name="id" type="xs:int"/>
+            <xs:element name="datePurchase" type="xs:date"/>
+            <xs:element name="status" type="tns:statusWs"/>
+            <xs:element name="librairy" type="tns:librairyWs"/>
+            <xs:element name="bookReference" type="tns:bookReferenceWs"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:simpleType name="statusWs">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="available"/>
+            <xs:enumeration value="booked"/>
+            <xs:enumeration value="borrowed"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:complexType name="librairyWs">
+        <xs:sequence>
+            <xs:element name="id" type="xs:int"/>
+            <xs:element name="name" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="bookReferenceWs">
+        <xs:sequence>
+            <xs:element name="id" type="xs:int"/>
+            <xs:element name="title" type="xs:string"/>
+            <xs:element name="authorFirstName" type="xs:string"/>
+            <xs:element name="authorSurname" type="xs:string"/>
+            <xs:element name="isbn13" type="xs:string"/>
+            <xs:element name="publisher" type="xs:string"/>
+            <xs:element name="summary" type="xs:string"/>
+            <xs:element name="yearPublication" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+</xs:schema>
+

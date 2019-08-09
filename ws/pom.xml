@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <modules>
+        <module>p7-webservice-app-webservice</module>
+        <module>p7-webservice-app-business</module>
+        <module>p7-webservice-app-consumer-contract</module>
+        <module>p7-webservice-app-consumer-jpa</module>
+        <module>p7-webservice-app-model</module>
+    </modules>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.4.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>com.berthoud</groupId>
+    <artifactId>p7-webservice-app</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>p7-webservice-app</name>
+    <description>Parent project for multi-modules webservice-app</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
+
+
+    <!-- =============================================================== -->
+    <!-- Dependencies -->
+    <!-- =============================================================== -->
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- ===== Modules ===== -->
+            <dependency>
+                <groupId>com.berthoud</groupId>
+                <artifactId>p7-webservice-app-business</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.berthoud</groupId>
+                <artifactId>p7-webservice-app-consumer-contract</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.berthoud</groupId>
+                <artifactId>p7-webservice-app-consumer-jpa</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.berthoud</groupId>
+                <artifactId>p7-webservice-app-model</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.berthoud</groupId>
+                <artifactId>p7-webservice-app-webservice</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
+            <!-- ===== Other dependencies ===== -->
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-jpa</artifactId>
+                <version>2.1.4.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web-services</artifactId>
+                <version>2.1.4.RELEASE</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-devtools</artifactId>
+                <version>2.1.4.RELEASE</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>42.2.5</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>2.1.4.RELEASE</version>
+                <scope>test</scope>
+            </dependency>
+
+
+            <!-- https://mvnrepository.com/artifact/org.mindrot/jbcrypt -->
+            <dependency>
+                <groupId>org.mindrot</groupId>
+                <artifactId>jbcrypt</artifactId>
+                <version>0.4</version>
+            </dependency>
+
+
+        </dependencies>
+
+    </dependencyManagement>
+
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                            <configuration>
+                                <classifier>spring-boot</classifier>
+                                <mainClass>
+                                    com.berthoud.p7.webserviceapp.WebserviceApp
+                                </mainClass>
+                            </configuration>
+                        </execution>
+                    </executions>
+
+
+
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>jaxb2-maven-plugin</artifactId>
+                    <version>2.3.1</version>
+
+                    <executions>
+
+                        <execution>
+                            <id>xjc-schema-customers</id>
+                            <goals>
+                                <goal>xjc</goal>
+                            </goals>
+
+                            <configuration>
+                                <sources>
+                                    <source>
+                                        ${project.basedir}/src/main/resources/customersAndLoans.xsd
+                                    </source>
+                                </sources>
+                                <packageName>com.berthoud.p7.webserviceapp.ws.customers</packageName>
+                                <clearOutputDir>false</clearOutputDir>
+                            </configuration>
+
+                        </execution>
+
+                        <execution>
+                            <id>xjc-schema-books</id>
+                            <goals>
+                                <goal>xjc</goal>
+                            </goals>
+
+                            <configuration>
+                                <sources>
+                                    <source>
+                                        ${project.basedir}/src/main/resources/books.xsd
+                                    </source>
+                                </sources>
+                                <packageName>com.berthoud.p7.webserviceapp.ws.books</packageName>
+                                <clearOutputDir>false</clearOutputDir>
+                            </configuration>
+                        </execution>
+
+
+
+                    </executions>
+
+
+                </plugin>
+
+            </plugins>
+
+
+        </pluginManagement>
+    </build>
+
+</project>

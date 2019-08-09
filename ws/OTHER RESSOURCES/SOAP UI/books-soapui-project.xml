@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="7cb679d6-004f-4b72-b6a5-ff9a420d523e" activeEnvironment="Default" name="books" resourceRoot="" soapui-version="5.5.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="18a0a2b1-e927-4115-8e73-1ff680552e62" wsaVersion="NONE" name="BookPortSoap11" type="wsdl" bindingName="{http://com.berthoud.p7}BookPortSoap11" soapVersion="1_1" anonymous="optional" definition="http://localhost:8080/ws/books.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8080/ws/books.wsdl"><con:part><con:url>http://localhost:8080/ws/books.wsdl</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="http://com.berthoud.p7" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://com.berthoud.p7" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://com.berthoud.p7">
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://com.berthoud.p7" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="bookRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="titleElement" type="xs:string"/>
+            <xs:element name="authorSurname" type="xs:string"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="tags" type="xs:string"/>
+            <xs:element name="librairyId" type="xs:int"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="bookResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="bookReferences" type="tns:bookReferenceWs"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="listLibrairyRequest">
+        <xs:complexType>
+          <xs:sequence></xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="listLibrairyResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="librairyWs" type="tns:librairyWs"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="bookReferenceWs">
+        <xs:sequence>
+          <xs:element name="id" type="xs:int"/>
+          <xs:element name="title" type="xs:string"/>
+          <xs:element name="authorFirstName" type="xs:string"/>
+          <xs:element name="authorSurname" type="xs:string"/>
+          <xs:element name="isbn13" type="xs:string"/>
+          <xs:element name="publisher" type="xs:string"/>
+          <xs:element name="yearPublication" type="xs:string"/>
+          <xs:element name="summary" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="book" type="tns:bookWs"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="tags" type="tns:tagsWs"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="tagsWs">
+        <xs:sequence>
+          <xs:element name="id" type="xs:int"/>
+          <xs:element name="tag" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="bookWs">
+        <xs:sequence>
+          <xs:element name="id" type="xs:int"/>
+          <xs:element name="datePurchase" type="xs:date"/>
+          <xs:element name="status" type="tns:statusWs"/>
+          <xs:element name="librairy" type="tns:librairyWs"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="statusWs">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="available"/>
+          <xs:enumeration value="booked"/>
+          <xs:enumeration value="borrowed"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="librairyWs">
+        <xs:sequence>
+          <xs:element name="id" type="xs:int"/>
+          <xs:element name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="bookRequest">
+    <wsdl:part element="tns:bookRequest" name="bookRequest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="bookResponse">
+    <wsdl:part element="tns:bookResponse" name="bookResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listLibrairyRequest">
+    <wsdl:part element="tns:listLibrairyRequest" name="listLibrairyRequest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="listLibrairyResponse">
+    <wsdl:part element="tns:listLibrairyResponse" name="listLibrairyResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="BookPort">
+    <wsdl:operation name="book">
+      <wsdl:input message="tns:bookRequest" name="bookRequest"></wsdl:input>
+      <wsdl:output message="tns:bookResponse" name="bookResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listLibrairy">
+      <wsdl:input message="tns:listLibrairyRequest" name="listLibrairyRequest"></wsdl:input>
+      <wsdl:output message="tns:listLibrairyResponse" name="listLibrairyResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BookPortSoap11" type="tns:BookPort">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="book">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="bookRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="bookResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="listLibrairy">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="listLibrairyRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="listLibrairyResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="BookPortService">
+    <wsdl:port binding="tns:BookPortSoap11" name="BookPortSoap11">
+      <soap:address location="http://localhost:8080/ws"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/ws</con:endpoint></con:endpoints><con:operation id="ab290873-718e-4984-b24f-7dda13100363" isOneWay="false" action="" name="book" bindingOperationName="book" type="Request-Response" outputName="bookResponse" inputName="bookRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="d1c8d4c7-baf4-44bc-a0e9-3d9fc22191f7" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:bookRequest>
+         <com:titleElement></com:titleElement>
+         <com:authorSurname></com:authorSurname>
+         <!--Zero or more repetitions:-->
+         <com:tags>sport</com:tags>
+         <com:librairyId>-1</com:librairyId>
+      </com:bookRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/BookPort/bookRequest"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="5056a16b-42c0-4320-aa2c-137717d3853e" isOneWay="false" action="" name="listLibrairy" bindingOperationName="listLibrairy" type="Request-Response" outputName="listLibrairyResponse" inputName="listLibrairyRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="f9976ae7-83be-42a5-8240-35007d3e3bad" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:listLibrairyRequest/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/BookPort/listLibrairyRequest"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:testSuite id="82aa62d3-43a5-466d-9043-82c7e60b2ef1" name="TestSuite 1"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="18540948-b4da-4ec5-9ee8-60493a4331e1" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="BookResearch" searchProperties="true"><con:settings/><con:testStep type="request" id="6aa8ef29-94fe-4002-884c-c5723ed5ee5e" name="book - Research by tag"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>BookPortSoap11</con:interface><con:operation>book</con:operation><con:request name="book - Research by tag" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="4296b4c3-ffc5-4517-a5b5-e099752e38a8"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:bookRequest>
+         <com:titleElement></com:titleElement>
+         <com:authorSurname></com:authorSurname>
+         <!--Zero or more repetitions:-->
+         <com:tags>${#TestCase#tag}</com:tags>
+         <com:librairyId>-1</com:librairyId>
+      </com:bookRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="55e27f54-0c5a-449f-9264-c5a7e6c00f62" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/BookPort/bookRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="e8d56e48-2333-485f-87b6-bd85cefd31d3" name="book - Research by author"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>BookPortSoap11</con:interface><con:operation>book</con:operation><con:request name="book - Research by author" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="6433b841-b879-4b31-9c8a-14b5ad2eecfe"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:bookRequest>
+         <com:titleElement></com:titleElement>
+         <com:authorSurname>sur</com:authorSurname>
+         <com:librairyId>-1</com:librairyId>
+      </com:bookRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="4594ef90-f891-499f-8f66-020803142baa" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/BookPort/bookRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="d6b5fe4c-a23c-4bce-bf42-ca962dddf2a1" name="book - Research by titleElement1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>BookPortSoap11</con:interface><con:operation>book</con:operation><con:request name="book - Research by titleElement1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="3062fb2a-d103-4fe4-ad2a-db0b4fd558ec"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:bookRequest>
+         <com:titleElement>${#TestCase#elementTitle1}</com:titleElement>
+         <com:authorSurname></com:authorSurname>
+         <com:librairyId>-1</com:librairyId>
+      </com:bookRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="5c095112-2278-4bc3-ba2f-0c44aad64df0" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/BookPort/bookRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="9395a275-ea6b-4010-9111-2096e1f6f026" name="book - Research by titleElement2"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>BookPortSoap11</con:interface><con:operation>book</con:operation><con:request name="book - Research by titleElement2" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="3062fb2a-d103-4fe4-ad2a-db0b4fd558ec"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:bookRequest>
+         <com:titleElement>${#TestCase#elementTitle2}</com:titleElement>
+         <com:authorSurname></com:authorSurname>
+         <com:librairyId>-1</com:librairyId>
+      </com:bookRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="5c095112-2278-4bc3-ba2f-0c44aad64df0" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/BookPort/bookRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="e5c82b66-ae7c-424c-86dd-785af2cb2aa6" name="book - Research by titleElement3"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>BookPortSoap11</con:interface><con:operation>book</con:operation><con:request name="book - Research by titleElement3" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="3062fb2a-d103-4fe4-ad2a-db0b4fd558ec"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:bookRequest>
+         <com:titleElement>${#TestCase#elementTitle3}</com:titleElement>
+         <com:authorSurname></com:authorSurname>
+         <com:librairyId>-1</com:librairyId>
+      </com:bookRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="5c095112-2278-4bc3-ba2f-0c44aad64df0" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/BookPort/bookRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="6d71ef44-a874-41fd-8f62-f63cdf81c205" name="book - Research multi-parameters"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>BookPortSoap11</con:interface><con:operation>book</con:operation><con:request name="book - Research multi-parameters" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="ff72feaa-588f-4b77-a290-aec4faaae375"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:bookRequest>
+         <com:titleElement>${#TestCase#elementTitle1}</com:titleElement>
+         <com:authorSurname></com:authorSurname>
+         <!--Zero or more repetitions:-->
+         <com:tags>sport</com:tags>
+           <com:tags>aventure</com:tags>
+         <com:librairyId>1</com:librairyId>
+      </com:bookRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="7ec3b3b0-9cdb-4191-a2fb-8914a896bda4" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/BookPort/bookRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="979d034c-0391-47bd-8f4b-130dc2477715" name="listLibrairy - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>BookPortSoap11</con:interface><con:operation>listLibrairy</con:operation><con:request name="listLibrairy - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="f57d89fe-c6ac-4442-844c-aaca00b0cd6b"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:listLibrairyRequest/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="dae7c4f8-5272-4d1c-bcd4-c4f245de3b41" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/BookPort/listLibrairyRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties><con:property><con:name>author</con:name><con:value>sur</con:value></con:property><con:property><con:name>elementTitle1</con:name><con:value>italie</con:value></con:property><con:property><con:name>elementTitle2</con:name><con:value>Itali</con:value></con:property><con:property><con:name>elementTitle3</con:name><con:value>iTaliE</con:value></con:property><con:property><con:name>tag</con:name><con:value>sport</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>

@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="05f0e01b-3f41-43ea-a25d-885edca3a732" activeEnvironment="Default" name="customersAndLoans" resourceRoot="" soapui-version="5.5.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.actions.iface.tools.soapui.TestRunnerAction@values-local"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Report Format(s)" value=""/>
+  <con:entry key="Host:Port" value=""/>
+  <con:entry key="Export JUnit Results" value="false"/>
+  <con:entry key="Export All" value="false"/>
+  <con:entry key="Save After" value="false"/>
+  <con:entry key="Add Settings" value="false"/>
+  <con:entry key="WSS Password Type" value=""/>
+  <con:entry key="TestSuite" value="TestSuite 1"/>
+  <con:entry key="Endpoint" value=""/>
+  <con:entry key="Select Report Type" value=""/>
+  <con:entry key="System Properties" value=""/>
+  <con:entry key="Password" value=""/>
+  <con:entry key="Print Report" value="false"/>
+  <con:entry key="Open Report" value="false"/>
+  <con:entry key="Export JUnit Results with test properties" value="false"/>
+  <con:entry key="Global Properties" value=""/>
+  <con:entry key="Project Properties" value=""/>
+  <con:entry key="Project Password" value=""/>
+  <con:entry key="TestCase" value="Customer Management"/>
+  <con:entry key="Username" value=""/>
+  <con:entry key="user-settings.xml Password" value=""/>
+  <con:entry key="TestRunner Path" value=""/>
+  <con:entry key="Environment" value="Default"/>
+  <con:entry key="Coverage Report" value="false"/>
+  <con:entry key="Enable UI" value="false"/>
+  <con:entry key="Root Folder" value=""/>
+  <con:entry key="Ignore Errors" value="false"/>
+  <con:entry key="Domain" value=""/>
+  <con:entry key="Tool Args" value=""/>
+  <con:entry key="Save Project" value="false"/>
+</xml-fragment>]]></con:setting></con:settings><con:interface xsi:type="con:WsdlInterface" id="ba9a8903-e11c-41aa-9584-f45312302234" wsaVersion="NONE" name="CustomerPortSoap11" type="wsdl" bindingName="{http://com.berthoud.p7}CustomerPortSoap11" soapVersion="1_1" anonymous="optional" definition="http://localhost:8080/ws/customersAndLoans.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8080/ws/customersAndLoans.wsdl"><con:part><con:url>http://localhost:8080/ws/customersAndLoans.wsdl</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="http://com.berthoud.p7" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://com.berthoud.p7" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://com.berthoud.p7">
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://com.berthoud.p7" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <!--customer management-->
+      <xs:element name="loginCustomerRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="password" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="loginCustomerResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="customer" type="tns:customerWs"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <!--customer management-->
+      <xs:element name="refreshCustomerRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="email" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="refreshCustomerResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="customer" type="tns:customerWs"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <!--loan management-->
+      <!--loan extension-->
+      <xs:element name="extendLoanRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="loanId" type="xs:int"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="extendLoanResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="resultCode" type="xs:int"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <!--register new loan-->
+      <xs:element name="registerLoanRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="customerId" type="xs:int"/>
+            <xs:element name="bookId" type="xs:int"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="registerLoanResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="resultCode" type="xs:int"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <!--register book return-->
+      <xs:element name="registerBookReturnRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="bookId" type="xs:int"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="registerBookReturnResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="resultCode" type="xs:int"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <!--monitoring loans (all open)-->
+      <xs:element name="getAllOpenLoansRequest">
+        <xs:complexType>
+          <xs:sequence></xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getAllOpenLoansResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="loans" type="tns:loanWs"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <!--monitoring loans (in time)-->
+      <xs:element name="getOpenLoansInTimeRequest">
+        <xs:complexType>
+          <xs:sequence></xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getOpenLoansInTimeResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="loans" type="tns:loanWs"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <!--monitoring loans (late)-->
+      <xs:element name="getOpenLoansLateRequest">
+        <xs:complexType>
+          <xs:sequence></xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getOpenLoansLateResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="loans" type="tns:loanWs"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <!--monitoring loans (extended)-->
+      <xs:element name="getOpenLoansExtendedRequest">
+        <xs:complexType>
+          <xs:sequence></xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getOpenLoansExtendedResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="loans" type="tns:loanWs"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <!--definition complexe types-->
+      <xs:complexType name="customerWs">
+        <xs:sequence>
+          <xs:element name="id" type="xs:int"/>
+          <xs:element name="firstName" type="xs:string"/>
+          <xs:element name="surname" type="xs:string"/>
+          <xs:element name="sex" type="xs:string"/>
+          <xs:element name="dateExpirationMembership" type="xs:date"/>
+          <xs:element name="phone" type="xs:string"/>
+          <xs:element name="email" type="xs:string"/>
+          <xs:element name="password" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="loans" type="tns:loanWs"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="loanWs">
+        <xs:sequence>
+          <xs:element name="id" type="xs:int"/>
+          <xs:element name="dateBegin" type="xs:date"/>
+          <xs:element name="dateEnd" type="xs:date"/>
+          <xs:element name="dateBack" type="xs:date"/>
+          <xs:element name="numberExtensions" type="xs:int"/>
+          <xs:element name="book" type="tns:bookWs"/>
+          <xs:element name="customerWs" type="tns:customerWs"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="bookWs">
+        <xs:sequence>
+          <xs:element name="id" type="xs:int"/>
+          <xs:element name="datePurchase" type="xs:date"/>
+          <xs:element name="status" type="tns:statusWs"/>
+          <xs:element name="librairy" type="tns:librairyWs"/>
+          <xs:element name="bookReference" type="tns:bookReferenceWs"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="statusWs">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="available"/>
+          <xs:enumeration value="booked"/>
+          <xs:enumeration value="borrowed"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="librairyWs">
+        <xs:sequence>
+          <xs:element name="id" type="xs:int"/>
+          <xs:element name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="bookReferenceWs">
+        <xs:sequence>
+          <xs:element name="id" type="xs:int"/>
+          <xs:element name="title" type="xs:string"/>
+          <xs:element name="authorFirstName" type="xs:string"/>
+          <xs:element name="authorSurname" type="xs:string"/>
+          <xs:element name="isbn13" type="xs:string"/>
+          <xs:element name="publisher" type="xs:string"/>
+          <xs:element name="summary" type="xs:string"/>
+          <xs:element name="yearPublication" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getOpenLoansLateResponse">
+    <wsdl:part element="tns:getOpenLoansLateResponse" name="getOpenLoansLateResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="refreshCustomerResponse">
+    <wsdl:part element="tns:refreshCustomerResponse" name="refreshCustomerResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getOpenLoansInTimeResponse">
+    <wsdl:part element="tns:getOpenLoansInTimeResponse" name="getOpenLoansInTimeResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getOpenLoansExtendedResponse">
+    <wsdl:part element="tns:getOpenLoansExtendedResponse" name="getOpenLoansExtendedResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="extendLoanResponse">
+    <wsdl:part element="tns:extendLoanResponse" name="extendLoanResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="extendLoanRequest">
+    <wsdl:part element="tns:extendLoanRequest" name="extendLoanRequest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="registerLoanResponse">
+    <wsdl:part element="tns:registerLoanResponse" name="registerLoanResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getOpenLoansExtendedRequest">
+    <wsdl:part element="tns:getOpenLoansExtendedRequest" name="getOpenLoansExtendedRequest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="registerBookReturnResponse">
+    <wsdl:part element="tns:registerBookReturnResponse" name="registerBookReturnResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllOpenLoansRequest">
+    <wsdl:part element="tns:getAllOpenLoansRequest" name="getAllOpenLoansRequest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="registerLoanRequest">
+    <wsdl:part element="tns:registerLoanRequest" name="registerLoanRequest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="refreshCustomerRequest">
+    <wsdl:part element="tns:refreshCustomerRequest" name="refreshCustomerRequest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="registerBookReturnRequest">
+    <wsdl:part element="tns:registerBookReturnRequest" name="registerBookReturnRequest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllOpenLoansResponse">
+    <wsdl:part element="tns:getAllOpenLoansResponse" name="getAllOpenLoansResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="loginCustomerRequest">
+    <wsdl:part element="tns:loginCustomerRequest" name="loginCustomerRequest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getOpenLoansInTimeRequest">
+    <wsdl:part element="tns:getOpenLoansInTimeRequest" name="getOpenLoansInTimeRequest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getOpenLoansLateRequest">
+    <wsdl:part element="tns:getOpenLoansLateRequest" name="getOpenLoansLateRequest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="loginCustomerResponse">
+    <wsdl:part element="tns:loginCustomerResponse" name="loginCustomerResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="CustomerPort">
+    <wsdl:operation name="getOpenLoansLate">
+      <wsdl:input message="tns:getOpenLoansLateRequest" name="getOpenLoansLateRequest"></wsdl:input>
+      <wsdl:output message="tns:getOpenLoansLateResponse" name="getOpenLoansLateResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="refreshCustomer">
+      <wsdl:input message="tns:refreshCustomerRequest" name="refreshCustomerRequest"></wsdl:input>
+      <wsdl:output message="tns:refreshCustomerResponse" name="refreshCustomerResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getOpenLoansInTime">
+      <wsdl:input message="tns:getOpenLoansInTimeRequest" name="getOpenLoansInTimeRequest"></wsdl:input>
+      <wsdl:output message="tns:getOpenLoansInTimeResponse" name="getOpenLoansInTimeResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getOpenLoansExtended">
+      <wsdl:input message="tns:getOpenLoansExtendedRequest" name="getOpenLoansExtendedRequest"></wsdl:input>
+      <wsdl:output message="tns:getOpenLoansExtendedResponse" name="getOpenLoansExtendedResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="extendLoan">
+      <wsdl:input message="tns:extendLoanRequest" name="extendLoanRequest"></wsdl:input>
+      <wsdl:output message="tns:extendLoanResponse" name="extendLoanResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="registerLoan">
+      <wsdl:input message="tns:registerLoanRequest" name="registerLoanRequest"></wsdl:input>
+      <wsdl:output message="tns:registerLoanResponse" name="registerLoanResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="registerBookReturn">
+      <wsdl:input message="tns:registerBookReturnRequest" name="registerBookReturnRequest"></wsdl:input>
+      <wsdl:output message="tns:registerBookReturnResponse" name="registerBookReturnResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllOpenLoans">
+      <wsdl:input message="tns:getAllOpenLoansRequest" name="getAllOpenLoansRequest"></wsdl:input>
+      <wsdl:output message="tns:getAllOpenLoansResponse" name="getAllOpenLoansResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="loginCustomer">
+      <wsdl:input message="tns:loginCustomerRequest" name="loginCustomerRequest"></wsdl:input>
+      <wsdl:output message="tns:loginCustomerResponse" name="loginCustomerResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CustomerPortSoap11" type="tns:CustomerPort">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getOpenLoansLate">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="getOpenLoansLateRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getOpenLoansLateResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="refreshCustomer">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="refreshCustomerRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="refreshCustomerResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getOpenLoansInTime">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="getOpenLoansInTimeRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getOpenLoansInTimeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getOpenLoansExtended">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="getOpenLoansExtendedRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getOpenLoansExtendedResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="extendLoan">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="extendLoanRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="extendLoanResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="registerLoan">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="registerLoanRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="registerLoanResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="registerBookReturn">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="registerBookReturnRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="registerBookReturnResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllOpenLoans">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="getAllOpenLoansRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getAllOpenLoansResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="loginCustomer">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="loginCustomerRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="loginCustomerResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CustomerPortService">
+    <wsdl:port binding="tns:CustomerPortSoap11" name="CustomerPortSoap11">
+      <soap:address location="http://localhost:8080/ws"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/ws</con:endpoint></con:endpoints><con:operation id="2058c3b6-19a1-4918-84d0-ba6ffdf3e92d" isOneWay="false" action="" name="extendLoan" bindingOperationName="extendLoan" type="Request-Response" outputName="extendLoanResponse" inputName="extendLoanRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="111698a3-c218-4e1f-8898-27fcc2e82a12" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:extendLoanRequest>
+         <com:loanId>?</com:loanId>
+      </com:extendLoanRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/extendLoanRequest"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="7a481339-1567-41e1-8213-c3ec625b483e" isOneWay="false" action="" name="getAllOpenLoans" bindingOperationName="getAllOpenLoans" type="Request-Response" outputName="getAllOpenLoansResponse" inputName="getAllOpenLoansRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="10dbe51f-17e7-4152-85b5-aae8bbd7117e" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:getAllOpenLoansRequest/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/getAllOpenLoansRequest"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="9d1986e9-5332-43e6-aaa8-0435d96ddc68" isOneWay="false" action="" name="getOpenLoansExtended" bindingOperationName="getOpenLoansExtended" type="Request-Response" outputName="getOpenLoansExtendedResponse" inputName="getOpenLoansExtendedRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="5ce9eeba-9cab-4514-bbcf-fa9832ae6e1d" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:getOpenLoansExtendedRequest/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/getOpenLoansExtendedRequest"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="a1439f43-efb2-4117-992f-53654c689771" isOneWay="false" action="" name="getOpenLoansInTime" bindingOperationName="getOpenLoansInTime" type="Request-Response" outputName="getOpenLoansInTimeResponse" inputName="getOpenLoansInTimeRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="ecf7a617-58f9-4364-8adf-402bbd575e0b" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:getOpenLoansInTimeRequest/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/getOpenLoansInTimeRequest"/></con:call></con:operation><con:operation id="ced02d81-2495-4b55-a9ff-709015cc5d92" isOneWay="false" action="" name="getOpenLoansLate" bindingOperationName="getOpenLoansLate" type="Request-Response" outputName="getOpenLoansLateResponse" inputName="getOpenLoansLateRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="67695546-b42f-47bc-b10c-4270364431d7" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:getOpenLoansLateRequest/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/getOpenLoansLateRequest"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="f9a6c136-8a70-4765-8fad-eabaa6171a77" isOneWay="false" action="" name="loginCustomer" bindingOperationName="loginCustomer" type="Request-Response" outputName="loginCustomerResponse" inputName="loginCustomerRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="853e5c16-8460-4b78-830b-a0b2ac1ccd0e" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:loginCustomerRequest>
+         <com:email>malika@yahoo.fr</com:email>
+         <com:password>soleil</com:password>
+      </com:loginCustomerRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/loginCustomerRequest"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="10a65363-5af7-4eb2-a064-e388fd616149" isOneWay="false" action="" name="refreshCustomer" bindingOperationName="refreshCustomer" type="Request-Response" outputName="refreshCustomerResponse" inputName="refreshCustomerRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="bb9ad215-b048-422c-9dfd-d587e02b4a00" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:refreshCustomerRequest>
+         <com:email>?</com:email>
+      </com:refreshCustomerRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/refreshCustomerRequest"/></con:call></con:operation><con:operation id="3eb8ea6a-c5b8-4928-bbc1-752ed28e791b" isOneWay="false" action="" name="registerBookReturn" bindingOperationName="registerBookReturn" type="Request-Response" outputName="registerBookReturnResponse" inputName="registerBookReturnRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="afd2645a-c47b-4def-a2e5-9e7b196ac27f" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:registerBookReturnRequest>
+         <com:bookId>?</com:bookId>
+      </com:registerBookReturnRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/registerBookReturnRequest"/></con:call></con:operation><con:operation id="29ec1ef5-445f-4df8-a291-c6e0996e9117" isOneWay="false" action="" name="registerLoan" bindingOperationName="registerLoan" type="Request-Response" outputName="registerLoanResponse" inputName="registerLoanRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="64531641-af6b-4daa-a491-f4a10c374652" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:registerLoanRequest>
+         <com:customerId>?</com:customerId>
+         <com:bookId>?</com:bookId>
+      </com:registerLoanRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/registerLoanRequest"/></con:call></con:operation></con:interface><con:testSuite id="6b61f37f-4437-40f6-b011-e6dc48259085" name="TestSuite 1"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="d899fdcb-d029-4cd4-83d9-0e6a5ffdf54b" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Customer Management" searchProperties="true"><con:settings/><con:testStep type="request" id="a085712c-081b-407a-93d2-fce355b38269" name="loginCustomer - successfull"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>loginCustomer</con:operation><con:request name="loginCustomer - successfull" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="a30c513e-fd41-4d06-9dda-5cd0c7e3b593"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:loginCustomerRequest>
+         <com:email>malika@yahoo.fr</com:email>
+         <com:password>soleil</com:password>
+      </com:loginCustomerRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="9af1483f-450f-460f-9c99-57240a194be4" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/loginCustomerRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="d6330641-1f95-4668-a8b9-edbc303186ce" name="loginCustomer - wrong password"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>loginCustomer</con:operation><con:request name="loginCustomer - wrong password" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="a30c513e-fd41-4d06-9dda-5cd0c7e3b593"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:loginCustomerRequest>
+         <com:email>malika@yahoo.fr</com:email>
+         <com:password>soleillllllllll</com:password>
+      </com:loginCustomerRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="9af1483f-450f-460f-9c99-57240a194be4" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/loginCustomerRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="d270c648-37e0-440d-9ab6-6f473dcab810" name="loginCustomer - wrong email"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>loginCustomer</con:operation><con:request name="loginCustomer - wrong email" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="a30c513e-fd41-4d06-9dda-5cd0c7e3b593"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:loginCustomerRequest>
+         <com:email>malika@yahuu.fr</com:email>
+         <com:password>soleil</com:password>
+      </com:loginCustomerRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="9af1483f-450f-460f-9c99-57240a194be4" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/loginCustomerRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="881a4e24-4ca0-4c40-a669-03eb7e9a6c38" name="refreshCustomer - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>refreshCustomer</con:operation><con:request name="refreshCustomer - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="e537ae40-6403-4793-87bc-46ec26f9fe6b"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:refreshCustomerRequest>
+         <com:email>malika@yahoo.fr</com:email>
+      </com:refreshCustomerRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="faecafb9-77e5-4348-8a95-0643b27df1b8" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/refreshCustomerRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="74f18059-2959-4401-9666-ddc1a03944d9" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Loan Management" searchProperties="true"><con:settings/><con:testStep type="request" id="7f304604-a821-46c9-8158-0cad5fd9eadb" name="getAllOpenLoans - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>getAllOpenLoans</con:operation><con:request name="getAllOpenLoans - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="f4cd1fe4-9c4a-416a-b96e-5b78b6ddd74a"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:getAllOpenLoansRequest/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="71bfac2f-ed7b-43fb-b810-b0fa5e9ca960" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/getAllOpenLoansRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="48feadac-9e03-4a88-ba7b-2f9e194a9573" name="getOpenLoansExtended - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>getOpenLoansExtended</con:operation><con:request name="getOpenLoansExtended - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="cff83b49-f780-4aad-a499-61f47c739c27"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:getOpenLoansExtendedRequest/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="4337d2f1-5a86-428b-8093-3a6939d1d44e" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/getOpenLoansExtendedRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="6189de1c-9f54-4bc3-90a1-763df884d7d5" name="getOpenLoansInTime - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>getOpenLoansInTime</con:operation><con:request name="getOpenLoansInTime - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="64d45110-2452-4359-9bbf-c1f723a4780c"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:getOpenLoansInTimeRequest/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="d84bf08c-3f67-4016-85dc-a8de9aa16c9c" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/getOpenLoansInTimeRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="7355e505-3d49-40f5-b6fd-10a097191423" name="getOpenLoansLate - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>getOpenLoansLate</con:operation><con:request name="getOpenLoansLate - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="dfd34c8b-d6ec-4ecd-8494-6de4f68f41fd"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:getOpenLoansLateRequest/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="24ccca96-0afb-4be0-89a0-fea0aaeb0b8f" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/getOpenLoansLateRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="7df539d6-c54f-4a94-91dd-aa33ddd70d13" name="extendLoan - extension denied"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>extendLoan</con:operation><con:request name="extendLoan - extension denied" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="1dd097e0-831d-4021-bb1a-61671b98e64e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:extendLoanRequest>
+         <com:loanId>106</com:loanId>
+      </com:extendLoanRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="b94ea057-0e85-4128-bd03-c6746b8eb69c" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/extendLoanRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>
