@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en" xml:lang="en">
+
+<head>
+    <title>RBGC</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <div class="logout text-right align-bottom" th:if="${session.user != null}">
+            <span th:text="'Bienvenue ' + ${session.user.firstName} + ' /'"> </span>
+            <span> <a th:href="@{/logout}">logout</a> </span>
+        </div>
+        <img th:src="@{/pictures/logo.jpg}" class="img-fluid">
+    </header>
+
+    <section>
+
+        <div id="bg-banner">
+            <p id="texteLogo">Réseau des Bibliothèques <br/> du Grand Cherbourg</p>
+
+            <div class="text-right" id="myMenu">
+                <a th:href="@{/researchForm}" class="btn btn-light" role="button">Rechercher un ouvrage</a>
+                <a th:href="@{/loginForm}" class="btn btn-light" role="button">Accéder à mon compte</a>
+                <a href="#link" class="btn btn-light" role="button">Infos pratiques</a>
+            </div>
+
+        </div>
+    </section>
+
+    <section>
+
+        <table id=researchResults class="table table-hover table-sm">
+
+            <thead class="thead-dark">
+            <tr>
+                <th style="width: 30%" scope="col">Titre</th>
+                <th style="width: 25%" scope="col">Auteur</th>
+                <th class="d-none d-sm-table-cell" style="width: 20%" scope="col">Editeur</th>
+                <th class="d-none d-sm-table-cell" style="width: 15%" scope="col">Année de publication</th>
+                <th style="width: 10%" scope="col">Exemplaires disponibles</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr th:each="bookReference: ${bookReferenceList}" class='clickable-row'
+                th:data-href="@{/bookDetails(bookRef = ${bookReference.id})}">
+                <td th:text="${bookReference.title}">Un jardin en ville</td>
+                <td th:text="${bookReference.authorFirstName + ' ' + bookReference.authorSurname}">Jean Loukfi</td>
+                <td class="d-none d-sm-table-cell" th:text="${bookReference.publisher}">Glénat</td>
+                <td class="d-none d-sm-table-cell" th:text="${bookReference.yearPublication}">2015</td>
+                <td th:text="${bookReference.amountAvailableBooks}">2</td>
+            </tr>
+
+            </tbody>
+        </table>
+
+        <div th:if="${#lists.isEmpty(bookReferenceList)}">
+            <p style="color: red">La recherche n'a donné aucun résultat. Essayer d'élargir vos critères. </p>
+        </div>
+
+
+    </section>
+
+
+    <footer>
+        <div class="marginBottom"></div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+
+    <script>
+        jQuery(document).ready(function ($) {
+            $(".clickable-row").click(function () {
+                window.location = $(this).data("href");
+            });
+        });
+    </script>
+
+</div>
+</body>
+</html>

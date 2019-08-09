@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="OFF">
+    <!--ci-dessous le niveau des logs générés par log4j pour sa propre configuration -->
+    <!-- indépendament du niveau des Apenders!!! -->
+
+    <!--chaque appender correspond a un type de sortie de log (console, file...)-->
+    <Appenders>
+        <File name="file" fileName="app.log">
+                <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
+
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+     <!--on peut mettre en place différents loggers, par exemple propre à des classes spécifiques-->
+
+        <Logger name="HelloController" level="OFF" additivity="false">
+        <AppenderRef ref="STDOUT"/>
+        </Logger>
+        <!--ci-dessus un logger spécifique pour la classe HelloController-->
+
+        <Logger name="org.springframework" level="OFF" additivity="false">
+            <AppenderRef ref="STDOUT"/>
+        </Logger>
+
+        <Root level="ALL">
+            <AppenderRef ref="file" level="DEBUG"/>
+            <AppenderRef ref="STDOUT" level="INFO"/>
+        </Root>
+        <!--ci-dessus le logger générique pour l'ensemble de l'application-->
+    </Loggers>
+
+</Configuration>
+
+
+<!--OFF-->
+<!--FATAL-->
+<!--ERROR-->
+<!--WARN-->
+<!--INFO-->
+<!--DEBUG-->
+<!--TRACE-->
+<!--ALL-->

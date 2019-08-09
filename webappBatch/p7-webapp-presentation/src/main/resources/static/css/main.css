@@ -1,0 +1,93 @@
+/*.jumbotron-fluid {*/
+    /*background-image: url("../pictures/ilnur-kalimullin-332587-unsplash-original.jpg");*/
+    /*background-size: cover;*/
+    /*background-repeat: no-repeat;*/
+/*}*/
+
+#bg {
+    /* The image used */
+    background-image: url("../pictures/ilnur-kalimullin-332587-unsplash-cut.jpg");
+
+    /* Full height */
+    height: 600px;
+
+    /* Center and scale the image nicely */
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    color: white;
+    margin: 0;
+}
+
+
+#bg-banner{
+    /* The image used */
+    background-image: url("../pictures/ilnur-kalimullin-332587-unsplash-banner.jpg");
+
+    /* Full height */
+    height: 200px;
+
+    /* Center and scale the image nicely */
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    color: white;
+    margin: 0;
+}
+
+
+.marginBottom{
+    height: 100px;
+}
+
+#texteLogo{
+    color: white;
+    font-style: italic;
+    margin-left: 2%;
+    font-size: calc(18px + 1vw);
+}
+
+#myMenu{
+    margin-right: 2%;
+    margin-bottom: 0px;
+}
+
+#loginBloc, #researchBloc{
+    width: fit-content;
+
+}
+
+#loginContainer, #researchContainer{
+    margin-top: 10%;
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 200px;
+    max-width: 500px;
+
+}
+
+
+
+#researchContainer{
+    margin-top: 5%;
+    margin-top: 2%;
+}
+
+#researchResults tr:hover td{
+    color: darkblue;
+    text-decoration: underline;
+}
+
+.logout{
+    height: 25px;
+}
+
+
+
+body, html {
+    margin: 0;
+}
+
+

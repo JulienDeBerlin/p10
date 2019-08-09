@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en" xml:lang="en">
+
+<head>
+    <title>RBGC</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <div class="logout text-right align-bottom" th:if="${session.user != null}">
+            <span th:text="'Bienvenue ' + ${session.user.firstName} + ' /'"> </span>
+            <span> <a th:href="@{/logout}">logout</a> </span>
+        </div>
+
+        <img th:src="@{/pictures/logo.jpg}" alt="logo" class="img-fluid">
+    </header>
+
+    <section>
+
+        <div id="bg-banner">
+            <p id="texteLogo">Réseau des Bibliothèques <br/> du Grand Cherbourg</p>
+
+            <div class="text-right" id="myMenu">
+                <a th:href="@{/researchForm}" class="btn btn-light" role="button">Rechercher un ouvrage</a>
+                <!--<a th:href="@{/loginForm}" class="btn btn-light" role="button">Accéder à mon compte</a>-->
+                <a href="#link" class="btn btn-light" role="button">Infos pratiques</a>
+            </div>
+        </div>
+
+    </section>
+
+    <section>
+        <table class="table table-sm">
+
+            <thead>
+            <tr>
+                <th scope="col" colspan="5" >Vos emprûnts en cours &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span th:text=" ${message} ?: ''"> </span>
+                </th>
+            </tr>
+            </thead>
+
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Titre</th>
+                <th class="d-none d-sm-table-cell" scope="col">Auteur</th>
+                <th class="d-none d-sm-table-cell" scope="col">Date prêt</th>
+                <th scope="col">Expiration prêt </th>
+                <th scope="col">Prolonger</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="loan: ${session.user.getLoans()}">
+                <td th:text="${loan.getBook().bookReference.title}">Un jardin en ville</td>
+                <td th:text="${loan.getBook().bookReference.authorFirstName + ' ' +  loan.getBook().bookReference.authorSurname }">Jean Loukfi</td>
+                <td class="d-none d-sm-table-cell" th:text="${#temporals.format(loan.getDateBegin(),'dd/MM/yyyy')}">25/03/19</td>
+                <td class="d-none d-sm-table-cell" th:text="${#temporals.format(loan.getDateEnd(),'dd/MM/yyyy')}">25/04/19</td>
+
+                <td> <a th:href="@{/extendLoan(loanId=${loan.id})}"> <img th:src="@{pictures/reload.png}" alt="arrow-reload"> </a></td>
+            </tr>
+
+            </tbody>
+        </table>
+
+
+    </section>
+
+</div>
+</body>
+
+</html>
