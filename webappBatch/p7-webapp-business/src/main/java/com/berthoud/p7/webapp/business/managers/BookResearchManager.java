@@ -9,6 +9,8 @@ import p7.webapp.model.beans.*;
 
 import java.util.*;
 
+//test
+
 @Service
 public class BookResearchManager {
 

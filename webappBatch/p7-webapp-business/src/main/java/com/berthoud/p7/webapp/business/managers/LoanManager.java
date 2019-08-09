@@ -10,6 +10,8 @@ import p7.webapp.model.beans.Loan;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 @Service
 public class LoanManager {
 
