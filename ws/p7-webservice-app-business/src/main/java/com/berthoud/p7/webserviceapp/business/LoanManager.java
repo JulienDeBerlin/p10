@@ -165,7 +165,7 @@ public class LoanManager {
 
 
     /**
-     * This method is used to register a new loan.
+     * This method is used to register the return of a book.
      *
      * @param bookId the id of the book that is returned.
      * @return :
