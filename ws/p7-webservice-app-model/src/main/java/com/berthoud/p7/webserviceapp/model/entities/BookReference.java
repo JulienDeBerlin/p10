@@ -34,13 +34,17 @@ public class BookReference extends AuditModel{
     @OneToMany (mappedBy = "bookReference", cascade = CascadeType.ALL)
     private Set<Book> books;
 
+    @OrderBy("positionQueue ASC ")
+    @OneToMany (mappedBy = "bookReference", cascade = CascadeType.ALL)
+    private Set<Reservation> reservations;
+
     @ManyToMany (cascade = CascadeType.ALL)
     @JoinTable (name = "book_references_tags",
             joinColumns = @JoinColumn (name = "bookReference_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
     private Set<Tag> tags;
 
-    public BookReference(String title, String authorFirstName, String authorSurname, String isbn13, String publisher, String summary, String yearPublication, Set<Book> books, Set<Tag> tags) {
+    public BookReference(String title, String authorFirstName, String authorSurname, String isbn13, String publisher, String summary, String yearPublication, Set<Book> books, Set<Reservation> reservations, Set<Tag> tags) {
         this.title = title;
         this.authorFirstName = authorFirstName;
         this.authorSurname = authorSurname;
@@ -49,6 +53,7 @@ public class BookReference extends AuditModel{
         this.summary = summary;
         this.yearPublication = yearPublication;
         this.books = books;
+        this.reservations = reservations;
         this.tags = tags;
     }
 
@@ -134,5 +139,13 @@ public class BookReference extends AuditModel{
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }
