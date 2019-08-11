@@ -1,6 +1,5 @@
 package com.berthoud.p7.webserviceapp.tests;
 
-
 import com.berthoud.p7.webserviceapp.business.CustomerManager;
 import com.berthoud.p7.webserviceapp.consumer.contract.CustomerDAO;
 import com.berthoud.p7.webserviceapp.consumer.repositories.SpringDataJPA.CustomerRepository;
