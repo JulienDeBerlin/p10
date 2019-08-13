@@ -162,6 +162,48 @@
     </xs:element>
 
 
+    <!--make a reservation-->
+    <xs:element name="reservationRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="bookReferenceId" type="xs:int"/>
+                <xs:element name="librairyId" type="xs:int"/>
+                <xs:element name="customerId" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="reservationResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name = "resultCode" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <!-- delete a reservation-->
+    <xs:element name="reservationDeleteRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="reservationId" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:element name="reservationDeleteResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name = "resultCode" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+
+
+
 
 <!--definition complexe types-->
 
