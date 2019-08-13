@@ -42,7 +42,6 @@ public class BookEndpoint {
         for (BookReference b : bookReferenceList) {
 
             BookReferenceWs bookReferenceWs = new BookReferenceWs();
-
             BeanUtils.copyProperties(b, bookReferenceWs);
 
             for (Tag tag : b.getTags()) {
@@ -50,7 +49,6 @@ public class BookEndpoint {
                 BeanUtils.copyProperties(tag, tagsWs);
                 bookReferenceWs.getTags().add(tagsWs);
             }
-
 
             for (Book book : b.getBooks()) {
                 BookWs bookWs = new BookWs();
@@ -60,7 +58,6 @@ public class BookEndpoint {
                 BeanUtils.copyProperties(book.getLibrairy(), librairyWs);
                 bookWs.setLibrairy(librairyWs);
                 bookWs.setDatePurchase(Utils.convertLocalDateForXml(book.getDatePurchase()));
-
 
                 Book.Status status = book.getStatus();
                 switch (status) {
@@ -76,9 +73,7 @@ public class BookEndpoint {
                 }
 
                 bookReferenceWs.getBook().add(bookWs);
-
             }
-
             response.getBookReferences().add(bookReferenceWs);
         }
 

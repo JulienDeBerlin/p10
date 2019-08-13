@@ -40,12 +40,12 @@ public class ResearchResultController {
             return "home";
 
         } else {
-
             List<String> tagList = new ArrayList<>();
             if (!tagsAsString.isEmpty()) {
                 tagList = bookResearchManager.convertTagsIntoList(tagsAsString);
             }
-            List<BookReference> bookReferenceList = bookResearchManager.getResultBookResearch(authorSurname, titleElement, tagList, librairyId);
+            List<BookReference> bookReferenceList = bookResearchManager.getResultBookResearch(authorSurname,
+                    titleElement, tagList, librairyId);
             bookReferenceList = bookResearchManager.getAmountAvailableBooks(bookReferenceList);
 
             model.addAttribute("bookReferenceList", bookReferenceList);
