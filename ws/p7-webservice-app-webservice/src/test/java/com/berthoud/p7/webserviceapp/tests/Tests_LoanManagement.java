@@ -54,7 +54,9 @@ public class Tests_LoanManagement {
         testValue = loanManager.extendLoan(1);
         assertEquals(testValue, -2);
 
-
+        // loan id not correct
+        testValue = loanManager.extendLoan(168);
+        assertEquals(testValue, 1);
     }
 
 

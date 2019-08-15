@@ -1,6 +1,8 @@
 package com.berthoud.p7.webapp.tests;
 
 import com.berthoud.p7.webapp.business.managers.BookResearchManager;
+import com.berthoud.p7.webapp.business.managers.LoanManager;
+import com.berthoud.p7.webapp.business.managers.LoginManager;
 import com.berthoud.p7.webapp.clients.BooksClientWs;
 import com.berthoud.p7.webapp.clients.CustomersAndLoansClientWs;
 import com.berthoud.p7.webapp.config.SoapClientConfig;
@@ -12,10 +14,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ws.soap.client.SoapFaultClientException;
 import p7.webapp.model.beans.BookReference;
 import p7.webapp.model.beans.Librairy;
 
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,6 +33,13 @@ public class WebappTests {
 
     @Autowired
     BookResearchManager bookResearchManager;
+
+    @Autowired
+    LoginManager loginManager;
+
+    @Autowired
+    LoanManager loanManager;
+
 
     @Test
     public void contextLoads() {
@@ -52,13 +64,20 @@ public class WebappTests {
             e.getSoapFault().getFaultDetail();
 
 
-
-
-
             System.out.println(e.getMessage());
             }
-
     }
+
+
+    @Test
+    public void loginManager(){
+
+        String email = "julien_berthoud@yahoo.fr";
+        String password = "soleil";
+
+         loginManager.loginCustomer(email, password);
+    }
+
 
 
     @Test
@@ -71,7 +90,6 @@ public class WebappTests {
 
         librairyList = bookResearchManager.getAllLibrairies();
         assertEquals(librairyList.size(), 3);
-
     }
 
     @Test
