@@ -54,7 +54,7 @@ public class Tests_LoanManagement {
         testValue = loanManager.extendLoan(1);
         assertEquals(testValue, -2);
 
-        // loan is already overdue
+        // loan is already overdue - no extension possible
         testValue = loanManager.extendLoan(169);
         assertEquals(testValue, -3);
 
