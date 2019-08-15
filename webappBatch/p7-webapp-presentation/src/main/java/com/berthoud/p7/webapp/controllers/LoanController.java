@@ -53,6 +53,12 @@ public class LoanController {
                 WebApp.logger.info("failure loan extension / cause: max amount of extensions reached");
 
                 break;
+
+            case -3:
+                message = "Un prêt hors délai ne peut pas être prolongé, merci de rapporter l'ouvrage à la bibliothèque! ";
+                WebApp.logger.info("failure loan extension / cause: extension not allowed because loan is already overdue");
+
+                break;
         }
         user = loginManager.refreshCustomer(user.getEmail());
 

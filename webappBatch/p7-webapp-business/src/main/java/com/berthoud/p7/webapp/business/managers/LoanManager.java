@@ -32,6 +32,7 @@ public class LoanManager {
      * 0 = failure (membership expired),
      * -1 = failure (max amount of extensions reached),
      * -2 = failure (loanId not correct)
+     * -3 = failure (extension not allowed because loan is already overdue)
      */
     public int extendLoan(int loanId) {
         Utils.loggerWebappBusiness.trace("entering method extendLoan with loanId = " + loanId);
