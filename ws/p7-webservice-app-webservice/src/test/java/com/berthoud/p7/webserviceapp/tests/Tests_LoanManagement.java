@@ -1,6 +1,7 @@
 package com.berthoud.p7.webserviceapp.tests;
 
 import com.berthoud.p7.webserviceapp.business.LoanManager;
+import com.berthoud.p7.webserviceapp.consumer.contract.LoanDAO;
 import com.berthoud.p7.webserviceapp.consumer.repositories.SpringDataJPA.BookRepository;
 import com.berthoud.p7.webserviceapp.consumer.repositories.SpringDataJPA.CustomerRepository;
 import com.berthoud.p7.webserviceapp.consumer.repositories.SpringDataJPA.LoanRepository;
@@ -14,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -32,6 +33,9 @@ public class Tests_LoanManagement {
     @Autowired
     BookRepository bookRepo;
 
+    @Autowired
+    LoanDAO loanDAO;
+
 
     @Test
     @Transactional
@@ -42,10 +46,6 @@ public class Tests_LoanManagement {
         int testValue = loanManager.extendLoan(36);
         assertEquals(testValue, -2);
 
-        // membership expired
-        testValue = loanManager.extendLoan(40);
-        assertEquals(testValue, 0);
-
         // max amount extension reached
         testValue = loanManager.extendLoan(106);
         assertEquals(testValue, -1);
@@ -54,6 +54,19 @@ public class Tests_LoanManagement {
         testValue = loanManager.extendLoan(1);
         assertEquals(testValue, -2);
 
+        // loan is already overdue - no extension possible
+        testValue = loanManager.extendLoan(169);
+        assertEquals(testValue, -3);
+
+        // membership expired
+        testValue = loanManager.extendLoan(40);
+        assertEquals(testValue, 0);
+
+    }
+
+    @Test
+    public void findBy (){
+        assertTrue(loanDAO.findById(169).isPresent());
 
     }
 
