@@ -40,8 +40,8 @@ public class Customer extends AuditModel {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private Set<Loan> loans;
 
-    @OrderBy("positionQueue ASC ")
-    @OneToMany (mappedBy = "bookReference", cascade = CascadeType.ALL)
+    @OrderBy("dateReservation ASC ")
+    @OneToMany (mappedBy = "customer", cascade = CascadeType.ALL)
     private Set<Reservation> reservations;
 
     public Customer(String firstName, String surname, char sex, LocalDate dateExpirationMembership, String phone, String email, String password, Address address, Set<Loan> loans, Set<Reservation> reservations) {
@@ -58,7 +58,6 @@ public class Customer extends AuditModel {
     }
 
     public Customer() {
-
     }
 
     public int getId() {

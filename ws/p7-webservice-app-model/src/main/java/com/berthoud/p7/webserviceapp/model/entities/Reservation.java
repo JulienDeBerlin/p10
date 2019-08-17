@@ -27,20 +27,17 @@ public class Reservation extends AuditModel{
 
     LocalDate dateBookAvailableNotification;
 
-    @Column(nullable=false)
-    int positionQueue;
 
 
     public Reservation() {
     }
 
-    public Reservation(BookReference bookReference, Librairy librairy, Customer customer, LocalDate dateReservation, LocalDate dateBookAvailableNotification, int positionQueue) {
+    public Reservation(BookReference bookReference, Librairy librairy, Customer customer, LocalDate dateReservation, LocalDate dateBookAvailableNotification) {
         this.bookReference = bookReference;
         this.librairy = librairy;
         this.customer = customer;
         this.dateReservation = dateReservation;
         this.dateBookAvailableNotification = dateBookAvailableNotification;
-        this.positionQueue = positionQueue;
     }
 
     public int getId() {
@@ -89,13 +86,5 @@ public class Reservation extends AuditModel{
 
     public void setDateBookAvailableNotification(LocalDate dateBookAvailableNotification) {
         this.dateBookAvailableNotification = dateBookAvailableNotification;
-    }
-
-    public int getPositionQueue() {
-        return positionQueue;
-    }
-
-    public void setPositionQueue(int positionQueue) {
-        this.positionQueue = positionQueue;
     }
 }

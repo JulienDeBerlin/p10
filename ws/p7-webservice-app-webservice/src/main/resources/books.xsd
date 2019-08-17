@@ -70,7 +70,6 @@
             <xs:element name="librairy" type="tns:librairyWs"/>
             <xs:element name="dateReservation" type="xs:date"/>
             <xs:element name="dateBookAvailableNotification" type="xs:date"/>
-            <xs:element name="positionQueue" type="xs:int"/>
         </xs:sequence>
     </xs:complexType>
 
