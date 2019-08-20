@@ -120,15 +120,25 @@
                         <th style="width: 30%" scope="col">Bibliothèque</th>
                         <th style="width: 25%" scope="col">Total exemplaires</th>
                         <th style="width: 25%" scope="col">dispos</th>
+                        <th style="width: 20%" scope="col">Réserver</th>
                     </tr>
                     </thead>
 
-                    <tbody>
-                    <tr th:each="item: ${selectedBookReference.availabilities}">
+                    <tbody th:each="item: ${selectedBookReference.availabilities}">
+                    <tr >
                         <td th:text="${item.librairyName}">Jean Jaures</td>
                         <td th:text="${item.amountBooks}">2</td>
                         <td th:text="${item.amountAvailableBooks}">2</td>
+                        <td style="width: 20%" scope="col" th:if="${item.amountBooks != 0 and item.amountAvailableBooks == 0}"> <a th:href="@{/makeReservation(BookReferenceId=${selectedBookReference.id}, LibrairyId=${item.librairyId})}">
+                            <img th:src="@{pictures/check-2.png}" alt="reserve"> </a></td>
                     </tr>
+
+                    <tr id="reservationDetails">
+                        <td colspan="4"
+                             th:text=" ${item.amountBooks != 0 and item.amountAvailableBooks == 0} ? 'Nb de réservation(s): ' + ${item.amountReservations} + ' / Prochaine date de retour: ' +${#temporals.format(item.closedDateEnd,'dd/MM/yyyy')} : '' " >
+                        </td>
+                    </tr>
+
 
                     </tbody>
                 </table>

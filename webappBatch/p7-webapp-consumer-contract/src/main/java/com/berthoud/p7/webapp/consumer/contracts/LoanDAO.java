@@ -11,4 +11,6 @@ public interface LoanDAO {
 
     List<Loan> getListOpenLoansLate();
 
+    List<Loan> getListOpenLoans();
+
 }

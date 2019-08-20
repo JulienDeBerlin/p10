@@ -196,6 +196,24 @@ public class CustomerAndLoanEndpoint {
     }
 
 
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getReservationListRequest")
+    @ResponsePayload
+    public GetReservationListResponse getReservationList (@RequestPayload GetReservationListRequest request) throws DatatypeConfigurationException {
+        WebserviceApp.logger.trace("SOAP call getReservationListRequest");
+
+        GetReservationListResponse response = new GetReservationListResponse();
+        List<Reservation> reservationList = reservationManager.getAllReservations(request.getBookReferenceId(), request.getLibrairyId());
+
+        response.getReservations().addAll(reservationMapping(reservationList));
+
+        return response;
+    }
+
+
+
+
+
+
     /**
      * This method is used to map a list of Loan object into a list of LoanWs object, LoanWs being the web-service-class
      * generated automatically by maven based on the xsd file "customersAndLoans.xsd"
@@ -279,6 +297,11 @@ public class CustomerAndLoanEndpoint {
             if ( reservation.getDateBookAvailableNotification() != null ) {
                 reservationWs.setDateBookAvailableNotification(convertLocalDateForXml(reservation.getDateBookAvailableNotification()));
             }
+
+            LibrairyWs librairyWs = new LibrairyWs();
+            BeanUtils.copyProperties(reservation.getLibrairy(), librairyWs);
+            reservationWs.setLibrairy(librairyWs);
+
             // copy reservation (nested BookReference)
 
             // 2 : copy bookReference ( primitive type attributes)
@@ -308,9 +331,9 @@ public class CustomerAndLoanEndpoint {
                         break;
                 }
 
-                LibrairyWs librairyWs = new LibrairyWs();
-                BeanUtils.copyProperties(book.getLibrairy(), librairyWs);
-                bookWs.setLibrairy(librairyWs);
+                LibrairyWs librairyWsOfBookWs = new LibrairyWs();
+                BeanUtils.copyProperties(book.getLibrairy(), librairyWsOfBookWs);
+                bookWs.setLibrairy(librairyWsOfBookWs);
 
                 List<Loan> loanList = new ArrayList<>(book.getLoans());
                 List<LoanWs> loanWsList = new ArrayList<>();

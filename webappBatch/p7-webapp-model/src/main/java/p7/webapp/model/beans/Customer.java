@@ -26,7 +26,10 @@ public class Customer{
 
     private List<Loan> loans;
 
-    public Customer(String firstName, String surname, char sex, LocalDate dateExpirationMembership, String phone, String email, String password, Address address, List<Loan> loans) {
+    private List<Reservation> reservations;
+
+    public Customer(int id, String firstName, String surname, char sex, LocalDate dateExpirationMembership, String phone, String email, String password, Address address, List<Loan> loans, List<Reservation> reservations) {
+        this.id = id;
         this.firstName = firstName;
         this.surname = surname;
         this.sex = sex;
@@ -36,6 +39,7 @@ public class Customer{
         this.password = password;
         this.address = address;
         this.loans = loans;
+        this.reservations = reservations;
     }
 
     public Customer(){
@@ -122,6 +126,13 @@ public class Customer{
         this.loans = loans;
     }
 
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -133,6 +144,6 @@ public class Customer{
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, surname, sex, dateExpirationMembership, phone, email, password, address, loans);
+        return Objects.hash(id, firstName, surname, sex, dateExpirationMembership, phone, email, password, address, loans, reservations);
     }
 }

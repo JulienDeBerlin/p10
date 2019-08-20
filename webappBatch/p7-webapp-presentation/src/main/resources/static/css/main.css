@@ -85,6 +85,10 @@
 }
 
 
+#reservationDetails{
+    font-style: italic;
+    font-size: 80%;
+}
 
 body, html {
     margin: 0;

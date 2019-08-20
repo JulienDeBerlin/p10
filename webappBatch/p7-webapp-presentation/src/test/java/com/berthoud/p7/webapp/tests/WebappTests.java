@@ -51,13 +51,17 @@ public class WebappTests {
         CustomersAndLoansClientWs client = context.getBean(CustomersAndLoansClientWs.class);
 
         try {
-            LoginCustomerResponse response = client.getCustomerWs("malika@yahoo.fr", "soleiel");
+            LoginCustomerResponse response = client.getCustomerWs("malika@yahoo.fr", "soleil");
 
             System.out.println("Prénom = " + response.getCustomer().getFirstName() + "\n");
             System.out.println("Nom = " + response.getCustomer().getSurname() + "\n");
             System.out.println("Email = " + response.getCustomer().getEmail() + "\n");
 
             response.getCustomer().getLoans().forEach(loanWs -> System.out.println(loanWs.getBook().getBookReference().getTitle()));
+
+            assertEquals(response.getCustomer().getReservations().size(), 2);
+            response.getCustomer().getReservations().forEach(reservationWs -> System.out.println(reservationWs.getBookReference().getTitle()));
+
 
         } catch (SoapFaultClientException e) {
 
@@ -153,6 +157,9 @@ public class WebappTests {
         assertEquals(bookReferenceList9.size(), 2);
 
     }
+
+
+
 
 
 }

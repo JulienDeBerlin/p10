@@ -1,38 +1,32 @@
-package com.berthoud.p7.webserviceapp.model.entities;
+package p7.webapp.model.beans;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity
-public class Reservation extends AuditModel{
+public class Reservation {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "book_reference_id")
     private BookReference bookReference;
 
-    @ManyToOne
-    @JoinColumn(name = "librairy_id")
     private Librairy librairy;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @Column(nullable=false)
     private LocalDate dateReservation;
 
     private LocalDate dateBookAvailableNotification;
 
+    private int positionInreservationList;
+
+    private LocalDate plannedNextreturn;
 
 
     public Reservation() {
     }
 
-    public Reservation(BookReference bookReference, Librairy librairy, Customer customer, LocalDate dateReservation, LocalDate dateBookAvailableNotification) {
+    public Reservation(int id, BookReference bookReference, Librairy librairy, Customer customer, LocalDate dateReservation, LocalDate dateBookAvailableNotification) {
+        this.id = id;
         this.bookReference = bookReference;
         this.librairy = librairy;
         this.customer = customer;
@@ -86,5 +80,21 @@ public class Reservation extends AuditModel{
 
     public void setDateBookAvailableNotification(LocalDate dateBookAvailableNotification) {
         this.dateBookAvailableNotification = dateBookAvailableNotification;
+    }
+
+    public int getPositionInreservationList() {
+        return positionInreservationList;
+    }
+
+    public void setPositionInreservationList(int positionInreservationList) {
+        this.positionInreservationList = positionInreservationList;
+    }
+
+    public LocalDate getPlannedNextreturn() {
+        return plannedNextreturn;
+    }
+
+    public void setPlannedNextreturn(LocalDate plannedNextreturn) {
+        this.plannedNextreturn = plannedNextreturn;
     }
 }
