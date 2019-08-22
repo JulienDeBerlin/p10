@@ -23,6 +23,23 @@
     </xs:element>
 
 
+    <xs:element name="bookReferenceRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="bookReferenceId" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="bookReferenceResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="bookReference" type="tns:bookReferenceWs"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
     <xs:element name="listLibrairyRequest">
         <xs:complexType>
             <xs:sequence>

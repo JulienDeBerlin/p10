@@ -97,5 +97,25 @@ public class BookEndpoint {
         return response;
     }
 
+//    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "bookReferenceRequest")
+//    @ResponsePayload
+//    public BookReferenceResponse getBookReferenceDetails (@RequestPayload BookReferenceRequest r)  {
+//        WebserviceApp.logger.trace("SOAP call getBookReferenceDetails");
+//
+//        BookReferenceResponse response = new BookReferenceResponse();
+//
+//        List<Librairy> librairyList = bookResearchManager.getAllLibrairies();
+//        for (Librairy librairy :librairyList) {
+//            LibrairyWs librairyWs = new LibrairyWs();
+//            BeanUtils.copyProperties(librairy, librairyWs);
+//            response.getLibrairyWs().add(librairyWs);
+//        }
+//
+//        return response;
+//    }
+
+
+
+
 
 }

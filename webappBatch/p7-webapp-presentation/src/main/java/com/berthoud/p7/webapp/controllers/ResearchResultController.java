@@ -70,7 +70,7 @@ public class ResearchResultController {
 
         BookReference selectedBookReference = bookResearchManager.getSelectedBookReference(bookReferenceId, bookReferenceList);
         selectedBookReference.setTagsAsString(bookResearchManager.convertTagsSetIntoString(selectedBookReference.getTags()));
-        selectedBookReference = bookResearchManager.getAvailabilitiesEachLibrairy(selectedBookReference);
+        selectedBookReference = bookResearchManager.getAvailabilities(selectedBookReference);
         model.addAttribute("selectedBookReference", selectedBookReference);
 
         return "researchResultDetails";

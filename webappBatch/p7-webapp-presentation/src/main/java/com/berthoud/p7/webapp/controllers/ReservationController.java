@@ -1,6 +1,7 @@
 package com.berthoud.p7.webapp.controllers;
 
 import com.berthoud.p7.webapp.WebApp;
+import com.berthoud.p7.webapp.business.managers.BookResearchManager;
 import com.berthoud.p7.webapp.business.managers.LoginManager;
 import com.berthoud.p7.webapp.business.managers.ReservationManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import p7.webapp.model.beans.Librairy;
 
 import javax.servlet.http.HttpSession;
 
-@SessionAttributes(value = "user")
+@SessionAttributes({ "user", "selectedBookReference"})
 @Controller
 public class ReservationController {
 
@@ -22,6 +23,9 @@ public class ReservationController {
 
     @Autowired
     LoginManager loginManager;
+
+    @Autowired
+    BookResearchManager bookResearchManager;
 
 
     @RequestMapping(value = "/deleteReservation", method = RequestMethod.GET)
@@ -48,8 +52,8 @@ public class ReservationController {
         }
 
         user = loginManager.refreshCustomer(user.getEmail());
-
         model.addAttribute("user", user);
+
         model.addAttribute("messageDeleteReservation", messageDeleteReservation);
 
         return "memberArea";
@@ -77,7 +81,6 @@ public class ReservationController {
                                   @RequestParam int bookReferenceId,
                                   @ModelAttribute String afterLogin,
                                   @SessionAttribute(value = "selectedBookReference") BookReference selectedBookReference,
-
                                   HttpSession session) {
 
 
@@ -88,13 +91,20 @@ public class ReservationController {
             return "home";
 
         } else {
-
             Customer user = (Customer) session.getAttribute("user");
-
             int resultReservation = reservationManager.makeReservation(user.getId(), bookReferenceId, librairyId);
 
+            // update the BookReference (in case the reservation was successfull)
+            BookReference bookReferenceUpdated = bookResearchManager.getAvailabilities(selectedBookReference);
+            model.addAttribute("selectedBookReference", bookReferenceUpdated);
+
+            // update user (in case the reservation was successfull)
+            user = loginManager.refreshCustomer(user.getEmail());
+            model.addAttribute("user", user);
+
+            // A customed message is displayed in the view, according to result
             model.addAttribute("resultReservation", resultReservation);
-            model.addAttribute("selectedBookReference", selectedBookReference);
+
             return "researchResultDetails";
         }
 

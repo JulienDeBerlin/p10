@@ -128,16 +128,15 @@ public class BookResearchManager {
         return inputList;
     }
 
-    // TODO javadoc à actualiser avec les réservations
     /**
-     * This method is used to determine how many {@link Book} of a specific {@link BookReference} are 1/owned and 2/currently available for loan
-     * in each librairy.
+     * This method retrieve a list of {@link Availability} object for the BookReference passed in parameter. The {@link Availability} object
+     * give information about the number of books matching the Bookreference which are owned, available and reserved in each of the librairies.
      *
      * @param bookReference a {@link BookReference} object
-     * @return a {@link BookReference} object with ist attribute {@link Availability} set.
+     * @return a {@link BookReference} object with its attribute {@link Availability} set.
      */
-    public BookReference getAvailabilitiesEachLibrairy(BookReference bookReference) {
-        Utils.loggerWebappBusiness.trace("entering method getAvailabilitiesEachLibrairy with bookReference id = " + bookReference.getId());
+    public BookReference getAvailabilities(BookReference bookReference) {
+        Utils.loggerWebappBusiness.trace("entering method getAvailabilities with bookReference id = " + bookReference.getId());
 
 
         List<Integer> ownedBy = new ArrayList<>();
