@@ -19,4 +19,9 @@ public class ReservationWsImpl  extends AbstractWsImpl implements ReservationDAO
     public int deleteReservation(int reservationId) {
         return customersAndLoansClientWs.deleteReservationMapped(reservationId);
     }
+
+    @Override
+    public int makeReservation(int customerId, int bookReferenceId, int librairyId) {
+        return customersAndLoansClientWs.makeReservationMapped(customerId, bookReferenceId, librairyId);
+    }
 }

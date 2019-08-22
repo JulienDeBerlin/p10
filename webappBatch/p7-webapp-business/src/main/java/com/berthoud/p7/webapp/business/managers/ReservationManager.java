@@ -3,13 +3,9 @@ package com.berthoud.p7.webapp.business.managers;
 import com.berthoud.p7.webapp.consumer.contracts.ReservationDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import p7.webapp.model.beans.Book;
-import p7.webapp.model.beans.Customer;
-import p7.webapp.model.beans.Loan;
-import p7.webapp.model.beans.Reservation;
+import p7.webapp.model.beans.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -129,6 +125,25 @@ public class ReservationManager {
     public int deleteReservation(int reservationId) {
         return reservationDAO.deleteReservation(reservationId);
 
+    }
+
+
+    /**
+     * With this method a {@link Customer} can make a reservation for a specific {@link BookReference} ind a specific {@link Librairy},
+     *
+     * @param customerId      -
+     * @param bookReferenceId -
+     * @param librairyId      -
+     * @return
+     * 1    = success (reservation is possible and registered),
+     * -1   = failure (customer Id not correct)
+     * -2   = failure (Librairy Id not correct)
+     * -3   = failure (BookReference Id not correct)
+     * -4   = failure: a book with the same BookReference is already currently borrowed by the customer
+     * -5   = failure: reservation list is full
+     */
+    public int makeReservation(int customerId, int bookReferenceId, int librairyId){
+        return reservationDAO.makeReservation(customerId, bookReferenceId, librairyId);
     }
 
 }

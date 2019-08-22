@@ -135,7 +135,7 @@ public class CustomersAndLoansClientWs extends WebServiceGatewaySupport {
      *
      * @return a webservice {@link GetOpenLoansLateResponse} object, that includes all open loans.
      */
-    public GetAllOpenLoansResponse getAllOpenLoans(){
+    public GetAllOpenLoansResponse getAllOpenLoans() {
         GetAllOpenLoansRequest request = new GetAllOpenLoansRequest();
         return (GetAllOpenLoansResponse) getWebServiceTemplate().marshalSendAndReceive(request);
     }
@@ -145,18 +145,16 @@ public class CustomersAndLoansClientWs extends WebServiceGatewaySupport {
      *
      * @return a list of all open loans.
      */
-    public List<Loan> getAllOpenLoansMapped(){
+    public List<Loan> getAllOpenLoansMapped() {
 
         List<Loan> openLoans = new ArrayList<>();
         List<LoanWs> openLoansWs = getAllOpenLoans().getLoans();
 
-        for (LoanWs loanWs :openLoansWs) {
+        for (LoanWs loanWs : openLoansWs) {
             openLoans.add(loanMapping(loanWs));
         }
         return openLoans;
     }
-
-
 
 
     /**
@@ -216,6 +214,42 @@ public class CustomersAndLoansClientWs extends WebServiceGatewaySupport {
         return deleteReservation(reservationId).getResultCode();
     }
 
+
+    /**
+     * With this method a {@link Customer} can make a reservation for a specific {@link BookReference} ind a specific {@link Librairy},
+     * using a web service
+     *
+     * @param customerId      -
+     * @param bookReferenceId -
+     * @param librairyId      -
+     * @return a webservice object
+     */
+    public MakeReservationResponse makeReservation(int customerId, int bookReferenceId, int librairyId) {
+        MakeReservationRequest request = new MakeReservationRequest();
+        request.setCustomerId(customerId);
+        request.setBookReferenceId(bookReferenceId);
+        request.setLibrairyId(librairyId);
+        return (MakeReservationResponse) getWebServiceTemplate().marshalSendAndReceive(request);
+    }
+
+    /**
+     * With this method a {@link Customer} can make a reservation for a specific {@link BookReference} ind a specific {@link Librairy},
+     * using a web service
+     *
+     * @param customerId      -
+     * @param bookReferenceId -
+     * @param librairyId      -
+     * @return
+     * 1    = success (reservation is possible and registered),
+     * -1   = failure (customer Id not correct)
+     * -2   = failure (Librairy Id not correct)
+     * -3   = failure (BookReference Id not correct)
+     * -4   = failure: a book with the same BookReference is already currently borrowed by the customer
+     * -5   = failure: reservation list is full
+     */
+    public int makeReservationMapped(int customerId, int bookReferenceId, int librairyId) {
+        return makeReservation(customerId, bookReferenceId, librairyId).getResultCode();
+    }
 
     /**
      * Mapping of a CustomerWs object into a Customer object.

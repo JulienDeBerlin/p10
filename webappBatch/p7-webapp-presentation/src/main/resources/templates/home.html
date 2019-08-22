@@ -29,18 +29,21 @@
 
             <div class="text-right" id="myMenu">
                 <a th:href="@{/researchForm}" class="btn btn-light" role="button">Rechercher un ouvrage</a>
-                <a th:href="@{/loginForm}" class="btn btn-light" role="button">Accéder à mon compte</a>
+                <a th:href="@{/displayMemberArea}" class="btn btn-light" role="button">Accéder à mon compte</a>
                 <a href="#link" class="btn btn-light" role="button">Infos pratiques</a>
             </div>
 
 
 
-            <div id="loginContainer" th:if="${toBeDisplayed == 'loginForm'}">
-                <form id="loginBloc" class="text-ce" method="post" th:action="@{/memberArea}">
+            <div id="loginContainer" th:if="${toBeDisplayed=='loginForm'}">
+                <form id="loginBloc" class="text-ce" method="post" th:action="@{/perfomLogin}">
 
                     <div th:switch="${alert}">
                         <p style="color: white" th:case="'wrong password'">Le mot de passe n'est pas correct</p>
                         <p style="color: white" th:case="'wrong email'">Email inconnu</p>
+                        <p style="color: white" th:case="'reservation'">Pour pouvoir réserver, veuillez vous connecter!</p>
+                        <p style="color: white" th:case="'memberArea'">Pour accéder à votre espace membre, veuillez vous connecter!</p>
+
                         <p  style="color: white; visibility: hidden"  th:case= "*" > hidden placeholder</p>
 
                     </div>
@@ -56,6 +59,9 @@
                     <div class="form-group">
                         <label for="password">Mot de passe</label>
                         <input type="password" name="password" class="form-control" id="password" required>
+                        <input hidden name="afterLogin"  th:value= "${afterLogin}" >
+
+
                     </div>
 
                     <button type="submit" class="btn btn-primary">Se connecter</button>

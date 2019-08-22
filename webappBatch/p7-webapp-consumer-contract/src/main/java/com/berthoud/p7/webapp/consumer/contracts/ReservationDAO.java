@@ -9,4 +9,6 @@ public interface ReservationDAO {
     List<Reservation> getReservationList (int bookReferenceId, int librairyId);
 
     int deleteReservation (int reservationId);
+
+    int makeReservation (int customerId, int bookReferenceId, int librairyId);
 }

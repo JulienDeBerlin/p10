@@ -101,7 +101,8 @@ public class ReservationManager {
      * @param bookReferenceId -
      * @param librairyId      -
      * @param customerId      -
-     * @return 1    = success (reservation is possible and registered),
+     * @return
+     * 1    = success (reservation is possible and registered),
      * -1   = failure (customer Id not correct)
      * -2   = failure (Librairy Id not correct)
      * -3   = failure (BookReference Id not correct)

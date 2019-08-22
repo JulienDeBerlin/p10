@@ -7,7 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import p7.webapp.model.beans.BookReference;
 import p7.webapp.model.beans.Customer;
+import p7.webapp.model.beans.Librairy;
+
+import javax.servlet.http.HttpSession;
 
 @SessionAttributes(value = "user")
 @Controller
@@ -21,7 +25,7 @@ public class ReservationController {
 
 
     @RequestMapping(value = "/deleteReservation", method = RequestMethod.GET)
-    public String deleteReservation (ModelMap model,
+    public String deleteReservation(ModelMap model,
                                     @RequestParam int reservationId,
                                     @SessionAttribute(value = "user") Customer user) {
 
@@ -50,8 +54,51 @@ public class ReservationController {
 
         return "memberArea";
 
+    }
 
+    /**
+     * With this method a {@link Customer} can make a reservation for a specific {@link BookReference} ind a specific {@link Librairy},
+     * @param model
+     * @param librairyId
+     * @param bookReferenceId
+     * @param afterLogin
+     * @param session
+     * @return
+     * 1    = success (reservation is possible and registered),
+     * -1   = failure (customer Id not correct)
+     * -2   = failure (Librairy Id not correct)
+     * -3   = failure (BookReference Id not correct)
+     * -4   = failure: a book with the same BookReference is already currently borrowed by the customer
+     * -5   = failure: reservation list is full
+     */
+    @RequestMapping(value = "/makeReservation", method = RequestMethod.GET)
+    public String makeReservation(ModelMap model,
+                                  @RequestParam int librairyId,
+                                  @RequestParam int bookReferenceId,
+                                  @ModelAttribute String afterLogin,
+                                  @SessionAttribute(value = "selectedBookReference") BookReference selectedBookReference,
+
+                                  HttpSession session) {
+
+
+        if (session.getAttribute("user") == null) {
+            model.addAttribute("afterLogin", "redirect:makeReservation?librairyId=" + librairyId + "&bookReferenceId=" + bookReferenceId);
+            model.addAttribute("toBeDisplayed", "loginForm");
+            model.addAttribute("alert", "reservation");
+            return "home";
+
+        } else {
+
+            Customer user = (Customer) session.getAttribute("user");
+
+            int resultReservation = reservationManager.makeReservation(user.getId(), bookReferenceId, librairyId);
+
+            model.addAttribute("resultReservation", resultReservation);
+            model.addAttribute("selectedBookReference", selectedBookReference);
+            return "researchResultDetails";
+        }
 
     }
 
 }
+

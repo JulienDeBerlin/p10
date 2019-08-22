@@ -10,7 +10,7 @@ import p7.webapp.model.beans.BookReference;
 import java.util.ArrayList;
 import java.util.List;
 
-@SessionAttributes(value = "bookReferenceList")
+@SessionAttributes({"bookReferenceList", "selectedBookReference"})
 @Controller
 public class ResearchResultController {
 
@@ -65,7 +65,7 @@ public class ResearchResultController {
      */
     @RequestMapping(value = "/bookDetails", method = RequestMethod.GET)
     public String getBookDetails(ModelMap model,
-                                 @RequestParam(value = "bookRef") int bookReferenceId,
+                                 @ModelAttribute(value = "bookReferenceId") int bookReferenceId,
                                  @SessionAttribute(value = "bookReferenceList") List<BookReference> bookReferenceList) {
 
         BookReference selectedBookReference = bookResearchManager.getSelectedBookReference(bookReferenceId, bookReferenceList);

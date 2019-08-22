@@ -28,7 +28,7 @@
 
             <div class="text-right" id="myMenu">
                 <a th:href="@{/researchForm}" class="btn btn-light" role="button">Rechercher un ouvrage</a>
-                <a th:href="@{/loginForm}" class="btn btn-light" role="button">Accéder à mon compte</a>
+                <a th:href="@{/displayMemberArea}" class="btn btn-light" role="button">Accéder à mon compte</a>
                 <a href="#link" class="btn btn-light" role="button">Infos pratiques</a>
             </div>
 
@@ -36,8 +36,15 @@
 
         <div>
             <a th:href="@{/backToResultOverview}"> <img th:src="@{/pictures/left-arrow.png}" alt="flêche retour"/>
-                <span style="color: black">retour à la liste</span>
+                <span style="color: black">retour à la liste&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             </a>
+
+            <span th:switch="${resultReservation}">
+                <span style="color: green" th:case="1">La réservation a été effectuée.</span>
+                <span style="color: darkred" th:case="-4">Réservation impossible, vous avez déjà un exemplaire de cet ouvrage en cours de prêt.</span>
+                <span style="color: darkred" th:case="-5">La liste de réservations est actuellement complète. Réessayer ultérieurement.</span>
+                <span  style="color: white; visibility: hidden"  th:case= "*" > hidden placeholder</span>
+            </span>
         </div>
 
     </section>
@@ -129,7 +136,8 @@
                         <td th:text="${item.librairyName}">Jean Jaures</td>
                         <td th:text="${item.amountBooks}">2</td>
                         <td th:text="${item.amountAvailableBooks}">2</td>
-                        <td style="width: 20%" scope="col" th:if="${item.amountBooks != 0 and item.amountAvailableBooks == 0}"> <a th:href="@{/makeReservation(BookReferenceId=${selectedBookReference.id}, LibrairyId=${item.librairyId})}">
+                        <td style="width: 20%" scope="col" th:if="${item.amountBooks != 0 and item.amountAvailableBooks == 0}">
+                            <a th:href="@{/makeReservation(bookReferenceId=${selectedBookReference.id},librairyId=${item.librairyId})}">
                             <img th:src="@{pictures/check-2.png}" alt="reserve"> </a></td>
                     </tr>
 
