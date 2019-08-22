@@ -246,6 +246,8 @@ public class CustomersAndLoansClientWs extends WebServiceGatewaySupport {
      * -3   = failure (BookReference Id not correct)
      * -4   = failure: a book with the same BookReference is already currently borrowed by the customer
      * -5   = failure: reservation list is full
+     * -6   = failure: the selected BookReference is not available in the selected Librairy
+     * -7   = failure: this BookReference is already currently reserved by the customer
      */
     public int makeReservationMapped(int customerId, int bookReferenceId, int librairyId) {
         return makeReservation(customerId, bookReferenceId, librairyId).getResultCode();

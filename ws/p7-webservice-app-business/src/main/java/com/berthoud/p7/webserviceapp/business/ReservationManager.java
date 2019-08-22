@@ -108,6 +108,8 @@ public class ReservationManager {
      * -3   = failure (BookReference Id not correct)
      * -4   = failure: a book with the same BookReference is already currently borrowed by the customer
      * -5   = failure: reservation list is full
+     * -6   = failure: the selected BookReference is not available in the selected Librairy
+     * -7   = failure: this BookReference is already currently reserved by the customer
      */
     public int makeReservation(int bookReferenceId, int librairyId, int customerId) {
         BusinessLogger.logger.trace("entering method makeReservation with param bookReferenceId =" + bookReferenceId +
@@ -148,6 +150,17 @@ public class ReservationManager {
             BusinessLogger.logger.info(" reservation impossible, cause: reservation list already full!");
             return -5;
         }
+
+
+        List <Reservation> reservationListCustomer = reservationDAO.findReservationsByCustomer(customerId);
+        for (Reservation reservation :reservationListCustomer) {
+            if (reservation.getBookReference().getId() == bookReferenceId){
+                BusinessLogger.logger.info(" reservation impossible, cause: the user has already a similar reservation open");
+                return -7;
+            }
+        }
+
+
 
         // create new reservation
         Reservation reservation = new Reservation();

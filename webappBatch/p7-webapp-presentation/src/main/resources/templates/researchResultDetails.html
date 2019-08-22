@@ -43,6 +43,7 @@
                 <span style="color: green" th:case="1">La réservation a été effectuée.</span>
                 <span style="color: darkred" th:case="-4">Réservation impossible, vous avez déjà un exemplaire de cet ouvrage en cours de prêt.</span>
                 <span style="color: darkred" th:case="-5">La liste de réservations est actuellement complète. Réessayer ultérieurement.</span>
+                <span style="color: darkred" th:case="-7">Vous avez déjà réservé cet ouvrage!</span>
                 <span  style="color: white; visibility: hidden"  th:case= "*" > hidden placeholder</span>
             </span>
         </div>
