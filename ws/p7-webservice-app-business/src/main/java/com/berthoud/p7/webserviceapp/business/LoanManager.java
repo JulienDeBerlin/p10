@@ -46,6 +46,9 @@ public class LoanManager {
     @Autowired
     CustomerDAO customerDAO;
 
+    @Autowired
+    ReservationManager reservationManager;
+
 
     /**
      * The method is used to extend an active loan. The extension of a loan is only possible if all following conditions are met:
@@ -193,13 +196,22 @@ public class LoanManager {
 
         for (Loan l : book.getLoans()) {
 
+            // recherche du prêt en cours
             if (l.getDateBack().equals(LocalDate.of(1900, 1, 1))) {
                 l.setDateBack(LocalDate.now());
                 loanDAO.save(l);
 
-                book.setStatus(Book.Status.AVAILABLE);
-                bookDAO.save(book);
+                //Vérification si une réservation court pour l'ouvrage et la bibliothèque correspondant au bookId
+                if (reservationManager.getAllReservations(book.getBookReference().getId(), book.getLibrairy().getId()).size() == 0){
+                    book.setStatus(Book.Status.AVAILABLE);
+                } else {
+                    book.setStatus(Book.Status.BOOKED);
 
+                    //TODO
+                    // appel d'une méthode (ou démarrage du batch) pour envoyer une notification
+                }
+
+                bookDAO.save(book);
                 break;
             }
         }
