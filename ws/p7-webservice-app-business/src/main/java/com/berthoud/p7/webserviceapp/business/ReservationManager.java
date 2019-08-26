@@ -9,6 +9,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,14 +25,18 @@ import java.util.Optional;
 
 public class ReservationManager {
 
+
+    @Autowired
+    LoanManager loanManager;
+
+    @Autowired
+    BookResearchManager bookResearchManager;
+
     @Autowired
     ReservationDAO reservationDAO;
 
     @Autowired
     BookDAO bookDAO;
-
-    @Autowired
-    LoanManager loanManager;
 
     @Autowired
     CustomerDAO customerDAO;
@@ -69,6 +75,24 @@ public class ReservationManager {
     }
 
     /**
+     * This method retrieves a reservationList for a given bookId
+     *
+     * @param bookId -
+     * @return
+     */
+    public List<Reservation> getAllReservationsByBookId(int bookId) {
+
+        List<Reservation> reservationList = new ArrayList<>();
+
+        Optional<Book> b = bookDAO.findById(bookId);
+        if (b.isPresent()) {
+            Book book = b.get();
+            reservationList = getAllReservations(book.getBookReference().getId(), book.getLibrairy().getId());
+        }
+        return reservationList;
+    }
+
+    /**
      * Retrieves all actual reservations for a specific {@link com.berthoud.p7.webserviceapp.model.entities.Librairy}
      * and a specific {@link com.berthoud.p7.webserviceapp.model.entities.BookReference}
      *
@@ -101,8 +125,7 @@ public class ReservationManager {
      * @param bookReferenceId -
      * @param librairyId      -
      * @param customerId      -
-     * @return
-     * 1    = success (reservation is possible and registered),
+     * @return 1    = success (reservation is possible and registered),
      * -1   = failure (customer Id not correct)
      * -2   = failure (Librairy Id not correct)
      * -3   = failure (BookReference Id not correct)
@@ -133,7 +156,7 @@ public class ReservationManager {
             return -3;
         }
 
-        if (getListOfBooksForReferenceAndLibrairy(bookReferenceId, librairyId).size() == 0) {
+        if (bookResearchManager.getListOfBooksForReferenceAndLibrairy(bookReferenceId, librairyId).size() == 0) {
             BusinessLogger.logger.info("reservation impossible, cause: book with bookReferenceId " + bookReferenceId +
                     "is not available in librairy with" + librairyId);
             return -6;
@@ -152,15 +175,13 @@ public class ReservationManager {
         }
 
 
-        List <Reservation> reservationListCustomer = reservationDAO.findReservationsByCustomer(customerId);
-        for (Reservation reservation :reservationListCustomer) {
-            if (reservation.getBookReference().getId() == bookReferenceId){
+        List<Reservation> reservationListCustomer = reservationDAO.findReservationsByCustomer(customerId);
+        for (Reservation reservation : reservationListCustomer) {
+            if (reservation.getBookReference().getId() == bookReferenceId) {
                 BusinessLogger.logger.info(" reservation impossible, cause: the user has already a similar reservation open");
                 return -7;
             }
         }
-
-
 
         // create new reservation
         Reservation reservation = new Reservation();
@@ -204,7 +225,7 @@ public class ReservationManager {
      * @return true if the reservation list is full and no new reservations can be registered anymore.
      */
     public boolean isReservationListFull(int bookReferenceId, int librairyId) {
-        int amountBooksForThisReferenceInThisLibrairy = getListOfBooksForReferenceAndLibrairy(bookReferenceId, librairyId).size();
+        int amountBooksForThisReferenceInThisLibrairy = bookResearchManager.getListOfBooksForReferenceAndLibrairy(bookReferenceId, librairyId).size();
         int amountReservationsForThisReferenceInThisLibrairy = getAllReservations(bookReferenceId, librairyId).size();
         return amountReservationsForThisReferenceInThisLibrairy == Integer.parseInt(reservationListLengthFactor) * amountBooksForThisReferenceInThisLibrairy;
     }
@@ -229,17 +250,53 @@ public class ReservationManager {
         return bookCurrentlyBorrowed;
     }
 
+    /**
+     * This method checks whether a given Book is currently reserved for a given Customer
+     *
+     * @param customerId -
+     * @param bookId     -
+     * @return
+     */
+    public boolean bookReservedForCustomer(int customerId, int bookId) {
+        Optional <Book> bookOptional = bookDAO.findById(bookId);
+
+        if (bookOptional.isPresent()){
+            Book book = bookOptional.get();
+            List<Reservation> reservationList = getAllReservations(book.getBookReference().getId(), book.getLibrairy().getId(), customerId);
+
+            for (int i = 0; i < reservationList.size(); i++) {
+                if ( reservationList.get(i).getDateBookAvailableNotification() != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     /**
-     * This method retrieves all the books matching with a specific {@link com.berthoud.p7.webserviceapp.model.entities.Librairy}
-     * and a specific {@link com.berthoud.p7.webserviceapp.model.entities.BookReference}
+     * This method retrieves the next Customer on a reservation list to be notified for a given bookId
      *
-     * @param bookReferenceId -
-     * @param librairyId      -
-     * @return a list of books matching with the book reference and the librairy
+     * @param bookId -
+     * @return A customer. If reservation list is empty, an empty customer object is retrieved.
      */
-    public List<Book> getListOfBooksForReferenceAndLibrairy(int bookReferenceId, int librairyId) {
-        return bookDAO.getListOfBooksForReferenceAndLibrairy(bookReferenceId, librairyId);
+    public Customer getNextCustomerToBeNotified(int bookId) {
+
+        List<Reservation> reservationList = getAllReservationsByBookId(bookId);
+        Customer customer = new Customer();
+
+        for (int i = 0; i < reservationList.size(); i++) {
+
+            reservationList.sort(Comparator.comparing(Reservation::getDateReservation));
+
+            if (reservationList.get(i).getDateBookAvailableNotification() == null) {
+                customer = reservationList.get(i).getCustomer();
+                break;
+            }
+        }
+
+        return customer;
     }
+
 
 }

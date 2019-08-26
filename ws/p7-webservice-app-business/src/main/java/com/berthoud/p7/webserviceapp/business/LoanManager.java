@@ -1,11 +1,13 @@
 package com.berthoud.p7.webserviceapp.business;
 
+import com.berthoud.p7.webserviceapp.business.batch.reservation.ProcessReservationListJob;
 import com.berthoud.p7.webserviceapp.consumer.contract.BookDAO;
 import com.berthoud.p7.webserviceapp.consumer.contract.CustomerDAO;
 import com.berthoud.p7.webserviceapp.consumer.contract.LoanDAO;
 import com.berthoud.p7.webserviceapp.model.entities.Book;
 import com.berthoud.p7.webserviceapp.model.entities.Customer;
 import com.berthoud.p7.webserviceapp.model.entities.Loan;
+import com.berthoud.p7.webserviceapp.model.entities.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -49,6 +51,9 @@ public class LoanManager {
     @Autowired
     ReservationManager reservationManager;
 
+    @Autowired
+    ProcessReservationListJob processReservationListJob;
+
 
     /**
      * The method is used to extend an active loan. The extension of a loan is only possible if all following conditions are met:
@@ -70,7 +75,7 @@ public class LoanManager {
 
         Optional<Loan> l = loanDAO.findById(loanId);
         if (!l.isPresent() || !l.get().getBook().getStatus().equals(Book.Status.BORROWED)) {
-            BusinessLogger.logger.info("failure loan extension, cause: loanId " +loanId +" not correct ");
+            BusinessLogger.logger.info("failure loan extension, cause: loanId " + loanId + " not correct ");
 
             return -2;
         }
@@ -117,24 +122,28 @@ public class LoanManager {
      * -3 = failure (book not available)
      */
     public int registerNewLoan(int customerId, int bookId) {
-        BusinessLogger.logger.trace("entering method registerNewLoan with param CustomerId= "+ customerId+ " and bookId= " + bookId);
+        BusinessLogger.logger.trace("entering method registerNewLoan with param CustomerId= " + customerId + " and bookId= " + bookId);
 
         Optional<Book> b = bookDAO.findById(bookId);
         if (!b.isPresent()) {
-            BusinessLogger.logger.info("failure registration new loan, cause: bookId " + bookId+ " not correct ");
+            BusinessLogger.logger.info("failure registration new loan, cause: bookId " + bookId + " not correct ");
             return -1;
         }
 
-        if (!b.get().getStatus().equals(Book.Status.AVAILABLE)) {
-            BusinessLogger.logger.info("failure registration new loan, cause: book with id" + bookId+ " not available ");
+        if (b.get().getStatus().equals(Book.Status.BORROWED)) {
+            BusinessLogger.logger.info("failure registration new loan, cause: book with id" + bookId + " not available ");
+            return -3;
+        }
 
+        if ((b.get().getStatus().equals(Book.Status.BOOKED)) && !reservationManager.bookReservedForCustomer(customerId, bookId)) {
+            BusinessLogger.logger.info("failure registration new loan, cause: book with id" + bookId + " is booked ");
             return -3;
         }
 
 
         Optional<Customer> c = customerDAO.findById(customerId);
         if (!c.isPresent()) {
-            BusinessLogger.logger.info("failure registration new loan, cause: customer id " + customerId+ "not correct ");
+            BusinessLogger.logger.info("failure registration new loan, cause: customer id " + customerId + "not correct ");
             return -2;
         }
 
@@ -182,15 +191,13 @@ public class LoanManager {
 
         Optional<Book> b = bookDAO.findById(bookId);
         if (!b.isPresent()) {
-            BusinessLogger.logger.info(" failure registration book return, cause: bookId "+bookId + " is not valid ");
-
+            BusinessLogger.logger.info(" failure registration book return, cause: bookId " + bookId + " is not valid ");
             return -1;
         }
 
         Book book = b.get();
         if (!book.getStatus().equals(Book.Status.BORROWED)) {
-            BusinessLogger.logger.info(" failure registration book return, cause: no loan active for book with id "+bookId);
-
+            BusinessLogger.logger.info(" failure registration book return, cause: no loan active for book with id " + bookId);
             return 0;
         }
 
@@ -202,20 +209,20 @@ public class LoanManager {
                 loanDAO.save(l);
 
                 //Vérification si une réservation court pour l'ouvrage et la bibliothèque correspondant au bookId
-                if (reservationManager.getAllReservations(book.getBookReference().getId(), book.getLibrairy().getId()).size() == 0){
+                List<Reservation> reservationList = reservationManager.getAllReservationsByBookId(bookId);
+                if (reservationList.isEmpty()) {
                     book.setStatus(Book.Status.AVAILABLE);
                 } else {
                     book.setStatus(Book.Status.BOOKED);
 
-                    //TODO
-                    // appel d'une méthode (ou démarrage du batch) pour envoyer une notification
+                    processReservationListJob.processReservationList(bookId);
                 }
 
                 bookDAO.save(book);
                 break;
             }
         }
-        BusinessLogger.logger.info(" registration book return, bookId "+bookId + " was successfull");
+        BusinessLogger.logger.info(" registration book return, bookId " + bookId + " was successfull");
 
         return 1;
     }
@@ -262,18 +269,20 @@ public class LoanManager {
     }
 
 
-
     /**
      * This method is used for the loan monitoring.
      *
      * @return a list of the open loans that has already been extended at least once.
      */
-    public List<Loan> getOpenLoansExtended(){
+    public List<Loan> getOpenLoansExtended() {
         BusinessLogger.logger.trace("entering getOpenLoansExtended()");
 
         LocalDate back = LocalDate.of(1900, 01, 01);
-        return  loanDAO.findByDateBackAndNumberExtensionsGreaterThan(back, 0);
+        return loanDAO.findByDateBackAndNumberExtensionsGreaterThan(back, 0);
     }
+
+
+
 
 }
 

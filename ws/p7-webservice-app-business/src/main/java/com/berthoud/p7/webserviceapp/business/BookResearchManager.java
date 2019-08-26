@@ -1,5 +1,6 @@
 package com.berthoud.p7.webserviceapp.business;
 
+import com.berthoud.p7.webserviceapp.consumer.contract.BookDAO;
 import com.berthoud.p7.webserviceapp.consumer.contract.BookReferenceDAO;
 import com.berthoud.p7.webserviceapp.consumer.contract.LibrairyDAO;
 import com.berthoud.p7.webserviceapp.model.entities.Book;
@@ -23,6 +24,9 @@ public class BookResearchManager {
 
     @Autowired
     LibrairyDAO librairyDAO;
+
+    @Autowired
+    BookDAO bookDAO;
 
     /**
      * This method is use to perform a book research. There are 3 research parameters ( author, title or keywords also called tags)
@@ -127,6 +131,18 @@ public class BookResearchManager {
         BusinessLogger.logger.trace("entering method convertListStringIntoSetString");
 
         return new HashSet<>(keywords);
+    }
+
+    /**
+     * This method retrieves all the books matching with a specific {@link com.berthoud.p7.webserviceapp.model.entities.Librairy}
+     * and a specific {@link com.berthoud.p7.webserviceapp.model.entities.BookReference}
+     *
+     * @param bookReferenceId -
+     * @param librairyId      -
+     * @return a list of books matching with the book reference and the librairy
+     */
+    public List<Book> getListOfBooksForReferenceAndLibrairy(int bookReferenceId, int librairyId) {
+        return bookDAO.getListOfBooksForReferenceAndLibrairy(bookReferenceId, librairyId);
     }
 
 
