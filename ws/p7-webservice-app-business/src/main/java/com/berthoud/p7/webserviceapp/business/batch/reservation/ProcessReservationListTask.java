@@ -6,15 +6,22 @@ import com.berthoud.p7.webserviceapp.model.entities.Book;
 import com.berthoud.p7.webserviceapp.model.entities.Customer;
 import com.berthoud.p7.webserviceapp.model.entities.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class ProcessReservationListJob {
+@PropertySources({
+        @PropertySource(value = "classpath:notificationEmail.properties", encoding = "UTF-8")
+})
+public class ProcessReservationListTask {
 
     @Autowired
     ReservationManager reservationManager;
@@ -22,12 +29,18 @@ public class ProcessReservationListJob {
     @Autowired
     BookDAO bookDAO;
 
+    @Autowired
+    SendNotificationTask sendNotificationTask;
 
-    public void processReservationList(int bookId) {
+    @Value("${reservationDelayInSecond}")
+    int reservationDelayInSecond;
 
-        Book returnedBook = bookDAO.findById(bookId).get();
+
+    public void processReservationList(int bookId) throws MessagingException {
+
         List<Reservation> reservationList = reservationManager.getAllReservationsByBookId(bookId);
 
+        Book returnedBook;
 
         do {
 
@@ -43,11 +56,11 @@ public class ProcessReservationListJob {
                 }
             }
 
-            sendNotificationEmail(customerToBeNotified);
+            sendNotificationTask.sendNotification(customerToBeNotified, reservationToBeManaged);
             reservationToBeManaged.setDateBookAvailableNotification(LocalDate.now());
 
             try {
-                TimeUnit.HOURS.sleep(48);
+                TimeUnit.SECONDS.sleep(reservationDelayInSecond);
 
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
@@ -56,21 +69,16 @@ public class ProcessReservationListJob {
 
             reservationManager.deleteReservation(reservationToBeManaged.getId());
 
+
             //refresh returnBook in order to check updated status
             returnedBook = bookDAO.findById(bookId).get();
+
 
             //refresh reservationList
             reservationList = reservationManager.getAllReservationsByBookId(bookId);
 
         } while (!reservationList.isEmpty() && returnedBook.getStatus() == Book.Status.BOOKED);
 
-
+        returnedBook.setStatus(Book.Status.AVAILABLE);
     }
-
-
-    private void sendNotificationEmail(Customer customer) {
-
-    }
-
-
 }

@@ -258,11 +258,13 @@ public class ReservationManager {
      * @return
      */
     public boolean bookReservedForCustomer(int customerId, int bookId) {
+
+        //TODO: le problème c'est que quand cette méthode est exécutée, il n'y a plus de réservation en BDD
         Optional <Book> bookOptional = bookDAO.findById(bookId);
 
         if (bookOptional.isPresent()){
             Book book = bookOptional.get();
-            List<Reservation> reservationList = getAllReservations(book.getBookReference().getId(), book.getLibrairy().getId(), customerId);
+            List<Reservation> reservationList = this.getAllReservations(book.getBookReference().getId(), book.getLibrairy().getId(), customerId);
 
             for (int i = 0; i < reservationList.size(); i++) {
                 if ( reservationList.get(i).getDateBookAvailableNotification() != null) {

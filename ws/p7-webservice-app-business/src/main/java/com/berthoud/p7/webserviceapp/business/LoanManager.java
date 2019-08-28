@@ -1,6 +1,6 @@
 package com.berthoud.p7.webserviceapp.business;
 
-import com.berthoud.p7.webserviceapp.business.batch.reservation.ProcessReservationListJob;
+import com.berthoud.p7.webserviceapp.business.batch.reservation.ProcessReservationListTask;
 import com.berthoud.p7.webserviceapp.consumer.contract.BookDAO;
 import com.berthoud.p7.webserviceapp.consumer.contract.CustomerDAO;
 import com.berthoud.p7.webserviceapp.consumer.contract.LoanDAO;
@@ -11,8 +11,10 @@ import com.berthoud.p7.webserviceapp.model.entities.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +54,7 @@ public class LoanManager {
     ReservationManager reservationManager;
 
     @Autowired
-    ProcessReservationListJob processReservationListJob;
+    ProcessReservationListTask processReservationListTask;
 
 
     /**
@@ -74,7 +76,7 @@ public class LoanManager {
         BusinessLogger.logger.trace("entering method extendLoan with param loanId = " + loanId);
 
         Optional<Loan> l = loanDAO.findById(loanId);
-        if (!l.isPresent() || !l.get().getBook().getStatus().equals(Book.Status.BORROWED)) {
+        if (!l.isPresent() || l.get().getBook().getStatus().equals(Book.Status.AVAILABLE)) {
             BusinessLogger.logger.info("failure loan extension, cause: loanId " + loanId + " not correct ");
 
             return -2;
@@ -185,8 +187,8 @@ public class LoanManager {
      * 0 = failure (no loan active with for this book id)
      * -1 = failure (bookId is not a valid book id)
      */
-
-    public int bookBack(int bookId) {
+    @Async
+    public int bookBack(int bookId) throws MessagingException {
         BusinessLogger.logger.trace("entering method bookBack with param bookId =" + bookId);
 
         Optional<Book> b = bookDAO.findById(bookId);
@@ -215,7 +217,7 @@ public class LoanManager {
                 } else {
                     book.setStatus(Book.Status.BOOKED);
 
-                    processReservationListJob.processReservationList(bookId);
+                    processReservationListTask.processReservationList(bookId);
                 }
 
                 bookDAO.save(book);

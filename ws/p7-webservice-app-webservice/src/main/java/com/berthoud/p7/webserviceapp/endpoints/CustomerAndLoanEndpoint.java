@@ -16,6 +16,7 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
+import javax.mail.MessagingException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +131,7 @@ public class CustomerAndLoanEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "registerBookReturnRequest")
     @ResponsePayload
-    public RegisterBookReturnResponse registerBookBack(@RequestPayload RegisterBookReturnRequest request) {
+    public RegisterBookReturnResponse registerBookBack(@RequestPayload RegisterBookReturnRequest request) throws MessagingException {
         WebserviceApp.logger.trace("SOAP call registerBookReturnRequest");
 
         RegisterBookReturnResponse response = new RegisterBookReturnResponse();
