@@ -1,7 +1,7 @@
 package com.berthoud.p7.webserviceapp.model.entities;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Reservation extends AuditModel{
@@ -23,21 +23,24 @@ public class Reservation extends AuditModel{
     private Customer customer;
 
     @Column(nullable=false)
-    private LocalDate dateReservation;
+    private LocalDateTime dateReservation;
 
-    private LocalDate dateBookAvailableNotification;
+    private LocalDateTime dateBookAvailableNotification;
+
+    private LocalDateTime dateEndReservation;
 
 
 
     public Reservation() {
     }
 
-    public Reservation(BookReference bookReference, Librairy librairy, Customer customer, LocalDate dateReservation, LocalDate dateBookAvailableNotification) {
+    public Reservation(BookReference bookReference, Librairy librairy, Customer customer, LocalDateTime dateReservation, LocalDateTime dateBookAvailableNotification, LocalDateTime dateEndReservation) {
         this.bookReference = bookReference;
         this.librairy = librairy;
         this.customer = customer;
         this.dateReservation = dateReservation;
         this.dateBookAvailableNotification = dateBookAvailableNotification;
+        this.dateEndReservation = dateEndReservation;
     }
 
     public int getId() {
@@ -72,19 +75,27 @@ public class Reservation extends AuditModel{
         this.customer = customer;
     }
 
-    public LocalDate getDateReservation() {
+    public LocalDateTime getDateReservation() {
         return dateReservation;
     }
 
-    public void setDateReservation(LocalDate dateReservation) {
+    public void setDateReservation(LocalDateTime dateReservation) {
         this.dateReservation = dateReservation;
     }
 
-    public LocalDate getDateBookAvailableNotification() {
+    public LocalDateTime getDateBookAvailableNotification() {
         return dateBookAvailableNotification;
     }
 
-    public void setDateBookAvailableNotification(LocalDate dateBookAvailableNotification) {
+    public void setDateBookAvailableNotification(LocalDateTime dateBookAvailableNotification) {
         this.dateBookAvailableNotification = dateBookAvailableNotification;
+    }
+
+    public LocalDateTime getDateEndReservation() {
+        return dateEndReservation;
+    }
+
+    public void setDateEndReservation(LocalDateTime dateEndReservation) {
+        this.dateEndReservation = dateEndReservation;
     }
 }

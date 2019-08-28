@@ -1,6 +1,7 @@
 package p7.webapp.model.beans;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Reservation {
 
@@ -13,25 +14,27 @@ public class Reservation {
 
     private Customer customer;
 
-    private LocalDate dateReservation;
+    private LocalDateTime dateReservation;
 
-    private LocalDate dateBookAvailableNotification;
+    private LocalDateTime dateBookAvailableNotification;
 
-    private int positionInreservationList;
+    private LocalDateTime dateEndReservation;
 
-    private LocalDate plannedNextreturn;
+    private int positionInReservationList;
+
+    private LocalDate plannedNextReturn;
 
 
     public Reservation() {
     }
 
-    public Reservation(int id, BookReference bookReference, Librairy librairy, Customer customer, LocalDate dateReservation, LocalDate dateBookAvailableNotification) {
-        this.id = id;
+    public Reservation(BookReference bookReference, Librairy librairy, Customer customer, LocalDateTime dateReservation, LocalDateTime dateBookAvailableNotification, LocalDateTime dateEndReservation) {
         this.bookReference = bookReference;
         this.librairy = librairy;
         this.customer = customer;
         this.dateReservation = dateReservation;
         this.dateBookAvailableNotification = dateBookAvailableNotification;
+        this.dateEndReservation = dateEndReservation;
     }
 
     public int getId() {
@@ -66,35 +69,43 @@ public class Reservation {
         this.customer = customer;
     }
 
-    public LocalDate getDateReservation() {
+    public LocalDateTime getDateReservation() {
         return dateReservation;
     }
 
-    public void setDateReservation(LocalDate dateReservation) {
+    public void setDateReservation(LocalDateTime dateReservation) {
         this.dateReservation = dateReservation;
     }
 
-    public LocalDate getDateBookAvailableNotification() {
+    public LocalDateTime getDateBookAvailableNotification() {
         return dateBookAvailableNotification;
     }
 
-    public void setDateBookAvailableNotification(LocalDate dateBookAvailableNotification) {
+    public void setDateBookAvailableNotification(LocalDateTime dateBookAvailableNotification) {
         this.dateBookAvailableNotification = dateBookAvailableNotification;
     }
 
-    public int getPositionInreservationList() {
-        return positionInreservationList;
+    public int getPositionInReservationList() {
+        return positionInReservationList;
     }
 
-    public void setPositionInreservationList(int positionInreservationList) {
-        this.positionInreservationList = positionInreservationList;
+    public void setPositionInReservationList(int positionInReservationList) {
+        this.positionInReservationList = positionInReservationList;
     }
 
-    public LocalDate getPlannedNextreturn() {
-        return plannedNextreturn;
+    public LocalDate getPlannedNextReturn() {
+        return plannedNextReturn;
     }
 
-    public void setPlannedNextreturn(LocalDate plannedNextreturn) {
-        this.plannedNextreturn = plannedNextreturn;
+    public void setPlannedNextReturn(LocalDate plannedNextReturn) {
+        this.plannedNextReturn = plannedNextReturn;
+    }
+
+    public LocalDateTime getDateEndReservation() {
+        return dateEndReservation;
+    }
+
+    public void setDateEndReservation(LocalDateTime dateEndReservation) {
+        this.dateEndReservation = dateEndReservation;
     }
 }

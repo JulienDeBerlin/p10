@@ -215,8 +215,6 @@ public class LoanManager {
                 if (reservationList.isEmpty()) {
                     book.setStatus(Book.Status.AVAILABLE);
                 } else {
-                    book.setStatus(Book.Status.BOOKED);
-
                     processReservationListTask.processReservationList(bookId);
                 }
 

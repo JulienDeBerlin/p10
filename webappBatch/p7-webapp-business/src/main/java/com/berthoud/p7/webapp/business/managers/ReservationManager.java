@@ -29,8 +29,8 @@ public class ReservationManager {
 
         while (iterator.hasNext()) {
             Reservation r = iterator.next();
-            r.setPlannedNextreturn(calculateNextReturnDate(r));
-            r.setPositionInreservationList(calculatePositionInReservationList(r));
+            r.setPlannedNextReturn(calculateNextReturnDate(r));
+            r.setPositionInReservationList(calculatePositionInReservationList(r));
         }
         return customer;
     }

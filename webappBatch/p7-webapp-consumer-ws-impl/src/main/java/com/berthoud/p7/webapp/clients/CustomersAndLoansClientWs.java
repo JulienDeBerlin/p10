@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import static com.berthoud.p7.webapp.utils.Utils.convertXmlDateToLocal;
+import static com.berthoud.p7.webapp.utils.Utils.convertXmlDateToLocalDateTime;
 
 
 /**
@@ -324,9 +325,9 @@ public class CustomersAndLoansClientWs extends WebServiceGatewaySupport {
         Reservation reservation = new Reservation();
 
         BeanUtils.copyProperties(reservationWs, reservation);
-        reservation.setDateReservation(convertXmlDateToLocal(reservationWs.getDateReservation()));
+        reservation.setDateReservation(convertXmlDateToLocalDateTime(reservationWs.getDateReservation()));
         if (reservationWs.getDateBookAvailableNotification() != null) {
-            reservation.setDateBookAvailableNotification(convertXmlDateToLocal(reservationWs.getDateBookAvailableNotification()));
+            reservation.setDateBookAvailableNotification(convertXmlDateToLocalDateTime(reservationWs.getDateBookAvailableNotification()));
         }
 
         Librairy librairy = new Librairy();

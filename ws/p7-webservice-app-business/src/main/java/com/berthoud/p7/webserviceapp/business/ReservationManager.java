@@ -9,6 +9,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -187,7 +188,7 @@ public class ReservationManager {
         Reservation reservation = new Reservation();
         reservation.setCustomer(customer.get());
         reservation.setBookReference(bookReference.get());
-        reservation.setDateReservation(LocalDate.now());
+        reservation.setDateReservation(LocalDateTime.now());
         reservation.setLibrairy(librairy.get());
 
         reservationDAO.save(reservation);

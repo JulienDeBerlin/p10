@@ -38,47 +38,53 @@ public class ProcessReservationListTask {
 
     public void processReservationList(int bookId) throws MessagingException {
 
+        //Get all required objects
+        Book returnedBook = bookDAO.findById(bookId).get();
+
         List<Reservation> reservationList = reservationManager.getAllReservationsByBookId(bookId);
 
-        Book returnedBook;
+        Customer customerToBeNotified = reservationManager.getNextCustomerToBeNotified(bookId);
 
-        do {
-
-            Customer customerToBeNotified = reservationManager.getNextCustomerToBeNotified(bookId);
-
-            Reservation reservationToBeManaged = new Reservation();
-            Iterator<Reservation> iterator = reservationList.iterator();
-            while (iterator.hasNext()) {
-                Reservation reservation = iterator.next();
-                if (reservation.getCustomer().getId() == customerToBeNotified.getId()) {
-                    reservationToBeManaged = reservation;
-                    break;
-                }
+        Reservation reservationToBeManaged = new Reservation();
+        Iterator<Reservation> iterator = reservationList.iterator();
+        while (iterator.hasNext()) {
+            Reservation reservation = iterator.next();
+            if (reservation.getCustomer().getId() == customerToBeNotified.getId()) {
+                reservationToBeManaged = reservation;
+                break;
             }
+        }
 
-            sendNotificationTask.sendNotification(customerToBeNotified, reservationToBeManaged);
-            reservationToBeManaged.setDateBookAvailableNotification(LocalDate.now());
-
-            try {
-                TimeUnit.SECONDS.sleep(reservationDelayInSecond);
-
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-                throw new RuntimeException(ex);
-            }
-
-            reservationManager.deleteReservation(reservationToBeManaged.getId());
+        // Send notification email and change status of returned book
+        sendNotificationTask.sendNotification(customerToBeNotified, reservationToBeManaged);
+//        reservationToBeManaged.setDateBookAvailableNotification(LocalDate.now());
+//        reservationToBeManaged.set
+        returnedBook.setStatus(Book.Status.BOOKED);
 
 
-            //refresh returnBook in order to check updated status
-            returnedBook = bookDAO.findById(bookId).get();
 
 
-            //refresh reservationList
-            reservationList = reservationManager.getAllReservationsByBookId(bookId);
+        try {
+            TimeUnit.SECONDS.sleep(reservationDelayInSecond);
 
-        } while (!reservationList.isEmpty() && returnedBook.getStatus() == Book.Status.BOOKED);
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException(ex);
+        }
 
-        returnedBook.setStatus(Book.Status.AVAILABLE);
+        reservationManager.deleteReservation(reservationToBeManaged.getId());
+
+
+        //refresh returnBook in order to check updated status
+        returnedBook = bookDAO.findById(bookId).get();
+
+
+        //refresh reservationList
+        reservationList = reservationManager.getAllReservationsByBookId(bookId);
+
     }
+//        while(!reservationList.isEmpty()&&returnedBook.getStatus()==Book.Status.BOOKED);
+//
+//        returnedBook.setStatus(Book.Status.AVAILABLE);
 }
+

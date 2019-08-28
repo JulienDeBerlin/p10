@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.berthoud.p7.webserviceapp.utils.Utils.convertLocalDateForXml;
+import static com.berthoud.p7.webserviceapp.utils.Utils.convertLocalDateTimeForXml;
 
 
 @Endpoint
@@ -294,9 +295,9 @@ public class CustomerAndLoanEndpoint {
             BeanUtils.copyProperties(reservation, reservationWs);
 
             // copy reservation (LocalDate)
-            reservationWs.setDateReservation(convertLocalDateForXml(reservation.getDateReservation()));
+            reservationWs.setDateReservation(convertLocalDateTimeForXml(reservation.getDateReservation()));
             if ( reservation.getDateBookAvailableNotification() != null ) {
-                reservationWs.setDateBookAvailableNotification(convertLocalDateForXml(reservation.getDateBookAvailableNotification()));
+                reservationWs.setDateBookAvailableNotification(convertLocalDateTimeForXml(reservation.getDateBookAvailableNotification()));
             }
 
             LibrairyWs librairyWs = new LibrairyWs();

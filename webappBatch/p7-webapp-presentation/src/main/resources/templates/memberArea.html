@@ -100,8 +100,8 @@
                 <td th:text="${reservation.getBookReference().title}">Un jardin en ville</td>
                 <td th:text="${reservation.getBookReference().authorFirstName +' '+reservation.getBookReference().authorSurname}">Jean Loukfi</td>
                 <td th:text="${reservation.getLibrairy().name}">Hélène Nathan</td>
-                <td class="d-none d-sm-table-cell" th:text="${#temporals.format(reservation.getPlannedNextreturn(),'dd/MM/yyyy')}">25/03/19</td>
-                <td class="d-none d-sm-table-cell" th:text="${reservation.getPositionInreservationList()}">2</td>
+                <td class="d-none d-sm-table-cell" th:text="${#temporals.format(reservation.getPlannedNextReturn(),'dd/MM/yyyy')}">25/03/19</td>
+                <td class="d-none d-sm-table-cell" th:text="${reservation.getPositionInReservationList()}">2</td>
 
                 <td> <a th:href="@{/deleteReservation(reservationId=${reservation.id})}"> <img th:src="@{pictures/clear-1.png}" alt="delete-icon"> </a></td>
             </tr>
