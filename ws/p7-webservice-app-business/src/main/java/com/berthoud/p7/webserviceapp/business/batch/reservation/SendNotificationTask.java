@@ -35,8 +35,6 @@ public class SendNotificationTask {
     @Value(value = "file:/Users/admin/Documents/PROGRAMMING/OPENCLASSROOMS/P10/P10_repoMerged/ws/p7-webservice-app-business/src/main/resources/logoSmall.jpg")
     Resource smallLogo;
 
-    @Value("${reservationDelayInSecond}")
-    int reservationDelayInSecond;
 
     public static Logger loggerEmail = LoggerFactory.getLogger(SendNotificationTask.class);
 
@@ -56,7 +54,7 @@ public class SendNotificationTask {
 
         helper.setTo(customer.getEmail());
 
-        helper.setSubject("Votre réservation est disponible pour " + reservationDelayInSecond + "secondes !");
+        helper.setSubject("Votre réservation est disponible !");
 
         helper.setText(HtmlNotification, true);
 

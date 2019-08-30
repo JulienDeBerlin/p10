@@ -28,7 +28,6 @@
         <module>p7-webapp-consumer-ws-impl</module>
         <module>p7-webapp-model</module>
         <module>p7-batch</module>
-        <module>p10-batch-reservation</module>
     </modules>
 
     <dependencies>

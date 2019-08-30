@@ -29,6 +29,10 @@ public class Reservation extends AuditModel{
 
     private LocalDateTime dateEndReservation;
 
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn (name = "book_id")
+    private Book book;
+
 
 
     public Reservation() {
@@ -97,5 +101,13 @@ public class Reservation extends AuditModel{
 
     public void setDateEndReservation(LocalDateTime dateEndReservation) {
         this.dateEndReservation = dateEndReservation;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 }

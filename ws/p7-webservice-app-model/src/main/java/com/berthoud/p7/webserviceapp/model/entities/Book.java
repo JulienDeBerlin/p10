@@ -33,6 +33,9 @@ public class Book extends AuditModel {
     @JoinColumn(name = "book_reference_id")
     private BookReference bookReference;
 
+    @OneToOne (mappedBy = "book")
+    private Reservation reservation;
+
     public Book(LocalDate datePurchase, Status status, Librairy librairy, Set<Loan> loans, BookReference bookReference) {
         this.datePurchase = datePurchase;
         this.status = status;
@@ -91,6 +94,14 @@ public class Book extends AuditModel {
 
     public void setBookReference(BookReference bookReference) {
         this.bookReference = bookReference;
+    }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 }
 

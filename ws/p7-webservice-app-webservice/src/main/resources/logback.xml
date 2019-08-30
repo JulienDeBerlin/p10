@@ -37,6 +37,10 @@
         <appender-ref ref="SAVE-TO-FILE" />
     </logger>
 
+    <logger name="com.berthoud.p7.webserviceapp.business.BusinessLogger" level="info">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
 
 
 </configuration>

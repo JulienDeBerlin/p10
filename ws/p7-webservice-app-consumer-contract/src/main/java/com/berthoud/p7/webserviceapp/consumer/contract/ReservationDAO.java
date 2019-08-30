@@ -3,12 +3,15 @@ package com.berthoud.p7.webserviceapp.consumer.contract;
 
 import com.berthoud.p7.webserviceapp.model.entities.Reservation;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface ReservationDAO {
 
     List<Reservation> findAll();
+
+    List<Reservation> findBydateEndReservationLessThan(LocalDateTime localDateTime);
 
     List<Reservation> findReservationsByBookReferenceAndLibrairy(int bookReferenceId, int librairyId);
 

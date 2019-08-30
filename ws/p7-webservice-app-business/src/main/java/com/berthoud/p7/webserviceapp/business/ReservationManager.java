@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -47,6 +47,9 @@ public class ReservationManager {
 
     @Autowired
     LibrairyDAO librairyDAO;
+
+    @Autowired
+    Clock clock;
 
     /**
      * For a specific BookReference in a specific Librairy, only a limited amount of reservations can be performed
@@ -117,6 +120,16 @@ public class ReservationManager {
      */
     public List<Reservation> getAllReservations(int bookReferenceId, int librairyId, int customerId) {
         return reservationDAO.findReservationsByBookReferenceLibrairyAndCustomer(bookReferenceId, librairyId, customerId);
+    }
+
+    /**
+     * Retrieves all reservation which have expired
+     *
+     * @return
+     */
+    public List<Reservation> getAllExpiredReservation() {
+        LocalDateTime now = LocalDateTime.now();
+        return reservationDAO.findBydateEndReservationLessThan(now);
     }
 
 
@@ -260,15 +273,14 @@ public class ReservationManager {
      */
     public boolean bookReservedForCustomer(int customerId, int bookId) {
 
-        //TODO: le problème c'est que quand cette méthode est exécutée, il n'y a plus de réservation en BDD
-        Optional <Book> bookOptional = bookDAO.findById(bookId);
+        Optional<Book> bookOptional = bookDAO.findById(bookId);
 
-        if (bookOptional.isPresent()){
+        if (bookOptional.isPresent()) {
             Book book = bookOptional.get();
             List<Reservation> reservationList = this.getAllReservations(book.getBookReference().getId(), book.getLibrairy().getId(), customerId);
 
             for (int i = 0; i < reservationList.size(); i++) {
-                if ( reservationList.get(i).getDateBookAvailableNotification() != null) {
+                if (reservationList.get(i).getDateBookAvailableNotification() != null) {
                     return true;
                 }
             }
