@@ -61,7 +61,7 @@ public class ReservationController {
     }
 
     /**
-     * With this method a {@link Customer} can make a reservation for a specific {@link BookReference} ind a specific {@link Librairy},
+     * With this method a {@link Customer} can make a reservation for a specific {@link BookReference} in a specific {@link Librairy},
      * @param model
      * @param librairyId
      * @param bookReferenceId

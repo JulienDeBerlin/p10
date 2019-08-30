@@ -76,7 +76,7 @@ public class WebappTests {
     @Test
     public void loginManager(){
 
-        String email = "julien_berthoud@yahoo.fr";
+        String email = "malika@yahoo.fr";
         String password = "soleil";
 
          loginManager.loginCustomer(email, password);
