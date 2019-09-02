@@ -184,7 +184,7 @@ public class LoanManager {
      * -1 = failure (bookId is not a valid book id)
      */
 
-    public int bookBack(int bookId) {
+    public int bookBack(int bookId) throws MessagingException {
         BusinessLogger.logger.trace("entering method bookBack with param bookId =" + bookId);
 
         Optional<Book> b = bookDAO.findById(bookId);
