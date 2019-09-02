@@ -296,7 +296,7 @@ public class CustomerAndLoanEndpoint {
 
             // copy reservation (LocalDate)
             reservationWs.setDateReservation(convertLocalDateTimeForXml(reservation.getDateReservation()));
-            if ( reservation.getDateBookAvailableNotification() != null ) {
+            if (reservation.getDateBookAvailableNotification() != null ) {
                 reservationWs.setDateBookAvailableNotification(convertLocalDateTimeForXml(reservation.getDateBookAvailableNotification()));
             }
 

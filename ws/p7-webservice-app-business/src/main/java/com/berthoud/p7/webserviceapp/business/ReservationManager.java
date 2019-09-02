@@ -229,7 +229,6 @@ public class ReservationManager {
 
     }
 
-
     /**
      * This method checks if the reservation list for a specific {@link com.berthoud.p7.webserviceapp.model.entities.BookReference}
      * in a specific {@link com.berthoud.p7.webserviceapp.model.entities.Librairy} is full.
@@ -287,7 +286,6 @@ public class ReservationManager {
         }
         return false;
     }
-
 
     /**
      * This method retrieves the next Customer on a reservation list to be notified for a given bookId

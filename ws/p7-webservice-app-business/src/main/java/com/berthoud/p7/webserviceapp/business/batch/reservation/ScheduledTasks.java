@@ -24,7 +24,7 @@ public class ScheduledTasks {
     private ProcessReservationListTask processReservationListTask;
 
 
-//    @Scheduled(fixedRateString = "${scheduling.updateReservationsTask.fixedRate.ms}")
+    @Scheduled(fixedRateString = "${scheduling.updateReservationsTask.fixedRate.ms}")
     public void updateReservationsTask() throws MessagingException {
 
 

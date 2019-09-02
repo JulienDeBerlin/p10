@@ -30,7 +30,6 @@ import java.util.Optional;
 @PropertySource("classpath:application.properties")
 public class LoanManager {
 
-
     @Value("${maxExtensions}")
     private String maxExtensions;
 
@@ -39,7 +38,6 @@ public class LoanManager {
 
     @Value("${loanLengthInDays}")
     private String loanLengthInDays;
-
 
     @Autowired
     LoanDAO loanDAO;
@@ -55,7 +53,6 @@ public class LoanManager {
 
     @Autowired
     ProcessReservationListTask processReservationListTask;
-
 
     /**
      * The method is used to extend an active loan. The extension of a loan is only possible if all following conditions are met:
@@ -165,7 +162,6 @@ public class LoanManager {
         LocalDate DateEnd = LocalDate.now().plusDays(Integer.parseInt(loanLengthInDays));
         newloan.setDateEnd(DateEnd);
 
-
         newloan.setDateBack(LocalDate.of(1900, 1, 1));
         loanDAO.save(newloan);
 
@@ -187,7 +183,7 @@ public class LoanManager {
      * 0 = failure (no loan active with for this book id)
      * -1 = failure (bookId is not a valid book id)
      */
-    @Async
+//    @Async
     public int bookBack(int bookId) throws MessagingException {
         BusinessLogger.logger.trace("entering method bookBack with param bookId =" + bookId);
 

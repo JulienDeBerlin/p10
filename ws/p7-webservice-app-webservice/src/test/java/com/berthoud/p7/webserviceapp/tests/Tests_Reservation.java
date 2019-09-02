@@ -235,26 +235,6 @@ public class Tests_Reservation {
     }
 
 
-    @Test
-    public void sendNotification3() throws MessagingException, InterruptedException {
-
-        // Add a 2nd reservation to the list
-        assertEquals(reservationManager.makeReservation(4, 3, 23), 1);
-
-        // A book matching with the reservation list if being returned
-        assertEquals(loanManager.bookBack(148), 1);
-
-
-        //TODO problème: j'aimerais tester les 2 cas ci-desous PENDANT que le Thread est mis en pause
-
-        //The second person on the list tries to borrow the return book after having been notified
-        assertEquals(loanManager.registerNewLoan(23, 148), -3);
-
-        //A person with no reservation tries to borrow the return book
-        assertEquals(loanManager.registerNewLoan(34, 148), -3);
-
-
-    }
 
 
 }
