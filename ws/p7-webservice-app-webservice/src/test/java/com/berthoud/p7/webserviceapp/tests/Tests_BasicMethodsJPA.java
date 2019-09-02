@@ -27,7 +27,6 @@ public class Tests_BasicMethodsJPA {
             Customer customer = customerRepo.findById(4).get();
             System.out.println(customer.getSurname());
         }
-
     }
 
 

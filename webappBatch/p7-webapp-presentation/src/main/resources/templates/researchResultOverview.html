@@ -27,7 +27,7 @@
 
             <div class="text-right" id="myMenu">
                 <a th:href="@{/researchForm}" class="btn btn-light" role="button">Rechercher un ouvrage</a>
-                <a th:href="@{/loginForm}" class="btn btn-light" role="button">Accéder à mon compte</a>
+                <a th:href="@{/displayMemberArea}" class="btn btn-light" role="button">Accéder à mon compte</a>
                 <a href="#link" class="btn btn-light" role="button">Infos pratiques</a>
             </div>
 
@@ -51,7 +51,7 @@
             <tbody>
 
             <tr th:each="bookReference: ${bookReferenceList}" class='clickable-row'
-                th:data-href="@{/bookDetails(bookRef = ${bookReference.id})}">
+                th:data-href="@{/bookDetails(bookReferenceId=${bookReference.id})}">
                 <td th:text="${bookReference.title}">Un jardin en ville</td>
                 <td th:text="${bookReference.authorFirstName + ' ' + bookReference.authorSurname}">Jean Loukfi</td>
                 <td class="d-none d-sm-table-cell" th:text="${bookReference.publisher}">Glénat</td>

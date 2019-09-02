@@ -3,6 +3,7 @@ package com.berthoud.p7.webserviceapp.consumer.contract;
 import com.berthoud.p7.webserviceapp.model.entities.BookReference;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -22,7 +23,7 @@ public interface BookReferenceDAO {
 
     List<BookReference> findBookReferenceByTagsAndTitleElementAndAuthor(Set<String> tags, long numberOfTags, String titleElement, String authorSurname);
 
-
+    Optional<BookReference> findById (int id);
 
 
 

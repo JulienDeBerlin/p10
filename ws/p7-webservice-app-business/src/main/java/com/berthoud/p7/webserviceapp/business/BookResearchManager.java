@@ -1,5 +1,6 @@
 package com.berthoud.p7.webserviceapp.business;
 
+import com.berthoud.p7.webserviceapp.consumer.contract.BookDAO;
 import com.berthoud.p7.webserviceapp.consumer.contract.BookReferenceDAO;
 import com.berthoud.p7.webserviceapp.consumer.contract.LibrairyDAO;
 import com.berthoud.p7.webserviceapp.model.entities.Book;
@@ -7,6 +8,8 @@ import com.berthoud.p7.webserviceapp.model.entities.BookReference;
 import com.berthoud.p7.webserviceapp.model.entities.Librairy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static com.berthoud.p7.webserviceapp.business.Utils.convertListStringIntoSetString;
 
 import java.util.*;
 
@@ -24,8 +27,11 @@ public class BookResearchManager {
     @Autowired
     LibrairyDAO librairyDAO;
 
+    @Autowired
+    BookDAO bookDAO;
+
     /**
-     * This method is use to perform a book research. There are 3 research parameters ( author, title or keywords also called tags)
+     * This method is use to perform a book research. There are 3 research parameters (author, title or keywords also called tags)
      * and 1 filter by librairy. At least 1 research parameter should be indicated otherwise an exception is thrown.
      *
      * @param authorSurname research parameter: authorSurname is the exact name of the author, NOT case sensitive
@@ -117,16 +123,18 @@ public class BookResearchManager {
     }
 
 
-    /**
-     * This is a small tool to convert a List of String into a set of strings
-     *
-     * @param keywords the list to be converted
-     * @return
-     */
-    public Set<String> convertListStringIntoSetString(List<String> keywords) {
-        BusinessLogger.logger.trace("entering method convertListStringIntoSetString");
 
-        return new HashSet<>(keywords);
+
+    /**
+     * This method retrieves all the books matching with a specific {@link com.berthoud.p7.webserviceapp.model.entities.Librairy}
+     * and a specific {@link com.berthoud.p7.webserviceapp.model.entities.BookReference}
+     *
+     * @param bookReferenceId -
+     * @param librairyId      -
+     * @return a list of books matching with the book reference and the librairy
+     */
+    public List<Book> getListOfBooksForReferenceAndLibrairy(int bookReferenceId, int librairyId) {
+        return bookDAO.getListOfBooksForReferenceAndLibrairy(bookReferenceId, librairyId);
     }
 
 

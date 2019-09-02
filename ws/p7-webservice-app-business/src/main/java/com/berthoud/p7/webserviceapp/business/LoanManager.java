@@ -1,16 +1,20 @@
 package com.berthoud.p7.webserviceapp.business;
 
+import com.berthoud.p7.webserviceapp.business.batch.reservation.ProcessReservationListTask;
 import com.berthoud.p7.webserviceapp.consumer.contract.BookDAO;
 import com.berthoud.p7.webserviceapp.consumer.contract.CustomerDAO;
 import com.berthoud.p7.webserviceapp.consumer.contract.LoanDAO;
 import com.berthoud.p7.webserviceapp.model.entities.Book;
 import com.berthoud.p7.webserviceapp.model.entities.Customer;
 import com.berthoud.p7.webserviceapp.model.entities.Loan;
+import com.berthoud.p7.webserviceapp.model.entities.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +30,6 @@ import java.util.Optional;
 @PropertySource("classpath:application.properties")
 public class LoanManager {
 
-
     @Value("${maxExtensions}")
     private String maxExtensions;
 
@@ -36,7 +39,6 @@ public class LoanManager {
     @Value("${loanLengthInDays}")
     private String loanLengthInDays;
 
-
     @Autowired
     LoanDAO loanDAO;
 
@@ -45,6 +47,12 @@ public class LoanManager {
 
     @Autowired
     CustomerDAO customerDAO;
+
+    @Autowired
+    ReservationManager reservationManager;
+
+    @Autowired
+    ProcessReservationListTask processReservationListTask;
 
     /**
      * The method is used to extend an active loan. The extension of a loan is only possible if all following conditions are met:
@@ -66,7 +74,7 @@ public class LoanManager {
         BusinessLogger.logger.trace("entering method extendLoan with param loanId = " + loanId);
 
         Optional<Loan> l = loanDAO.findById(loanId);
-        if (!l.isPresent() || !l.get().getBook().getStatus().equals(Book.Status.BORROWED)) {
+        if (!l.isPresent() || l.get().getBook().getStatus().equals(Book.Status.AVAILABLE)) {
             BusinessLogger.logger.info("failure loan extension, cause: loanId " + loanId + " not correct ");
             return -2;
         }
@@ -121,9 +129,13 @@ public class LoanManager {
             return -1;
         }
 
-        if (!b.get().getStatus().equals(Book.Status.AVAILABLE)) {
+        if (b.get().getStatus().equals(Book.Status.BORROWED)) {
             BusinessLogger.logger.info("failure registration new loan, cause: book with id" + bookId + " not available ");
+            return -3;
+        }
 
+        if ((b.get().getStatus().equals(Book.Status.BOOKED)) && !reservationManager.bookReservedForCustomer(customerId, bookId)) {
+            BusinessLogger.logger.info("failure registration new loan, cause: book with id" + bookId + " is booked ");
             return -3;
         }
 
@@ -150,7 +162,6 @@ public class LoanManager {
         LocalDate DateEnd = LocalDate.now().plusDays(Integer.parseInt(loanLengthInDays));
         newloan.setDateEnd(DateEnd);
 
-
         newloan.setDateBack(LocalDate.of(1900, 1, 1));
         loanDAO.save(newloan);
 
@@ -164,7 +175,7 @@ public class LoanManager {
 
 
     /**
-     * This method is used to register a new loan.
+     * This method is used to register the return of a book.
      *
      * @param bookId the id of the book that is returned.
      * @return :
@@ -178,27 +189,34 @@ public class LoanManager {
 
         Optional<Book> b = bookDAO.findById(bookId);
         if (!b.isPresent()) {
-            BusinessLogger.logger.info(" failure registration book return, cause: bookId " + bookId + " is not valid ");
+            BusinessLogger.logger.info(" failure registration book return, cause: bookId "+bookId + " is not valid ");
 
             return -1;
         }
 
         Book book = b.get();
         if (!book.getStatus().equals(Book.Status.BORROWED)) {
-            BusinessLogger.logger.info(" failure registration book return, cause: no loan active for book with id " + bookId);
+            BusinessLogger.logger.info(" failure registration book return, cause: no loan active for book with id "+bookId);
 
             return 0;
         }
 
         for (Loan l : book.getLoans()) {
 
+            // recherche du prêt en cours
             if (l.getDateBack().equals(LocalDate.of(1900, 1, 1))) {
                 l.setDateBack(LocalDate.now());
                 loanDAO.save(l);
 
-                book.setStatus(Book.Status.AVAILABLE);
-                bookDAO.save(book);
+                //Vérification si une réservation court pour l'ouvrage et la bibliothèque correspondant au bookId
+                List<Reservation> reservationList = reservationManager.getAllReservationsByBookId(bookId);
+                if (reservationList.isEmpty()) {
+                    book.setStatus(Book.Status.AVAILABLE);
+                } else {
+                    processReservationListTask.processReservationList(bookId);
+                }
 
+                bookDAO.save(book);
                 break;
             }
         }
@@ -247,6 +265,7 @@ public class LoanManager {
         LocalDate back = LocalDate.of(1900, 01, 01);
         return loanDAO.findByDateBackAndDateEndLessThanEqual(back, LocalDate.now());
     }
+
 
 
     /**

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import p7.webapp.model.beans.Customer;
 
@@ -19,6 +18,28 @@ public class LoginController {
     @Autowired
     LoginManager loginManager;
 
+
+    /**
+     * Displays the member area
+     *
+     * @param model -
+     * @param session -
+     * @return the member area page
+     */
+    @RequestMapping(value = "/displayMemberArea")
+    public String displayMemberArea(ModelMap model, HttpSession session) {
+        WebApp.logger.trace("entering 'checkLogin()");
+
+        if (session.getAttribute("user") == null) {
+            model.addAttribute("toBeDisplayed", "loginForm");
+            model.addAttribute("afterLogin", "redirect:displayMemberArea");
+            model.addAttribute("alert", "memberArea");
+            return "home";
+        } else {
+            return "memberArea";
+        }
+    }
+
     /**
      * This controller is used to perform the login.
      *
@@ -27,16 +48,18 @@ public class LoginController {
      * @param password the password input
      * @return the memberArea page.
      */
-    @RequestMapping(value = "/memberArea", method = RequestMethod.POST)
-    public String getMemberArea(ModelMap model,
-                                @RequestParam String email,
-                                @RequestParam String password,
-                                HttpSession session) {
+    @RequestMapping(value = "/perfomLogin")
+    public String performLogin(ModelMap model,
+                               @RequestParam String email,
+                               @RequestParam String password,
+                               @RequestParam String afterLogin,
+                               HttpSession session) {
 
-        WebApp.logger.trace("entering 'getMemberArea()");
+        System.out.println("afterlogin = " + afterLogin);
+
+        WebApp.logger.trace("entering 'performLogin()");
 
         WebApp.logger.info("Email entered by user =" + email);
-
 
         Customer user = new Customer();
         try {
@@ -44,15 +67,14 @@ public class LoginController {
             session.setAttribute("user", user);
             WebApp.logger.info("login successfull");
 
-
         } catch (Exception e) {
             String alert = new String();
-            if ( e.getMessage().contains("no user registered")){
+            if (e.getMessage().contains("no user registered")) {
                 alert = "wrong email";
                 WebApp.logger.info("login failure: wrong email");
 
             }
-            if ( e.getMessage().contains("login denied")){
+            if (e.getMessage().contains("login denied")) {
                 alert = "wrong password";
                 WebApp.logger.info("login failure: wrong password");
 
@@ -61,9 +83,7 @@ public class LoginController {
             model.addAttribute("toBeDisplayed", "loginForm");
             return "home";
         }
-
-        return "memberArea";
-
+        return afterLogin;
     }
 
     /**

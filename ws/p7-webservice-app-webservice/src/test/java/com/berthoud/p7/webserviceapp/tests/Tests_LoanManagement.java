@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -53,6 +54,10 @@ public class Tests_LoanManagement {
         // loan id not correct
         testValue = loanManager.extendLoan(1);
         assertEquals(testValue, -2);
+
+        // loan id not correct
+        testValue = loanManager.extendLoan(168);
+        assertEquals(testValue, 1);
 
         // loan is already overdue - no extension possible
         testValue = loanManager.extendLoan(169);
@@ -102,7 +107,7 @@ public class Tests_LoanManagement {
 
     @Test
     @Transactional
-    public void bookBack() {
+    public void bookBack() throws MessagingException {
 
         //book id wrong
         int testValue = loanManager.bookBack(34);
@@ -126,13 +131,13 @@ public class Tests_LoanManagement {
         assertEquals(listLoansLate.size(), 4);
 
         List<Loan> listLoansInTime = loanManager.getOpenLoansInTime();
-        assertEquals(listLoansInTime.size(), 3);
+        assertEquals(listLoansInTime.size(), 5);
 
         List<Loan> listAllLoans = loanManager.getAllOpenLoans();
-        assertEquals(listAllLoans.size(), 7);
+        assertEquals(listAllLoans.size(), 9);
 
         List<Loan> listOpenLoansExtended = loanManager.getOpenLoansExtended();
-        assertEquals(listOpenLoansExtended.size(), 6);
+        assertEquals(listOpenLoansExtended.size(), 4);
 
     }
 
