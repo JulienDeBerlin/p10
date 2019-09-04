@@ -8,7 +8,6 @@ import com.berthoud.p7.webserviceapp.model.entities.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import sun.misc.ConditionLock;
 
 import javax.mail.MessagingException;
 import java.time.Clock;
