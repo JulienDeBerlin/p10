@@ -50,12 +50,11 @@ public class ReservationManager {
 
         for (Book book : bookListMatchingWithReservation) {
             for (Loan loan : book.getLoans()) {
-                if (book.getStatus() == Book.Status.BORROWED && loan.getDateEnd().isBefore(nextDateEnd)) {
+                if (book.getStatus() != Book.Status.AVAILABLE && loan.getDateEnd().isBefore(nextDateEnd)) {
                     nextDateEnd = loan.getDateEnd();
                 }
             }
         }
-
         return nextDateEnd;
     }
 
