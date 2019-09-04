@@ -31,7 +31,7 @@ public class Tests_Security {
     @Test
     public void updateCustomerWithHashPassword() {
 
-        Optional<Customer> customer = customerRepo.findById(86);
+        Optional<Customer> customer = customerRepo.findById(23);
         if (customer.isPresent()) {
             Customer myCustomer = customer.get();
             myCustomer.setPassword(CustomerManager.hashPasswordBCrypt(myCustomer.getPassword()));
