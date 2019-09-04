@@ -1,10 +1,7 @@
 package com.berthoud.p7.webserviceapp.utils;
 
-import com.berthoud.p7.webserviceapp.business.BusinessLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
