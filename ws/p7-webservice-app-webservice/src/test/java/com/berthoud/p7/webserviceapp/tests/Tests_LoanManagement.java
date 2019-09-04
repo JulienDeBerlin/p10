@@ -134,7 +134,6 @@ public class Tests_LoanManagement {
 
         List<Loan> listOpenLoansExtended = loanManager.getOpenLoansExtended();
         assertEquals(listOpenLoansExtended.size(), 4);
-
     }
 
 }
