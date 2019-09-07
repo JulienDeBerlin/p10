@@ -12,13 +12,13 @@
     <artifactId>p7-webservice-app-model</artifactId>
     <packaging>jar</packaging>
 
+    <!-- =============================================================== -->
+    <!-- Dependencies -->
+    <!-- =============================================================== -->
     <dependencies>
-
         <!-- ===== Modules ===== -->
 
-
         <!-- ===== Other dependencies ===== -->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -35,18 +35,22 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
+
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
         </dependency>
-
-
     </dependencies>
 
+
+    <!-- =============================================================== -->
+    <!-- Build and plugins -->
+    <!-- =============================================================== -->
     <build>
         <plugins>
 

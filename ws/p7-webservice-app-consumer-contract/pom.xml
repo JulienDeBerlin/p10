@@ -12,20 +12,18 @@
     <artifactId>p7-webservice-app-consumer-contract</artifactId>
     <packaging>jar</packaging>
 
+    <!-- =============================================================== -->
+    <!-- Dependencies -->
+    <!-- =============================================================== -->
     <dependencies>
-
         <!-- ===== Modules ===== -->
-
-
         <dependency>
             <groupId>com.berthoud</groupId>
             <artifactId>p7-webservice-app-model</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
-
         <!-- ===== Other dependencies ===== -->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -56,6 +54,9 @@
 
     </dependencies>
 
+    <!-- =============================================================== -->
+    <!-- Build and plugins -->
+    <!-- =============================================================== -->
     <build>
         <plugins>
 

@@ -33,7 +33,7 @@ public class Book extends AuditModel {
     @JoinColumn(name = "book_reference_id")
     private BookReference bookReference;
 
-    @OneToOne (mappedBy = "book")
+//    @OneToOne (mappedBy = "book")
     private Reservation reservation;
 
     public Book(LocalDate datePurchase, Status status, Librairy librairy, Set<Loan> loans, BookReference bookReference) {

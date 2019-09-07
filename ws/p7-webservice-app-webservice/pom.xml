@@ -12,6 +12,9 @@
     <artifactId>p7-webservice-app-webservice</artifactId>
     <packaging>jar</packaging>
 
+    <!-- =============================================================== -->
+    <!-- Dependencies -->
+    <!-- =============================================================== -->
     <dependencies>
 
         <!-- ===== Modules ===== -->
@@ -21,8 +24,6 @@
         </dependency>
 
         <!-- ===== Other dependencies ===== -->
-
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web-services</artifactId>
@@ -50,10 +51,11 @@
             <artifactId>mockito-core</artifactId>
             <version>2.21.0</version>
         </dependency>
-
     </dependencies>
 
-
+    <!-- =============================================================== -->
+    <!-- Build and plugins -->
+    <!-- =============================================================== -->
     <build>
         <plugins>
             <plugin>

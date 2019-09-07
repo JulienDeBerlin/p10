@@ -34,7 +34,6 @@
     <!-- =============================================================== -->
     <!-- Profiles -->
     <!-- =============================================================== -->
-
     <profiles>
         <profile>
             <id>dev</id>
@@ -53,11 +52,9 @@
         </profile>
     </profiles>
 
-
     <!-- =============================================================== -->
     <!-- Dependencies -->
     <!-- =============================================================== -->
-
     <dependencyManagement>
         <dependencies>
 
@@ -93,7 +90,6 @@
             </dependency>
 
             <!-- ===== Other dependencies ===== -->
-
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -111,7 +107,6 @@
                 <artifactId>spring-boot-starter-mail</artifactId>
                 <version>2.1.4.RELEASE</version>
             </dependency>
-
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -141,7 +136,6 @@
                 <scope>test</scope>
             </dependency>
 
-
             <!-- https://mvnrepository.com/artifact/org.mindrot/jbcrypt -->
             <dependency>
                 <groupId>org.mindrot</groupId>
@@ -155,19 +149,21 @@
                 <version>1.4.199</version>
             </dependency>
 
-
         </dependencies>
-
     </dependencyManagement>
 
 
+    <!-- =============================================================== -->
+    <!-- Plugins -->
+    <!-- =============================================================== -->
     <build>
         <pluginManagement>
             <plugins>
+
+                <!-- ===== spring-boot-maven-plugin ===== -->
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-
                     <executions>
                         <execution>
                             <goals>
@@ -181,16 +177,13 @@
                             </configuration>
                         </execution>
                     </executions>
-
-
-
                 </plugin>
 
+                <!-- ===== jaxb2-maven-plugin ===== -->
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>jaxb2-maven-plugin</artifactId>
                     <version>2.3.1</version>
-
                     <executions>
 
                         <execution>
@@ -198,7 +191,6 @@
                             <goals>
                                 <goal>xjc</goal>
                             </goals>
-
                             <configuration>
                                 <sources>
                                     <source>
@@ -208,7 +200,6 @@
                                 <packageName>com.berthoud.p7.webserviceapp.ws.customers</packageName>
                                 <clearOutputDir>false</clearOutputDir>
                             </configuration>
-
                         </execution>
 
                         <execution>
@@ -216,7 +207,6 @@
                             <goals>
                                 <goal>xjc</goal>
                             </goals>
-
                             <configuration>
                                 <sources>
                                     <source>
@@ -227,18 +217,32 @@
                                 <clearOutputDir>false</clearOutputDir>
                             </configuration>
                         </execution>
-
-
-
                     </executions>
-
-
                 </plugin>
 
+                <!-- ===== build-helper-maven-plugin ===== -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+
+                <!-- ===== maven-failsafe-plugin ===== -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>3.0.0-M3</version>
+                </plugin>
+
+                <!-- ===== maven-surefire-plugin ===== -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0-M3</version>
+                </plugin>
+
+
             </plugins>
-
-
         </pluginManagement>
     </build>
-
 </project>
