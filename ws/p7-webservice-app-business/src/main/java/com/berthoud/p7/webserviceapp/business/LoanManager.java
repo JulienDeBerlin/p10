@@ -53,6 +53,30 @@ public class LoanManager {
     @Autowired
     ProcessReservationListTask processReservationListTask;
 
+    public void setMaxExtensions(String maxExtensions) {
+        this.maxExtensions = maxExtensions;
+    }
+
+    public void setExtensionLengthInDays(String extensionLengthInDays) {
+        this.extensionLengthInDays = extensionLengthInDays;
+    }
+
+    public void setLoanLengthInDays(String loanLengthInDays) {
+        this.loanLengthInDays = loanLengthInDays;
+    }
+
+    public String getMaxExtensions() {
+        return maxExtensions;
+    }
+
+    public String getExtensionLengthInDays() {
+        return extensionLengthInDays;
+    }
+
+    public String getLoanLengthInDays() {
+        return loanLengthInDays;
+    }
+
     /**
      * The method is used to extend an active loan. The extension of a loan is only possible if all following conditions are met:
      * - membership is still valid

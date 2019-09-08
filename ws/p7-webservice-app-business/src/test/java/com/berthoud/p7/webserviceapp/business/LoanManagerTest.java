@@ -4,6 +4,7 @@ import com.berthoud.p7.webserviceapp.consumer.contract.LoanDAO;
 import com.berthoud.p7.webserviceapp.model.entities.Book;
 import com.berthoud.p7.webserviceapp.model.entities.Customer;
 import com.berthoud.p7.webserviceapp.model.entities.Loan;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -12,13 +13,13 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.context.TestPropertySource;
 
+import static java.lang.Integer.parseInt;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
-
 
 @RunWith(MockitoJUnitRunner.class)
 @TestPropertySource("classpath:application.properties")
@@ -30,9 +31,19 @@ public class LoanManagerTest {
     @InjectMocks
     private LoanManager loanManager;
 
-    private int maxExtensions;
+    static private int maxExtension;
+    static private int loanLengthInDays;
+    static private int extensionLengthInDays;
 
-    private int extensionLengthInDays;
+    @Before
+    public void injectValues(){
+        loanManager.setExtensionLengthInDays("28");
+        loanManager.setLoanLengthInDays("28");
+        loanManager.setMaxExtensions("1");
+        maxExtension = parseInt(loanManager.getMaxExtensions());
+        loanLengthInDays = parseInt(loanManager.getLoanLengthInDays());
+        extensionLengthInDays = parseInt(loanManager.getExtensionLengthInDays());
+    }
 
     @Test
     public void extendLoanTest() {
@@ -43,53 +54,50 @@ public class LoanManagerTest {
         Customer customerMembershipExpired = new Customer();
         customerMembershipExpired.setDateExpirationMembership(LocalDate.now().minusDays(10));
 
-        // LoanId 1 = open loan, number of extension limit not reached, membership not expired
-        Loan openLoan1 = new Loan();
-        openLoan1.setId(1);
-        openLoan1.setDateBack(LocalDate.of(1900, 01, 01));
+        // case 1 = open loan, number of extension limit not reached, membership not expired
+        Loan loan = new Loan();
+        loan.setId(1);
+        loan.setDateBack(LocalDate.of(1900, 01, 01));
         LocalDate dateEndBeforeExtension1 = LocalDate.of(2021, 03, 01);
-        openLoan1.setDateEnd(dateEndBeforeExtension1);
-        openLoan1.setNumberExtensions(maxExtensions - 1);
-        openLoan1.setCustomer(customerMembershipValid);
+        loan.setDateEnd(dateEndBeforeExtension1);
+        loan.setNumberExtensions(maxExtension-1);
+        loan.setCustomer(customerMembershipValid);
 
         Book book1 = new Book();
         book1.setStatus(Book.Status.BORROWED);
-        openLoan1.setBook(book1);
+        loan.setBook(book1);
 
-        Optional<Loan> opt = Optional.of(openLoan1);
+        Optional<Loan> opt = Optional.of(loan);
 
         when(loanDaoMock.findById(1)).thenReturn(opt);
         assertEquals(loanManager.extendLoan(1), 1);
-        assertEquals(openLoan1.getDateEnd(), dateEndBeforeExtension1.plusDays(extensionLengthInDays));
+        assertEquals(loan.getDateEnd(), dateEndBeforeExtension1.plusDays(loanLengthInDays));
 
 
-//        // LoanId 2 = open loan, number of extension limit  reached
-//        Loan openLoan2 = new Loan();
-//        openLoan1.setId(1);
-//        openLoan1.setDateBack(LocalDate.of(1900, 01, 01));
-//        LocalDate dateEndBeforeExtension2 = LocalDate.of(2021, 03, 01);
-//        openLoan1.setDateEnd(dateEndBeforeExtension2);
-//        openLoan1.setNumberExtensions(maxLoanExtension);
-//
-//        when(loanDaoMock.findById(2)).thenReturn(Optional.of(openLoan2));
-//        loanManager.extendLoan(2);
-//        assertEquals (openLoan1.getDateEnd(), dateEndBeforeExtension2.plusDays(extensionLengthInDays));
-//
-//
-//
-//
-//
-//        // LoanId 2 = closed loan
-//
-//        Loan closedLoan = new Loan();
-//        openLoan1.setId(2);
-//        closedLoan.setDateBack(LocalDate.of(2019, 05, 17));
-//        closedLoan.setDateEnd(LocalDate.of(2019, 05, 20));
-//        when(loanDaoMock.findById(2)).thenReturn(Optional.of(closedLoan));
-//
-//        // LoanId 3 = non existant loan
-//        when(loanDaoMock.findById(3)).thenReturn((Optional.empty()));
+        // case 2 : membership expired
+        loan.setNumberExtensions(maxExtension-1);
+        loan.setCustomer(customerMembershipExpired);
+        Optional<Loan> opt2 = Optional.of(loan);
+        when(loanDaoMock.findById(1)).thenReturn(opt2);
+        assertEquals(loanManager.extendLoan(1), 0);
 
 
+        // case 3 :  number of extension limit  reached
+        loan.setNumberExtensions(maxExtension);
+        loan.setCustomer(customerMembershipValid);
+        Optional<Loan> opt3 = Optional.of(loan);
+        when(loanDaoMock.findById(1)).thenReturn(opt3);
+        assertEquals(loanManager.extendLoan(1), -1);
+
+        // case 4 = non existant loan id
+        when(loanDaoMock.findById(99)).thenReturn((Optional.empty()));
+        assertEquals(loanManager.extendLoan(99), -2);
+
+        // case 5 = loan is already overdue
+        loan.setDateEnd(LocalDate.now().minusDays(3));
+        loan.setNumberExtensions(maxExtension-1);
+        Optional<Loan> opt4 = Optional.of(loan);
+        when(loanDaoMock.findById(1)).thenReturn(opt4);
+        assertEquals(loanManager.extendLoan(1), -3);
     }
 }

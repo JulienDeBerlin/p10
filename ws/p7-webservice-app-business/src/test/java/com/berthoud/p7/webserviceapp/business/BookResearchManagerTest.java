@@ -76,10 +76,6 @@ public class BookResearchManagerTest {
         assertEquals( 1, bookReferencesFilteredForLibrairy1.size());
         bookReferencesFilteredForLibrairy2.add(bookReference2);
         bookReferencesFilteredForLibrairy2.add(bookReference3);
-
-        //FIXME : la méthode filterBookReferenceListByLibrairy modifie l'objet rentré en paramètre. Est-ce que c'est ok. Est-ce que ce ne serait
-        // pas préférable de copier l'objet passer en paramètre, de modifier la copie et retourner la copie. L'avantage serait que l'original reste inchangé?
-
     }
 
 

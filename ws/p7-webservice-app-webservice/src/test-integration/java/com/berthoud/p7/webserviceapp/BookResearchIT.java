@@ -1,8 +1,8 @@
-package com.berthoud.p7.webserviceapp.business;
+package com.berthoud.p7.webserviceapp;
 
+import com.berthoud.p7.webserviceapp.business.BookResearchManager;
 import com.berthoud.p7.webserviceapp.consumer.contract.BookDAO;
 import com.berthoud.p7.webserviceapp.consumer.contract.BookReferenceDAO;
-import com.berthoud.p7.webserviceapp.model.entities.Book;
 import com.berthoud.p7.webserviceapp.model.entities.BookReference;
 import com.berthoud.p7.webserviceapp.model.entities.Librairy;
 import org.junit.Test;
@@ -16,11 +16,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = TestContextConfiguration.class)
-
+@SpringBootTest
+@Transactional
 public class BookResearchIT {
 
     @Autowired
@@ -32,116 +32,47 @@ public class BookResearchIT {
     @Autowired
     BookDAO bookRepo;
 
+
+    // TI bookReferenceRepository
     @Test
-    @Transactional
     public void findByTags() {
+        List<BookReference> bookReferenceList = bookReferenceRepository.findBookReferenceByTags(new HashSet<>(Arrays.asList("sport", "aventure", "ecologie")), 3);
+        assertTrue(bookReferenceList.isEmpty());
 
-        List<BookReference> bookReferenceList =
-                bookReferenceRepository.findBookReferenceByTags(new HashSet<>(Arrays.asList("Sport", "Aventure", "Ecologie")), 3);
-
-//        assertEquals(bookReferenceList.size(), 4);
-
-        for (BookReference bookReference : bookReferenceList) {
-            System.out.println(bookReference.getTitle());
-            for (Book book : bookReference.getBooks()) {
-                System.out.println(book.getStatus());
-            }
-        }
-
-        if (bookReferenceList.isEmpty()) {
-            System.out.println("EMPTY!!!!");
-        }
-
+        bookReferenceList = bookReferenceRepository.findBookReferenceByTags(new HashSet<>(Arrays.asList("italie")), 1);
+        assertEquals(bookReferenceList.size(), 2);
     }
 
     @Test
-    @Transactional
     public void findByTagsAndAuthor() {
 
         List<BookReference> bookReferenceList =
-                bookReferenceRepository.findBookReferenceByTagsAndAuthor(new HashSet<>(Arrays.asList("Sport", "Aventure", "Ecologie")), 3, "Surty");
-
-        for (BookReference bookReference : bookReferenceList) {
-            System.out.println(bookReference.getTitle());
-            for (Book book : bookReference.getBooks()) {
-                System.out.println(book.getStatus());
-            }
-        }
-
-        if (bookReferenceList.isEmpty()) {
-            System.out.println("EMPTY!!!!");
-        }
-
+                bookReferenceRepository.findBookReferenceByTagsAndAuthor(new HashSet<>(Arrays.asList("histoire")), 1, "delors");
+        assertEquals(bookReferenceList.size(), 1);
+        assertEquals(bookReferenceList.get(0).getTitle(), "Mon Italie");
     }
 
-
     @Test
-    @Transactional
     public void findByTagsAndTitleElement() {
 
         List<BookReference> bookReferenceList =
-                bookReferenceRepository.findBookReferenceByTagsAndTitleElement(new HashSet<>(Arrays.asList("Sport", "Aventure", "Ecologie")), 3, "les septs");
-
-        for (BookReference bookReference : bookReferenceList) {
-            System.out.println(bookReference.getTitle());
-            for (Book book : bookReference.getBooks()) {
-                System.out.println(book.getStatus());
-            }
-        }
-
-        if (bookReferenceList.isEmpty()) {
-            System.out.println("EMPTY!!!!");
-        }
-
+                bookReferenceRepository.findBookReferenceByTagsAndTitleElement(new HashSet<>(Arrays.asList("histoire")), 1, "Italie");
+        assertEquals(bookReferenceList.size(), 1);
+        assertEquals(bookReferenceList.get(0).getTitle(), "Mon Italie");
     }
 
     @Test
-    @Transactional
     public void findByTagsAndTitleElementAndAuthor() {
-
         List<BookReference> bookReferenceList =
                 bookReferenceRepository.findBookReferenceByTagsAndTitleElementAndAuthor
-                        (new HashSet<>(Arrays.asList("Sport", "Aventure", "Ecologie")), 3, "%les septs %", "sur");
-
-        for (BookReference bookReference : bookReferenceList) {
-            System.out.println(bookReference.getTitle());
-            for (Book book : bookReference.getBooks()) {
-                System.out.println(book.getStatus());
-            }
-        }
-
-        if (bookReferenceList.isEmpty()) {
-            System.out.println("EMPTY!!!!");
-        }
-
+                        (new HashSet<>(Arrays.asList("sport", "aventure", "écologie")), 3, "les septs", "sur");
+        assertEquals(bookReferenceList.size(), 1);
+        assertEquals(bookReferenceList.get(0).getTitle(), "Les septs collines en Italie");
     }
 
-
+    // TI bookResearchManager
     @Test
-    @Transactional
-    public void finderTestJPQL() {
-
-        List<BookReference> bookReferenceList =
-                bookReferenceRepository.findBookReferenceTestJPQL("Sur");
-
-        for (BookReference bookReference : bookReferenceList) {
-            System.out.println(bookReference.getTitle());
-            for (Book book : bookReference.getBooks()) {
-                System.out.println(book.getStatus());
-            }
-        }
-
-        if (bookReferenceList.isEmpty()) {
-            System.out.println("EMPTY!!!!");
-        }
-
-    }
-
-
-    @Test
-    @Transactional
     public void findMultipleParameters() {
-
         List<BookReference> bookReferenceList10 =
                 bookResearchManager.findBookMultiParameters("Sur", "", -1, Arrays.asList("sport"));
         assertEquals(bookReferenceList10.size(), 1);
@@ -159,7 +90,7 @@ public class BookResearchIT {
         assertEquals(bookReferenceList2.size(), 1);
 
         List<BookReference> bookReferenceList3 =
-                bookResearchManager.findBookMultiParameters("Sur", "Italie", 2, Arrays.asList("sport", "aventure", "écologie"));
+                bookResearchManager.findBookMultiParameters("Sur", "iTtalie", 2, Arrays.asList("sport", "aventure", "écologie"));
         assertEquals(bookReferenceList3.size(), 0);
 
         List<BookReference> bookReferenceList4 =
@@ -185,16 +116,11 @@ public class BookResearchIT {
         List<BookReference> bookReferenceList9 =
                 bookResearchManager.findBookMultiParameters("", "", -1, Arrays.asList("architecture"));
         assertEquals(bookReferenceList9.size(), 2);
-
     }
-
 
     @Test
     public void findAllLibrairies(){
         List<Librairy> librairyList = bookResearchManager.getAllLibrairies();
         assertEquals(librairyList.size(), 3);
     }
-
-
-
 }
