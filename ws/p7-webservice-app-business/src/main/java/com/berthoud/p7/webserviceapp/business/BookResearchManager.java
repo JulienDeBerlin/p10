@@ -21,6 +21,7 @@ import java.util.*;
 @Service
 public class BookResearchManager {
 
+
     @Autowired
     BookReferenceDAO bookReferenceDAO;
 
@@ -29,6 +30,8 @@ public class BookResearchManager {
 
     @Autowired
     BookDAO bookDAO;
+
+
 
     /**
      * This method is use to perform a book research. There are 3 research parameters (author, title or keywords also called tags)
@@ -122,9 +125,6 @@ public class BookResearchManager {
         return librairyDAO.findAll();
     }
 
-
-
-
     /**
      * This method retrieves all the books matching with a specific {@link com.berthoud.p7.webserviceapp.model.entities.Librairy}
      * and a specific {@link com.berthoud.p7.webserviceapp.model.entities.BookReference}
@@ -136,6 +136,4 @@ public class BookResearchManager {
     public List<Book> getListOfBooksForReferenceAndLibrairy(int bookReferenceId, int librairyId) {
         return bookDAO.getListOfBooksForReferenceAndLibrairy(bookReferenceId, librairyId);
     }
-
-
 }

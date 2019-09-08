@@ -1,4 +1,4 @@
-package com.berthoud.p7.webserviceapp.tests;
+package com.berthoud.p7.webserviceapp.business;
 
 public class ProcessReservationListTaskTest {
 }

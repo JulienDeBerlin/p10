@@ -1,10 +1,11 @@
-package com.berthoud.p7.webserviceapp.tests;
+package com.berthoud.p7.webserviceapp;
 
-import com.berthoud.p7.webserviceapp.WebserviceApp;
 import com.berthoud.p7.webserviceapp.business.LoanManager;
 import com.berthoud.p7.webserviceapp.business.ReservationManager;
 import com.berthoud.p7.webserviceapp.business.batch.reservation.ScheduledTasks;
+import com.berthoud.p7.webserviceapp.consumer.contract.BookDAO;
 import com.berthoud.p7.webserviceapp.consumer.contract.ReservationDAO;
+import com.berthoud.p7.webserviceapp.model.entities.Book;
 import com.berthoud.p7.webserviceapp.model.entities.Reservation;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,11 +13,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
@@ -31,11 +30,9 @@ import static org.mockito.Mockito.doReturn;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = WebserviceApp.class)
-
+@SpringBootTest
 @Transactional
-
-public class Tests_Reservation {
+public class ReservationIT {
 
     @InjectMocks
     @Autowired
@@ -49,6 +46,9 @@ public class Tests_Reservation {
 
     @Autowired
     ScheduledTasks scheduledTasks;
+
+    @Autowired
+    BookDAO bookDAO;
 
     @Mock
     private Clock clock;
@@ -157,84 +157,69 @@ public class Tests_Reservation {
 
 
     @Test
-    public void sendNotification0() throws MessagingException, InterruptedException {
+    public void notification_single_reservation() throws MessagingException, InterruptedException {
 
+        // Julien has one reservation for Les vagues
         Reservation reservation1NotYetNotified = reservationDAO.findReservationsByBookReferenceLibrairyAndCustomer(4, 3, 34).get(0);
+        assertEquals(reservation1NotYetNotified.getBookReference().getTitle(), "Les Vagues");
 
-        assertEquals(reservationManager.getAllExpiredReservation().size(), 0);
+        //No notification has been sent for this reservation yet
         assertNull(reservation1NotYetNotified.getDateEndReservation());
+        assertEquals(reservationManager.getAllExpiredReservation().size(), 0);
 
-        // A book matching with the reservation list if being returned
+        // A book matching with the reservation is being returned
         assertEquals(loanManager.bookBack(148), 1);
 
-        //reservation1 is notified and a dateEndreservation is set:
+        //reservation1 is notified (email sent to Julien) and a dateEndreservation is set:
         assertNotNull(reservation1NotYetNotified.getDateEndReservation());
 
-        System.out.println(" notification résa1= " + reservation1NotYetNotified.getDateBookAvailableNotification());
-        System.out.println("fin de résa pour résa1= " + reservation1NotYetNotified.getDateEndReservation());
-
-        assertEquals(reservationManager.getAllExpiredReservation().size(), 0);
-
-        System.out.println("now1 is = " + LocalDateTime.now());
-
+        // After 3 seconds, the reservation expires
         Thread.sleep(4000);
-
-        System.out.println("now2 is = " + LocalDateTime.now());
-
         assertEquals(reservationManager.getAllExpiredReservation().size(), 1);
-
-        // Add a 2nd reservation to the list
-        assertEquals(reservationManager.makeReservation(4, 3, 23), 1);
-
-
-        //With this command...
-        scheduledTasks.updateReservationsTask();
-
-        //reservation1 (expired) should be delete and a notification should be sent for reservation2
-        assertEquals(reservationManager.getAllExpiredReservation().size(), 0);
-
-
-
     }
 
 
     @Test
-    public void sendNotification1() throws MessagingException, InterruptedException {
+    public void notification_reservation_list() throws MessagingException, InterruptedException {
 
-        // Add a 2nd reservation to the list
-        assertEquals(reservationManager.makeReservation(4, 3, 23), 1);
+        // Add a 2nd reservation to the list (Malika)
+        assertEquals(reservationManager.makeReservation(4, 3, 86), 1);
 
         // A book matching with the reservation list if being returned
         assertEquals(loanManager.bookBack(148), 1);
 
+        //a notification will be sent to Julien (1st on the reservation list)
+        assertEquals(reservationManager.getAllExpiredReservation().size(), 0);
 
+        // After 3 seconds, the reservation expires
+        Thread.sleep(4000);
+        assertEquals(reservationManager.getAllExpiredReservation().size(), 1);
 
-        //1st reservation should have expired, email should be sent to person 2
-
+        // When the scheduled task is run...
         scheduledTasks.updateReservationsTask();
+
+        //reservation1 (expired) should be delete and a notification should be sent for reservation2 (Malika)
+        assertEquals(reservationManager.getAllExpiredReservation().size(), 0);
     }
 
 
     @Test
-    public void sendNotification2() throws MessagingException, InterruptedException {
+    public void book_reservation() throws MessagingException, InterruptedException {
 
-        // Add a 2nd reservation to the list
-        assertEquals(reservationManager.makeReservation(4, 3, 23), 1);
-
+        // Julien has a reservation on the BookReference "Les vagues"
+        //No matching book has been returned yet, so no book matching with reserved bookReference has been attributed to Julien
         assertFalse(reservationManager.bookReservedForCustomer(34, 148));
+        assertEquals(bookDAO.findById(148).get().getStatus(), Book.Status.BORROWED);
 
-        assertEquals(reservationManager.getAllReservations().size(), 2);
-
-        // A book matching with the reservation list is being returned
+        // But when a book matching with the reservation  is being returned...
         assertEquals(loanManager.bookBack(148), 1);
 
+        // Then the book status changed from borrowed to BORROWED TO BOOKED and the book is attributed to the 1st on the reservation list
+        assertEquals(bookDAO.findById(148).get().getStatus(), Book.Status.BOOKED);
         assertTrue(reservationManager.bookReservedForCustomer(34, 148));
 
-        //First person on the reservation list borrows the returned book
-        assertEquals(loanManager.registerNewLoan(34, 148), 1);
+        //During the reservation delay, only the first person (Julien, ID = 34) on the reservation list can borrow the returned book
+        assertEquals(loanManager.registerNewLoan(23, 148), -3); //book not available, loan impossible !
+        assertEquals(loanManager.registerNewLoan(34, 148), 1); // loan ok
     }
-
-
-
-
 }

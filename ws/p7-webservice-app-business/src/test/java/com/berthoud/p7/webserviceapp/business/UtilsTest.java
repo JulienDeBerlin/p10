@@ -1,8 +1,10 @@
-package com.berthoud.p7.webserviceapp.tests;
+package com.berthoud.p7.webserviceapp.business;
 
-import com.berthoud.p7.webserviceapp.business.Utils;
 import org.junit.Test;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +13,6 @@ import static org.junit.Assert.*;
 
 
 public class UtilsTest {
-
 
     @Test
     public void convertListStringIntoSetString(){
@@ -27,5 +28,13 @@ public class UtilsTest {
         assertTrue(Utils.convertListStringIntoSetString(stringList).contains("bin "));
         assertTrue(Utils.convertListStringIntoSetString(stringList).contains("ein "));
         assertTrue(Utils.convertListStringIntoSetString(stringList).contains("Berliner. "));
+    }
+
+    @Test
+    public void testConvertLocalDateTimeForXml() throws DatatypeConfigurationException {
+        LocalDateTime localDateTime1= LocalDateTime.now();
+        LocalDateTime localDateTime2= LocalDateTime.now(Clock.systemUTC());
+        Utils.convertLocalDateTimeForXml(localDateTime1);
+
     }
 }

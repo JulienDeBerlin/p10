@@ -42,7 +42,13 @@
             <thead>
             <tr>
                 <th scope="col" colspan="6">Vos emprûnts en cours&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span th:text=" ${message} ?: ''"> </span>
+                    <span th:switch="${messageResultExtension}">
+                        <span style="color: green" th:case="1">Le prêt a été prolongé</span>
+                        <span style="color: darkred" th:case="0">Prolongation impossible, veuillez renouveler votre carte de membre.</span>
+                        <span style="color: darkred" th:case="-1">Vous avez atteint le nombre max. de prolongations autorisées.</span>
+                        <span style="color: darkred" th:case="-3">Un prêt hors délai ne peut pas être prolongé, merci de rapporter l'ouvrage à la bibliothèque!</span>
+                    </span>
+
                 </th>
             </tr>
             </thead>
@@ -85,7 +91,10 @@
             <thead>
             <tr>
                 <th scope="col" colspan="6">Vos réservations en cours&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span style="color: green" th:text=" ${messageDeleteReservation} ?: ''"> </span>
+                    <span th:switch="${messageDeleteReservation}">
+                        <span style="color: green" th:case="1">La réservation a été supprimée</span>
+                        <span style="color: darkred" th:case="-1">Oups, la réservation n'a pas pus être supprimée. Essayez plus tard.</span>
+                    </span>
                 </th>
             </tr>
             </thead>
@@ -108,7 +117,9 @@
                     th:text="${reservation.getBookReference().authorFirstName +' '+reservation.getBookReference().authorSurname}">
                     Jean Loukfi
                 </td>
-                <td class="d-none d-sm-table-cell" scope="col" th:text="${reservation.getLibrairy().name}">Hélène Nathan</td>
+                <td class="d-none d-sm-table-cell" scope="col" th:text="${reservation.getLibrairy().name}">Hélène
+                    Nathan
+                </td>
                 <td class="d-none d-sm-table-cell" scope="col"
                     th:text="${#temporals.format(reservation.getPlannedNextReturn(),'dd/MM/yyyy')}">25/03/19
                 </td>

@@ -1,4 +1,4 @@
-package com.berthoud.p7.webserviceapp.business.com.berthoud.p7.webserviceapp.buiness.config;
+package com.berthoud.p7.webserviceapp.business.config;
 
 
 import org.springframework.context.annotation.Bean;

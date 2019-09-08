@@ -1,4 +1,4 @@
-package com.berthoud.p7.webserviceapp.tests;
+package com.berthoud.p7.webserviceapp;
 
 import com.berthoud.p7.webserviceapp.business.LoanManager;
 import com.berthoud.p7.webserviceapp.consumer.contract.LoanDAO;
@@ -20,7 +20,8 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class Tests_LoanManagement {
+@Transactional
+public class LoanManagementIT {
 
     @Autowired
     LoanManager loanManager;
@@ -39,8 +40,6 @@ public class Tests_LoanManagement {
 
 
     @Test
-    @Transactional
-    /** ...without this annotation, rollback is like false... ! */
     public void extendLoan() {
 
         // loan id not correct (no active loan)
@@ -73,7 +72,6 @@ public class Tests_LoanManagement {
 
 
     @Test
-    @Transactional
     public void registerNewLoan() {
 
         // membership expired
@@ -95,14 +93,10 @@ public class Tests_LoanManagement {
         // ok
         testValue = loanManager.registerNewLoan(85, 7);
         assertEquals(testValue, 1);
-
-
-
     }
 
 
     @Test
-    @Transactional
     public void bookBack() throws MessagingException {
 
         //book id wrong
@@ -116,25 +110,17 @@ public class Tests_LoanManagement {
         //return ok
         testValue = loanManager.bookBack(3);
         assertEquals(testValue, 1);
-
     }
 
 
     @Test
     public void testMonitoringLoans() {
 
-        List<Loan> listLoansLate = loanManager.getOpenLoansLate();
-        assertEquals(listLoansLate.size(), 4);
-
-        List<Loan> listLoansInTime = loanManager.getOpenLoansInTime();
-        assertEquals(listLoansInTime.size(), 5);
-
         List<Loan> listAllLoans = loanManager.getAllOpenLoans();
         assertEquals(listAllLoans.size(), 9);
 
         List<Loan> listOpenLoansExtended = loanManager.getOpenLoansExtended();
         assertEquals(listOpenLoansExtended.size(), 4);
-
     }
 
 }

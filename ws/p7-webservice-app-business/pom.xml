@@ -12,11 +12,11 @@
     <artifactId>p7-webservice-app-business</artifactId>
     <packaging>jar</packaging>
 
-
+    <!-- =============================================================== -->
+    <!-- Dependencies -->
+    <!-- =============================================================== -->
     <dependencies>
-
         <!-- ===== Modules ===== -->
-
         <dependency>
             <groupId>com.berthoud</groupId>
             <artifactId>p7-webservice-app-consumer-contract</artifactId>
@@ -31,7 +31,6 @@
         </dependency>
 
         <!-- ===== Other dependencies ===== -->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -49,23 +48,23 @@
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
+
         <!-- https://mvnrepository.com/artifact/org.mindrot/jbcrypt -->
         <dependency>
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
         </dependency>
-
     </dependencies>
 
+    <!-- =============================================================== -->
+    <!-- Build / plugins / profiles -->
+    <!-- =============================================================== -->
     <build>
+        <plugins>
 
-            <plugins>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                </plugin>
-            </plugins>
-
+        </plugins>
     </build>
+
+
 </project>

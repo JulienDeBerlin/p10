@@ -1,6 +1,5 @@
-package com.berthoud.p7.webserviceapp.tests;
+package com.berthoud.p7.webserviceapp.business;
 
-import com.berthoud.p7.webserviceapp.business.CustomerManager;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

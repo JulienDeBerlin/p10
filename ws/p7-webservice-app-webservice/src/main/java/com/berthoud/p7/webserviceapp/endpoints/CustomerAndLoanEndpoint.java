@@ -21,15 +21,14 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.berthoud.p7.webserviceapp.utils.Utils.convertLocalDateForXml;
-import static com.berthoud.p7.webserviceapp.utils.Utils.convertLocalDateTimeForXml;
+import static com.berthoud.p7.webserviceapp.business.Utils.convertLocalDateForXml;
+import static com.berthoud.p7.webserviceapp.business.Utils.convertLocalDateTimeForXml;
 
 
 @Endpoint
 @Transactional
 public class CustomerAndLoanEndpoint {
     public static final String NAMESPACE_URI = "http://com.berthoud.p7";
-
 
     @Autowired
     LoanManager loanManager;
@@ -39,7 +38,6 @@ public class CustomerAndLoanEndpoint {
 
     @Autowired
     ReservationManager reservationManager;
-
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "loginCustomerRequest")
     @ResponsePayload
@@ -55,7 +53,6 @@ public class CustomerAndLoanEndpoint {
         response.setCustomer(customerWs);
         return response;
     }
-
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "refreshCustomerRequest")
     @ResponsePayload
@@ -93,7 +90,6 @@ public class CustomerAndLoanEndpoint {
         return response;
     }
 
-
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteReservationRequest")
     @ResponsePayload
     public DeleteReservationResponse deleteReservation(@RequestPayload DeleteReservationRequest request) throws Exception {
@@ -106,7 +102,6 @@ public class CustomerAndLoanEndpoint {
 
         return response;
     }
-
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "extendLoanRequest")
     @ResponsePayload
@@ -141,7 +136,6 @@ public class CustomerAndLoanEndpoint {
         return response;
     }
 
-
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getAllOpenLoansRequest")
     @ResponsePayload
     public GetAllOpenLoansResponse getAllOpenLoans(@RequestPayload GetAllOpenLoansRequest request) throws DatatypeConfigurationException {
@@ -154,7 +148,6 @@ public class CustomerAndLoanEndpoint {
 
         return response;
     }
-
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getOpenLoansInTimeRequest")
     @ResponsePayload
@@ -169,7 +162,6 @@ public class CustomerAndLoanEndpoint {
         return response;
     }
 
-
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getOpenLoansLateRequest")
     @ResponsePayload
     public GetOpenLoansLateResponse getOpenLoansLate(@RequestPayload GetOpenLoansLateRequest request) throws DatatypeConfigurationException {
@@ -182,7 +174,6 @@ public class CustomerAndLoanEndpoint {
 
         return response;
     }
-
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getOpenLoansExtendedRequest")
     @ResponsePayload
@@ -197,7 +188,6 @@ public class CustomerAndLoanEndpoint {
         return response;
     }
 
-
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getReservationListRequest")
     @ResponsePayload
     public GetReservationListResponse getReservationList (@RequestPayload GetReservationListRequest request) throws DatatypeConfigurationException {
@@ -210,11 +200,6 @@ public class CustomerAndLoanEndpoint {
 
         return response;
     }
-
-
-
-
-
 
     /**
      * This method is used to map a list of Loan object into a list of LoanWs object, LoanWs being the web-service-class

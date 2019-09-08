@@ -1,4 +1,4 @@
-package com.berthoud.p7.webserviceapp.tests;
+package com.berthoud.p7.webserviceapp;
 
 import com.berthoud.p7.webserviceapp.business.CustomerManager;
 import com.berthoud.p7.webserviceapp.consumer.contract.CustomerDAO;
@@ -15,8 +15,7 @@ import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class Tests_Security {
-
+public class SecurityIT {
 
     @Autowired
     CustomerRepository customerRepo;
@@ -27,11 +26,9 @@ public class Tests_Security {
     @Autowired
     CustomerManager customerManager;
 
-
     @Test
     public void updateCustomerWithHashPassword() {
-
-        Optional<Customer> customer = customerRepo.findById(86);
+        Optional<Customer> customer = customerRepo.findById(23);
         if (customer.isPresent()) {
             Customer myCustomer = customer.get();
             myCustomer.setPassword(CustomerManager.hashPasswordBCrypt(myCustomer.getPassword()));
@@ -40,10 +37,8 @@ public class Tests_Security {
 
     }
 
-
     @Test
     public void testLogin() {
-
         try {
             customerManager.login("malika@yahoo.fr", "soleil");
         } catch (Exception e) {
