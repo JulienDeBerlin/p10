@@ -10,9 +10,11 @@ See below the description of project 7.
 ### **New features**
 The new features include :
 * a reservation systeme : the users have the possibility to make a reservation for a book which is currently not available. 
+**Warning: feature only available on branch develop as of 09/09/19**
 
 ### **Bug fix**
 One functionnal bug has been fixed: loan extension is now only possible if the loan is NOT already overdue.  
+
 
 ---
 
