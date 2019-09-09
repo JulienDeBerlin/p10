@@ -2,6 +2,7 @@ package com.berthoud.p7.webserviceapp.business.batch.reservation;
 
 import com.berthoud.p7.webserviceapp.business.ReservationManager;
 import com.berthoud.p7.webserviceapp.consumer.contract.BookDAO;
+import com.berthoud.p7.webserviceapp.consumer.contract.ReservationDAO;
 import com.berthoud.p7.webserviceapp.model.entities.Book;
 import com.berthoud.p7.webserviceapp.model.entities.Customer;
 import com.berthoud.p7.webserviceapp.model.entities.Reservation;
@@ -21,6 +22,9 @@ public class ProcessReservationListTask {
 
     @Autowired
     ReservationManager reservationManager;
+
+    @Autowired
+    ReservationDAO reservationDAO;
 
     @Autowired
     BookDAO bookDAO;
@@ -78,7 +82,6 @@ public class ProcessReservationListTask {
                     break;
                 }
             }
-
             // Send notification email
             sendNotificationTask.sendNotification(customerToBeNotified, reservationToBeManaged);
 
@@ -86,6 +89,7 @@ public class ProcessReservationListTask {
             reservationToBeManaged.setDateBookAvailableNotification(LocalDateTime.now());
             reservationToBeManaged.setDateEndReservation(reservationToBeManaged.getDateBookAvailableNotification().plus(reservationDelayAmount, ChronoUnit.valueOf(reservationDelayUnit)));
             reservationToBeManaged.setBook(returnedBook);
+            reservationDAO.save(reservationToBeManaged);
 
             // Change status of returned book
             returnedBook.setStatus(Book.Status.BOOKED);
@@ -93,6 +97,7 @@ public class ProcessReservationListTask {
         } else {
             returnedBook.setStatus(Book.Status.AVAILABLE);
         }
+        bookDAO.save(returnedBook);
     }
 
 

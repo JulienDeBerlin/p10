@@ -190,6 +190,9 @@ public class ITReservation {
         //a notification will be sent to Julien (1st on the reservation list)
         assertEquals(reservationManager.getAllExpiredReservation().size(), 0);
 
+        // Malika can not borrow the book
+        assertEquals(loanManager.registerNewLoan(86, 148), -3);
+
         // After 3 seconds, the reservation expires
         Thread.sleep(4000);
         assertEquals(reservationManager.getAllExpiredReservation().size(), 1);
@@ -199,6 +202,19 @@ public class ITReservation {
 
         //reservation1 (expired) should be delete and a notification should be sent for reservation2 (Malika)
         assertEquals(reservationManager.getAllExpiredReservation().size(), 0);
+
+        Reservation reservationMalika = reservationManager.getAllReservationsByBookId(148).get(0);
+        assertNotNull(reservationMalika.getDateBookAvailableNotification());
+
+        // Malika can now borrow the book
+        assertEquals(loanManager.registerNewLoan(86, 148), 1);
+
+        // When the scheduled task is run...
+        Thread.sleep(4000);
+        scheduledTasks.updateReservationsTask();
+
+        // La resa de Malika devrait avoir été supprimée,
+        assertTrue(reservationManager.getAllReservations(86).isEmpty());
     }
 
 

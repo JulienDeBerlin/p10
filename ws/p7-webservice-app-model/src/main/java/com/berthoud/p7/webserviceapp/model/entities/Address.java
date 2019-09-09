@@ -7,7 +7,7 @@ import java.util.Set;
 public class Address extends AuditModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String additionalAddressField1;

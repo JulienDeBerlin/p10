@@ -2,6 +2,7 @@ package com.berthoud.p7.webserviceapp.business.batch.reservation;
 
 import com.berthoud.p7.webserviceapp.business.BusinessLogger;
 import com.berthoud.p7.webserviceapp.business.ReservationManager;
+import com.berthoud.p7.webserviceapp.model.entities.Book;
 import com.berthoud.p7.webserviceapp.model.entities.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +28,6 @@ public class ScheduledTasks {
     @Scheduled(fixedRateString = "${scheduling.updateReservationsTask.fixedRate.ms}")
     public void updateReservationsTask() throws MessagingException {
 
-
         if (schedulingEnabled) {
 
             BusinessLogger.logger.info("start scheduled Task: updateReservationsTask");
@@ -36,9 +36,10 @@ public class ScheduledTasks {
             BusinessLogger.logger.info("nb de reservations ayant expirées =" + expiredReservationsList.size());
 
             for (Reservation reservation : expiredReservationsList) {
-
                 reservationManager.deleteReservation(reservation.getId());
-                processReservationListTask.processReservationList(reservation.getBook().getId());
+                if (reservation.getBook().getStatus()!= Book.Status.BORROWED){
+                    processReservationListTask.processReservationList(reservation.getBook().getId());
+                }
             }
         }
     }
