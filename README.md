@@ -40,6 +40,7 @@ and [one for the webapp and the batch](https://github.com/JulienDeBerlin/p7-libr
 * The database used in developement is **PostgreSQL 9.6.** 
 * the data layer is managed with **Spring Data / Hibernate**
 * the creation of the webservice uses **Spring WS and the jaxb maven plugin**. 
+* The view layer relies on **Spring MVC and Thymeleaf**
 
 **Warning: this webservice has been developped with and for Java 8. As Jaxb is not fully compatible with more recent version, you might experience troubles if
 you try to run the JAR with Java 9 or more. It is also greatly recommended to run it with Java 8. For more infos on this issue, [click here.](https://www.jesperdj.com/2018/09/30/jaxb-on-java-9-10-11-and-beyond/)**
@@ -57,7 +58,7 @@ you try to run the JAR with Java 9 or more. It is also greatly recommended to ru
 If your intention is only to test the appl, use the dev profile. It's more convenient because it uses an embedded H2-Database, so you don't have to worry with DB configuration
 
 * prod profile
-If you want to connect the app to a local database, use the prod profile. In this case, you will have to create a database on PostgreSQL. You can use as template the dump of the demo-database available in this repo to import all the data in your database
+If you want to connect the app to a local database, use the prod profile. In this case, you will have to create a database on PostgreSQL. You can use as template the dump of the demo-database available in this repo to import all the data in your database. Database resources available under branch develop, p10/ws/OTHER RESSOURCES/DATABASE/
 
 3/ build the project with Maven ( "mvn package" in the parent maven module with -P prod if you want to activate the prod profile). A runnable jar will be created in the target folder of the module "p7-webservice-app-webservice". 
 
