@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SecurityIT {
+public class ITSecurity {
 
     @Autowired
     CustomerRepository customerRepo;

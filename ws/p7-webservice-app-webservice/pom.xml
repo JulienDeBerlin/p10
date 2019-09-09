@@ -74,7 +74,7 @@
     <profiles>
         <!-- Profile utilisé pour lancer les tests d'intégration de la couche Business -->
         <profile>
-            <id>dev</id>
+            <id>integration-test</id>
             <build>
                 <plugins>
                     <plugin>
@@ -102,7 +102,7 @@
                                 </goals>
                                 <configuration>
                                     <sources>
-                                        <source>src/integration-test-business/java</source>
+                                        <source>src/test-integration/java</source>
                                     </sources>
                                 </configuration>
                             </execution>

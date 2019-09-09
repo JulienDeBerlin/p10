@@ -50,6 +50,9 @@
                 <activatedProperties>prod</activatedProperties>
             </properties>
         </profile>
+        <profile>
+            <id>integration-test</id>
+        </profile>
     </profiles>
 
     <!-- =============================================================== -->

@@ -37,7 +37,28 @@ public class ProcessReservationListTask {
     @Value("${reservationDelayAmount}")
     int reservationDelayAmount;
 
+    public String getReservationDelayUnit() {
+        return reservationDelayUnit;
+    }
 
+    public void setReservationDelayUnit(String reservationDelayUnit) {
+        this.reservationDelayUnit = reservationDelayUnit;
+    }
+
+    public int getReservationDelayAmount() {
+        return reservationDelayAmount;
+    }
+
+    public void setReservationDelayAmount(int reservationDelayAmount) {
+        this.reservationDelayAmount = reservationDelayAmount;
+    }
+
+    /**
+     * This method is used to trigger the process of the reservation list when a book is returned.
+     *
+     * @param bookId the id of the returned book
+     * @throws MessagingException
+     */
     public void processReservationList(int bookId) throws MessagingException {
 
         // Get required objects

@@ -21,7 +21,6 @@ import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.time.Clock;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
@@ -32,7 +31,7 @@ import static org.mockito.Mockito.doReturn;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @Transactional
-public class ReservationIT {
+public class ITReservation {
 
     @InjectMocks
     @Autowired
@@ -208,7 +207,7 @@ public class ReservationIT {
 
         // Julien has a reservation on the BookReference "Les vagues"
         //No matching book has been returned yet, so no book matching with reserved bookReference has been attributed to Julien
-        assertFalse(reservationManager.bookReservedForCustomer(34, 148));
+        assertFalse(reservationManager.isBookReservedForCustomer(34, 148));
         assertEquals(bookDAO.findById(148).get().getStatus(), Book.Status.BORROWED);
 
         // But when a book matching with the reservation  is being returned...
@@ -216,7 +215,7 @@ public class ReservationIT {
 
         // Then the book status changed from borrowed to BORROWED TO BOOKED and the book is attributed to the 1st on the reservation list
         assertEquals(bookDAO.findById(148).get().getStatus(), Book.Status.BOOKED);
-        assertTrue(reservationManager.bookReservedForCustomer(34, 148));
+        assertTrue(reservationManager.isBookReservedForCustomer(34, 148));
 
         //During the reservation delay, only the first person (Julien, ID = 34) on the reservation list can borrow the returned book
         assertEquals(loanManager.registerNewLoan(23, 148), -3); //book not available, loan impossible !

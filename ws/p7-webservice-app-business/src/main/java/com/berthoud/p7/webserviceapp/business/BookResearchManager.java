@@ -13,14 +13,12 @@ import static com.berthoud.p7.webserviceapp.business.Utils.convertListStringInto
 
 import java.util.*;
 
-
 /**
  * This class is dedicated to the research of books in the catalog of the librairies.
  * It gathers all methods required for the book research.
  */
 @Service
 public class BookResearchManager {
-
 
     @Autowired
     BookReferenceDAO bookReferenceDAO;
@@ -30,8 +28,6 @@ public class BookResearchManager {
 
     @Autowired
     BookDAO bookDAO;
-
-
 
     /**
      * This method is use to perform a book research. There are 3 research parameters (author, title or keywords also called tags)

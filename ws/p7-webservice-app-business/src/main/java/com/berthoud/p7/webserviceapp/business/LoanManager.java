@@ -157,11 +157,10 @@ public class LoanManager {
             return -3;
         }
 
-        if ((b.get().getStatus().equals(Book.Status.BOOKED)) && !reservationManager.bookReservedForCustomer(customerId, bookId)) {
+        if ((b.get().getStatus().equals(Book.Status.BOOKED)) && !reservationManager.isBookReservedForCustomer(customerId, bookId)) {
             BusinessLogger.logger.info("failure registration new loan, cause: book with id" + bookId + " is booked ");
             return -3;
         }
-
 
         Optional<Customer> c = customerDAO.findById(customerId);
         if (!c.isPresent()) {
@@ -206,26 +205,22 @@ public class LoanManager {
      * 0 = failure (no loan active with for this book id)
      * -1 = failure (bookId is not a valid book id)
      */
-
     public int bookBack(int bookId) throws MessagingException {
         BusinessLogger.logger.trace("entering method bookBack with param bookId =" + bookId);
 
         Optional<Book> b = bookDAO.findById(bookId);
         if (!b.isPresent()) {
             BusinessLogger.logger.info(" failure registration book return, cause: bookId "+bookId + " is not valid ");
-
             return -1;
         }
 
         Book book = b.get();
         if (!book.getStatus().equals(Book.Status.BORROWED)) {
             BusinessLogger.logger.info(" failure registration book return, cause: no loan active for book with id "+bookId);
-
             return 0;
         }
 
         for (Loan l : book.getLoans()) {
-
             // recherche du prêt en cours
             if (l.getDateBack().equals(LocalDate.of(1900, 1, 1))) {
                 l.setDateBack(LocalDate.now());
@@ -238,13 +233,11 @@ public class LoanManager {
                 } else {
                     processReservationListTask.processReservationList(bookId);
                 }
-
                 bookDAO.save(book);
                 break;
             }
         }
         BusinessLogger.logger.info(" registration book return, bookId " + bookId + " was successfull");
-
         return 1;
     }
 

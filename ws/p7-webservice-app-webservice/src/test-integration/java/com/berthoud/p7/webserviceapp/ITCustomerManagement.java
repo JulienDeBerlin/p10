@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class CustomerManagementIT {
+public class ITCustomerManagement {
 
     @Autowired
     CustomerManager customerManager;

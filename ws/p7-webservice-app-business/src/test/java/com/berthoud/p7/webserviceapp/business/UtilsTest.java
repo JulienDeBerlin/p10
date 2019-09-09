@@ -1,9 +1,12 @@
 package com.berthoud.p7.webserviceapp.business;
 
+import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import org.junit.Test;
 
 import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.Clock;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,8 +36,12 @@ public class UtilsTest {
     @Test
     public void testConvertLocalDateTimeForXml() throws DatatypeConfigurationException {
         LocalDateTime localDateTime1= LocalDateTime.now();
-        LocalDateTime localDateTime2= LocalDateTime.now(Clock.systemUTC());
-        Utils.convertLocalDateTimeForXml(localDateTime1);
+        assertTrue(Utils.convertLocalDateTimeForXml(localDateTime1) instanceof XMLGregorianCalendar);
+    }
 
+    @Test
+    public void testConvertLocalDateForXml() throws DatatypeConfigurationException {
+        LocalDate localDate= LocalDate.now();
+        assertTrue(Utils.convertLocalDateForXml(localDate) instanceof XMLGregorianCalendar);
     }
 }

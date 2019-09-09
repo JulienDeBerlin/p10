@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 /**
@@ -57,6 +54,14 @@ public class ReservationManager {
      */
     @Value("${reservationListLengthFactor}")
     private String reservationListLengthFactor;
+
+    public String getReservationListLengthFactor() {
+        return reservationListLengthFactor;
+    }
+
+    public void setReservationListLengthFactor(String reservationListLengthFactor) {
+        this.reservationListLengthFactor = reservationListLengthFactor;
+    }
 
     /**
      * Retrieves all actual reservations
@@ -188,7 +193,6 @@ public class ReservationManager {
             return -5;
         }
 
-
         List<Reservation> reservationListCustomer = reservationDAO.findReservationsByCustomer(customerId);
         for (Reservation reservation : reservationListCustomer) {
             if (reservation.getBookReference().getId() == bookReferenceId) {
@@ -270,7 +274,7 @@ public class ReservationManager {
      * @param bookId     -
      * @return
      */
-    public boolean bookReservedForCustomer(int customerId, int bookId) {
+    public boolean isBookReservedForCustomer(int customerId, int bookId) {
 
         Optional<Book> bookOptional = bookDAO.findById(bookId);
 
@@ -278,9 +282,11 @@ public class ReservationManager {
             Book book = bookOptional.get();
             List<Reservation> reservationList = this.getAllReservations(book.getBookReference().getId(), book.getLibrairy().getId(), customerId);
 
-            for (int i = 0; i < reservationList.size(); i++) {
-                if (reservationList.get(i).getDateBookAvailableNotification() != null) {
-                    return true;
+            if (!reservationList.isEmpty()){
+                for (int i = 0; i < reservationList.size(); i++) {
+                    if (reservationList.get(i).getDateBookAvailableNotification() != null) {
+                        return true;
+                    }
                 }
             }
         }
@@ -296,18 +302,15 @@ public class ReservationManager {
     public Customer getNextCustomerToBeNotified(int bookId) {
 
         List<Reservation> reservationList = getAllReservationsByBookId(bookId);
+        reservationList.sort(Comparator.comparing(Reservation::getDateReservation));
+
         Customer customer = new Customer();
-
         for (int i = 0; i < reservationList.size(); i++) {
-
-            reservationList.sort(Comparator.comparing(Reservation::getDateReservation));
-
             if (reservationList.get(i).getDateBookAvailableNotification() == null) {
                 customer = reservationList.get(i).getCustomer();
                 break;
             }
         }
-
         return customer;
     }
 

@@ -11,7 +11,7 @@ public class CustomerManagerTest {
     private static CustomerManager customerManager = new CustomerManager();
 
     @Test
-    public void encryptionTest() {
+    public void hashAndCheckPassword() {
         String inputHashed = customerManager.hashPasswordBCrypt("soleil");
         assertTrue(checkPasswordBCrypt("soleil", inputHashed));
         assertFalse(checkPasswordBCrypt("lune", inputHashed));

@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class LoanManagementIT {
+public class ITLoanManagement {
 
     @Autowired
     LoanManager loanManager;
