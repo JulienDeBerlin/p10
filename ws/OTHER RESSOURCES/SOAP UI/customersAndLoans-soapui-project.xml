@@ -163,6 +163,54 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <!--make a reservation-->
+      <xs:element name="makeReservationRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="bookReferenceId" type="xs:int"/>
+            <xs:element name="librairyId" type="xs:int"/>
+            <xs:element name="customerId" type="xs:int"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="makeReservationResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="resultCode" type="xs:int"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <!--delete a reservation-->
+      <xs:element name="deleteReservationRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="reservationId" type="xs:int"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="deleteReservationResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="resultCode" type="xs:int"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <!--get reservation list-->
+      <xs:element name="getReservationListRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="bookReferenceId" type="xs:int"/>
+            <xs:element name="librairyId" type="xs:int"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getReservationListResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="reservations" type="tns:reservationWs"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
       <!--definition complexe types-->
       <xs:complexType name="customerWs">
         <xs:sequence>
@@ -175,6 +223,7 @@
           <xs:element name="email" type="xs:string"/>
           <xs:element name="password" type="xs:string"/>
           <xs:element maxOccurs="unbounded" minOccurs="0" name="loans" type="tns:loanWs"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="reservations" type="tns:reservationWs"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="loanWs">
@@ -188,6 +237,16 @@
           <xs:element name="customerWs" type="tns:customerWs"/>
         </xs:sequence>
       </xs:complexType>
+      <xs:complexType name="reservationWs">
+        <xs:sequence>
+          <xs:element name="id" type="xs:int"/>
+          <xs:element name="dateReservation" type="xs:date"/>
+          <xs:element name="dateBookAvailableNotification" type="xs:date"/>
+          <xs:element name="customer" type="tns:customerWs"/>
+          <xs:element name="librairy" type="tns:librairyWs"/>
+          <xs:element name="bookReference" type="tns:bookReferenceWs"/>
+        </xs:sequence>
+      </xs:complexType>
       <xs:complexType name="bookWs">
         <xs:sequence>
           <xs:element name="id" type="xs:int"/>
@@ -195,6 +254,7 @@
           <xs:element name="status" type="tns:statusWs"/>
           <xs:element name="librairy" type="tns:librairyWs"/>
           <xs:element name="bookReference" type="tns:bookReferenceWs"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="loans" type="tns:loanWs"/>
         </xs:sequence>
       </xs:complexType>
       <xs:simpleType name="statusWs">
@@ -220,10 +280,14 @@
           <xs:element name="publisher" type="xs:string"/>
           <xs:element name="summary" type="xs:string"/>
           <xs:element name="yearPublication" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="books" type="tns:bookWs"/>
         </xs:sequence>
       </xs:complexType>
     </xs:schema>
   </wsdl:types>
+  <wsdl:message name="deleteReservationResponse">
+    <wsdl:part element="tns:deleteReservationResponse" name="deleteReservationResponse"></wsdl:part>
+  </wsdl:message>
   <wsdl:message name="getOpenLoansLateResponse">
     <wsdl:part element="tns:getOpenLoansLateResponse" name="getOpenLoansLateResponse"></wsdl:part>
   </wsdl:message>
@@ -238,6 +302,9 @@
   </wsdl:message>
   <wsdl:message name="extendLoanResponse">
     <wsdl:part element="tns:extendLoanResponse" name="extendLoanResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteReservationRequest">
+    <wsdl:part element="tns:deleteReservationRequest" name="deleteReservationRequest"></wsdl:part>
   </wsdl:message>
   <wsdl:message name="extendLoanRequest">
     <wsdl:part element="tns:extendLoanRequest" name="extendLoanRequest"></wsdl:part>
@@ -260,11 +327,20 @@
   <wsdl:message name="refreshCustomerRequest">
     <wsdl:part element="tns:refreshCustomerRequest" name="refreshCustomerRequest"></wsdl:part>
   </wsdl:message>
+  <wsdl:message name="makeReservationRequest">
+    <wsdl:part element="tns:makeReservationRequest" name="makeReservationRequest"></wsdl:part>
+  </wsdl:message>
   <wsdl:message name="registerBookReturnRequest">
     <wsdl:part element="tns:registerBookReturnRequest" name="registerBookReturnRequest"></wsdl:part>
   </wsdl:message>
   <wsdl:message name="getAllOpenLoansResponse">
     <wsdl:part element="tns:getAllOpenLoansResponse" name="getAllOpenLoansResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getReservationListRequest">
+    <wsdl:part element="tns:getReservationListRequest" name="getReservationListRequest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getReservationListResponse">
+    <wsdl:part element="tns:getReservationListResponse" name="getReservationListResponse"></wsdl:part>
   </wsdl:message>
   <wsdl:message name="loginCustomerRequest">
     <wsdl:part element="tns:loginCustomerRequest" name="loginCustomerRequest"></wsdl:part>
@@ -275,10 +351,17 @@
   <wsdl:message name="getOpenLoansLateRequest">
     <wsdl:part element="tns:getOpenLoansLateRequest" name="getOpenLoansLateRequest"></wsdl:part>
   </wsdl:message>
+  <wsdl:message name="makeReservationResponse">
+    <wsdl:part element="tns:makeReservationResponse" name="makeReservationResponse"></wsdl:part>
+  </wsdl:message>
   <wsdl:message name="loginCustomerResponse">
     <wsdl:part element="tns:loginCustomerResponse" name="loginCustomerResponse"></wsdl:part>
   </wsdl:message>
   <wsdl:portType name="CustomerPort">
+    <wsdl:operation name="deleteReservation">
+      <wsdl:input message="tns:deleteReservationRequest" name="deleteReservationRequest"></wsdl:input>
+      <wsdl:output message="tns:deleteReservationResponse" name="deleteReservationResponse"></wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="getOpenLoansLate">
       <wsdl:input message="tns:getOpenLoansLateRequest" name="getOpenLoansLateRequest"></wsdl:input>
       <wsdl:output message="tns:getOpenLoansLateResponse" name="getOpenLoansLateResponse"></wsdl:output>
@@ -311,6 +394,14 @@
       <wsdl:input message="tns:getAllOpenLoansRequest" name="getAllOpenLoansRequest"></wsdl:input>
       <wsdl:output message="tns:getAllOpenLoansResponse" name="getAllOpenLoansResponse"></wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="makeReservation">
+      <wsdl:input message="tns:makeReservationRequest" name="makeReservationRequest"></wsdl:input>
+      <wsdl:output message="tns:makeReservationResponse" name="makeReservationResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getReservationList">
+      <wsdl:input message="tns:getReservationListRequest" name="getReservationListRequest"></wsdl:input>
+      <wsdl:output message="tns:getReservationListResponse" name="getReservationListResponse"></wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="loginCustomer">
       <wsdl:input message="tns:loginCustomerRequest" name="loginCustomerRequest"></wsdl:input>
       <wsdl:output message="tns:loginCustomerResponse" name="loginCustomerResponse"></wsdl:output>
@@ -318,6 +409,15 @@
   </wsdl:portType>
   <wsdl:binding name="CustomerPortSoap11" type="tns:CustomerPort">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="deleteReservation">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="deleteReservationRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteReservationResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="getOpenLoansLate">
       <soap:operation soapAction=""/>
       <wsdl:input name="getOpenLoansLateRequest">
@@ -387,6 +487,24 @@
         <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="getAllOpenLoansResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="makeReservation">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="makeReservationRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="makeReservationResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getReservationList">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="getReservationListRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getReservationListResponse">
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
@@ -462,23 +580,53 @@
          <com:bookId>?</com:bookId>
       </com:registerLoanRequest>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/registerLoanRequest"/></con:call></con:operation></con:interface><con:testSuite id="6b61f37f-4437-40f6-b011-e6dc48259085" name="TestSuite 1"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="d899fdcb-d029-4cd4-83d9-0e6a5ffdf54b" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Customer Management" searchProperties="true"><con:settings/><con:testStep type="request" id="a085712c-081b-407a-93d2-fce355b38269" name="loginCustomer - successfull"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>loginCustomer</con:operation><con:request name="loginCustomer - successfull" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="a30c513e-fd41-4d06-9dda-5cd0c7e3b593"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/registerLoanRequest"/></con:call></con:operation><con:operation id="a3425d79-fca0-492d-b92a-7926abd54682" isOneWay="false" action="" name="deleteReservation" bindingOperationName="deleteReservation" type="Request-Response" outputName="deleteReservationResponse" inputName="deleteReservationRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="53475023-fc27-4c39-ab5b-682d58fd92e3" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:deleteReservationRequest>
+         <com:reservationId>?</com:reservationId>
+      </com:deleteReservationRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/deleteReservationRequest"/></con:call></con:operation><con:operation id="872bde64-0ce1-45bb-bb65-0b5ec6418f9b" isOneWay="false" action="" name="makeReservation" bindingOperationName="makeReservation" type="Request-Response" outputName="makeReservationResponse" inputName="makeReservationRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="30960a12-33e5-4d7b-a111-4d6954f3819d" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:makeReservationRequest>
+         <com:bookReferenceId>?</com:bookReferenceId>
+         <com:librairyId>?</com:librairyId>
+         <com:customerId>?</com:customerId>
+      </com:makeReservationRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/makeReservationRequest"/></con:call></con:operation><con:operation id="5d5f48e1-24dd-4c9e-a748-51f30adc88fb" isOneWay="false" action="" name="getReservationList" bindingOperationName="getReservationList" type="Request-Response" outputName="getReservationListResponse" inputName="getReservationListRequest" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="220fafb8-1771-449f-846c-55919dc4f514" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:getReservationListRequest>
+         <com:bookReferenceId>?</com:bookReferenceId>
+         <com:librairyId>?</com:librairyId>
+      </com:getReservationListRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/getReservationListRequest"/></con:call></con:operation></con:interface><con:testSuite id="6b61f37f-4437-40f6-b011-e6dc48259085" name="TestSuite 1"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="d899fdcb-d029-4cd4-83d9-0e6a5ffdf54b" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Customer Management" searchProperties="true"><con:settings/><con:testStep type="request" id="a085712c-081b-407a-93d2-fce355b38269" name="loginCustomer - successfull"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>loginCustomer</con:operation><con:request name="loginCustomer - successfull" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="a30c513e-fd41-4d06-9dda-5cd0c7e3b593"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
    <soapenv:Header/>
    <soapenv:Body>
       <com:loginCustomerRequest>
-         <com:email>malika@yahoo.fr</com:email>
+         <com:email>aicha@yahoo.fr</com:email>
          <com:password>soleil</com:password>
       </com:loginCustomerRequest>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="9af1483f-450f-460f-9c99-57240a194be4" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/loginCustomerRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="d6330641-1f95-4668-a8b9-edbc303186ce" name="loginCustomer - wrong password"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>loginCustomer</con:operation><con:request name="loginCustomer - wrong password" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="a30c513e-fd41-4d06-9dda-5cd0c7e3b593"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="9af1483f-450f-460f-9c99-57240a194be4" name="SOAP Response"/><con:assertion type="XPath Match" id="3e62fd88-bb3d-4c1c-921a-c5b7b603a3e0" name="XPath Match _ CustomerId"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:loginCustomerResponse/ns2:customer/ns2:id</path><content>85</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" id="c731b95f-d171-4451-af50-7a0bc52de5e4"><con:configuration/></con:assertion><con:assertion type="XPath Match" id="1a2c36f6-3bfb-4301-9f8d-923c42d62512" name="XPath Match_FirstName"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:loginCustomerResponse/ns2:customer/ns2:firstName</path><content>Aicha</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" id="0e196ac7-c30c-4a66-8a93-48aa64dea253" name="XPath Match_surname"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:loginCustomerResponse/ns2:customer/ns2:surname</path><content>Djarir</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/loginCustomerRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="d6330641-1f95-4668-a8b9-edbc303186ce" name="loginCustomer - wrong password"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>loginCustomer</con:operation><con:request name="loginCustomer - wrong password" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="a30c513e-fd41-4d06-9dda-5cd0c7e3b593"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
    <soapenv:Header/>
    <soapenv:Body>
       <com:loginCustomerRequest>
-         <com:email>malika@yahoo.fr</com:email>
+         <com:email>schatzmeister@berliner-ringer.de</com:email>
          <com:password>soleillllllllll</com:password>
       </com:loginCustomerRequest>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="9af1483f-450f-460f-9c99-57240a194be4" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/loginCustomerRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="d270c648-37e0-440d-9ab6-6f473dcab810" name="loginCustomer - wrong email"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>loginCustomer</con:operation><con:request name="loginCustomer - wrong email" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="a30c513e-fd41-4d06-9dda-5cd0c7e3b593"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="9af1483f-450f-460f-9c99-57240a194be4" name="SOAP Response"/><con:assertion type="Not SOAP Fault Assertion" id="bac92df1-bb38-4e4e-be9b-0aa654a1d949" name="SOAP Fault"/><con:assertion type="Simple Contains" id="ddd2e03e-1993-426c-bcaa-2c692169cea2" name="Contains"><con:configuration><token/><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:assertion type="Simple Contains" id="c8130ae8-ab8e-404c-aafa-e69fb8f83095" name="description_fault"><con:configuration><token>the password is not correct.</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/loginCustomerRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="d270c648-37e0-440d-9ab6-6f473dcab810" name="loginCustomer - wrong email"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>loginCustomer</con:operation><con:request name="loginCustomer - wrong email" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="a30c513e-fd41-4d06-9dda-5cd0c7e3b593"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
    <soapenv:Header/>
    <soapenv:Body>
       <com:loginCustomerRequest>
@@ -486,38 +634,234 @@
          <com:password>soleil</com:password>
       </com:loginCustomerRequest>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="9af1483f-450f-460f-9c99-57240a194be4" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/loginCustomerRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="881a4e24-4ca0-4c40-a669-03eb7e9a6c38" name="refreshCustomer - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>refreshCustomer</con:operation><con:request name="refreshCustomer - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="e537ae40-6403-4793-87bc-46ec26f9fe6b"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="9af1483f-450f-460f-9c99-57240a194be4" name="SOAP Response"/><con:assertion type="Not SOAP Fault Assertion" id="bf13a63b-de7f-48ac-a982-7ba04843ee5c" name="SOAP Fault"/><con:assertion type="Simple Contains" id="11404e8c-3759-459d-9a2a-b89c6ec8da23" name="Contains"><con:configuration><token>no user registered under this email</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/loginCustomerRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="881a4e24-4ca0-4c40-a669-03eb7e9a6c38" name="refreshCustomer - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>refreshCustomer</con:operation><con:request name="refreshCustomer - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="e537ae40-6403-4793-87bc-46ec26f9fe6b"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
    <soapenv:Header/>
    <soapenv:Body>
       <com:refreshCustomerRequest>
-         <com:email>malika@yahoo.fr</com:email>
+         <com:email>aicha@yahoo.fr</com:email>
       </com:refreshCustomerRequest>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="faecafb9-77e5-4348-8a95-0643b27df1b8" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/refreshCustomerRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="74f18059-2959-4401-9666-ddc1a03944d9" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Loan Management" searchProperties="true"><con:settings/><con:testStep type="request" id="7f304604-a821-46c9-8158-0cad5fd9eadb" name="getAllOpenLoans - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>getAllOpenLoans</con:operation><con:request name="getAllOpenLoans - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="f4cd1fe4-9c4a-416a-b96e-5b78b6ddd74a"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <com:getAllOpenLoansRequest/>
-   </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="71bfac2f-ed7b-43fb-b810-b0fa5e9ca960" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/getAllOpenLoansRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="48feadac-9e03-4a88-ba7b-2f9e194a9573" name="getOpenLoansExtended - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>getOpenLoansExtended</con:operation><con:request name="getOpenLoansExtended - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="cff83b49-f780-4aad-a499-61f47c739c27"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="faecafb9-77e5-4348-8a95-0643b27df1b8" name="SOAP Response"/><con:assertion type="XPath Match" id="81c2398b-33ae-4ba1-9893-c6f52d1524d1" name="XPath Match_CustomerId"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:refreshCustomerResponse/ns2:customer/ns2:id</path><content>85</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:assertion type="XPath Match" id="2f9478f0-082e-43d3-802e-b42857da6fe5" name="XPath Match_surname"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:refreshCustomerResponse/ns2:customer/ns2:surname</path><content>Djarir</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/refreshCustomerRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="74f18059-2959-4401-9666-ddc1a03944d9" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Loan Management" searchProperties="true"><con:settings/><con:testStep type="request" id="48feadac-9e03-4a88-ba7b-2f9e194a9573" name="getOpenLoansExtended - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>getOpenLoansExtended</con:operation><con:request name="getOpenLoansExtended - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="cff83b49-f780-4aad-a499-61f47c739c27"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
    <soapenv:Header/>
    <soapenv:Body>
       <com:getOpenLoansExtendedRequest/>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="4337d2f1-5a86-428b-8093-3a6939d1d44e" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/getOpenLoansExtendedRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="6189de1c-9f54-4bc3-90a1-763df884d7d5" name="getOpenLoansInTime - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>getOpenLoansInTime</con:operation><con:request name="getOpenLoansInTime - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="64d45110-2452-4359-9bbf-c1f723a4780c"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="4337d2f1-5a86-428b-8093-3a6939d1d44e" name="SOAP Response"/><con:assertion type="XQuery Match" id="e84972a3-e42b-4c4c-a8e8-a00738956797" name="XQuery Match"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+
+ &lt;myresult>
+{
+for $x in //SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:getOpenLoansExtendedResponse/ns2:loans
+return &lt;id>{data($x/ns2:id)}&lt;/id>
+}
+&lt;/myresult></path><content><![CDATA[<myresult>
+  <id>167</id>
+  <id>169</id>
+</myresult>]]></content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/getOpenLoansExtendedRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="6189de1c-9f54-4bc3-90a1-763df884d7d5" name="getOpenLoansInTime - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>getOpenLoansInTime</con:operation><con:request name="getOpenLoansInTime - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="64d45110-2452-4359-9bbf-c1f723a4780c"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
    <soapenv:Header/>
    <soapenv:Body>
       <com:getOpenLoansInTimeRequest/>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="d84bf08c-3f67-4016-85dc-a8de9aa16c9c" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/getOpenLoansInTimeRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="7355e505-3d49-40f5-b6fd-10a097191423" name="getOpenLoansLate - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>getOpenLoansLate</con:operation><con:request name="getOpenLoansLate - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="dfd34c8b-d6ec-4ecd-8494-6de4f68f41fd"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="d84bf08c-3f67-4016-85dc-a8de9aa16c9c" name="SOAP Response"/><con:assertion type="XQuery Match" id="c90d628b-ded5-4b42-a7ce-b9fa212e225f" name="XQuery Match"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+
+ &lt;myresult>
+{
+for $x in //SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:getOpenLoansInTimeResponse/ns2:loans
+return &lt;id>{data($x/ns2:id)}&lt;/id>
+}
+&lt;/myresult></path><content><![CDATA[<myresult>
+  <id>40</id>
+  <id>231</id>
+  <id>232</id>
+  <id>233</id>
+</myresult>]]></content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/getOpenLoansInTimeRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="7355e505-3d49-40f5-b6fd-10a097191423" name="getOpenLoansLate - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>getOpenLoansLate</con:operation><con:request name="getOpenLoansLate - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="dfd34c8b-d6ec-4ecd-8494-6de4f68f41fd"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
    <soapenv:Header/>
    <soapenv:Body>
       <com:getOpenLoansLateRequest/>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="24ccca96-0afb-4be0-89a0-fea0aaeb0b8f" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/getOpenLoansLateRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="7df539d6-c54f-4a94-91dd-aa33ddd70d13" name="extendLoan - extension denied"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>extendLoan</con:operation><con:request name="extendLoan - extension denied" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="1dd097e0-831d-4021-bb1a-61671b98e64e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="24ccca96-0afb-4be0-89a0-fea0aaeb0b8f" name="SOAP Response"/><con:assertion type="XQuery Match" id="c82a4e00-915d-41e0-8e32-b4d16f276d27" name="XQuery Match"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+
+ &lt;myresult>
+{
+for $x in //SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:getOpenLoansLateResponse/ns2:loans
+return &lt;id>{data($x/ns2:id)}&lt;/id>
+}
+&lt;/myresult></path><content><![CDATA[<myresult>
+  <id>167</id>
+  <id>168</id>
+  <id>169</id>
+</myresult>]]></content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/getOpenLoansLateRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="7df539d6-c54f-4a94-91dd-aa33ddd70d13" name="extendLoan - extension denied"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>extendLoan</con:operation><con:request name="extendLoan - extension denied" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="1dd097e0-831d-4021-bb1a-61671b98e64e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
    <soapenv:Header/>
    <soapenv:Body>
       <com:extendLoanRequest>
          <com:loanId>106</com:loanId>
       </com:extendLoanRequest>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="b94ea057-0e85-4128-bd03-c6746b8eb69c" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/extendLoanRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="b94ea057-0e85-4128-bd03-c6746b8eb69c" name="SOAP Response"/><con:assertion type="XPath Match" id="c734e2d6-6906-4cc3-b843-a18362381668" name="XPath Match"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:extendLoanResponse/ns2:resultCode</path><content>-2</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/extendLoanRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="a3b04db2-44df-4d21-8918-124d48aea35f" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Reservations" searchProperties="true"><con:settings/><con:testStep type="request" name="Julien gets connected" id="bc7c3621-483e-476f-ac97-65d292e8abb6"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>loginCustomer</con:operation><con:request name="Julien gets connected" id="82d815b2-4098-4a4f-b1ca-860d3c878f4e"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:loginCustomerRequest>
+         <com:email>${#TestCase#emailCustomer}</com:email>
+         <com:password>${#TestCase#password}</com:password>
+      </com:loginCustomerRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="8b9fbfa6-440f-4ff7-9ec0-4bfbc4fd1e48"/><con:assertion type="SOAP Fault Assertion" id="edadb255-c7a2-4b50-be96-4832e4312798"/><con:assertion type="XPath Match" id="4e85b614-6958-4fca-a537-a2b4573f9fa7" name="XPath Match"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:loginCustomerResponse/ns2:customer/ns2:surname</path><content>Berthoud</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="transfer" name="Property Transfer_customerId" id="033d33c5-b8df-46d2-bf76-053087dc0ea1"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>customerId</con:name><con:sourceType>Response</con:sourceType><con:sourceStep>Julien gets connected</con:sourceStep><con:sourcePath>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:loginCustomerResponse/ns2:customer/ns2:id/text()</con:sourcePath><con:targetType>customerId</con:targetType><con:targetStep>#TestCase#</con:targetStep><con:targetPath>
+</con:targetPath><con:upgraded>true</con:upgraded></con:transfers></con:config></con:testStep><con:testStep type="request" name="Julien tries to makes a reservation that already exists: FAILURE" id="7f3cd7e5-06f2-4b59-bfeb-58ffc823d4ec"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>makeReservation</con:operation><con:request name="Julien tries to makes a reservation that already exists: FAILURE" id="e8c43385-360b-429d-9d7d-506243a67df2"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:makeReservationRequest>
+         <com:bookReferenceId>${#TestCase#bookReferenceId}</com:bookReferenceId>
+         <com:librairyId>${#TestCase#librairyId}</com:librairyId>
+         <com:customerId>${#TestCase#customerId}</com:customerId>
+      </com:makeReservationRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="c4985057-528c-4626-94f1-525e2db03283"/><con:assertion type="Schema Compliance" id="9d4cc66e-c2e0-4be3-8c77-386c76504797"><con:configuration/></con:assertion><con:assertion type="SOAP Fault Assertion" id="3b6b57d1-545a-46a9-92ab-57d839300461"/><con:assertion type="XPath Match" id="6d1c049e-0882-4b38-890f-509a401c1304" name="XPath Match"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:makeReservationResponse/ns2:resultCode</path><content>-7</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="transfer" name="Property Transfer_ReservationId" id="8d739503-d0f0-4b39-9651-1c623689aa47"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true"><con:name>ReservationId</con:name><con:sourceType>Response</con:sourceType><con:sourceStep>Julien gets connected</con:sourceStep><con:sourcePath>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:loginCustomerResponse/ns2:customer/ns2:reservations/ns2:id</con:sourcePath><con:targetType>reservationId</con:targetType><con:targetStep>#TestCase#</con:targetStep><con:upgraded>true</con:upgraded></con:transfers></con:config></con:testStep><con:testStep type="request" name="Julien deletes reservation: SUCCESS" id="a8f42483-c1da-433f-b002-a61f1ae33f73"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>deleteReservation</con:operation><con:request name="Julien deletes reservation: SUCCESS" id="a142026f-c9c7-4371-bc97-b3ff97da8d0f"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:deleteReservationRequest>
+         <com:reservationId>${#TestCase#reservationId}</com:reservationId>
+      </com:deleteReservationRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="bb114982-be06-492a-a436-f39d79599d12"/><con:assertion type="Schema Compliance" id="1b660cb7-f66a-407b-a8d8-439d8d7134fb"><con:configuration/></con:assertion><con:assertion type="SOAP Fault Assertion" id="45d9f93c-5b70-425a-afd4-d3a339778f9f"/><con:assertion type="XPath Match" id="070a8fc1-3e07-4e8b-9515-2ea7ecd75fce" name="XPath Match"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:deleteReservationResponse/ns2:resultCode</path><content>1</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="Julien makes same reservation again: SUCCESS" id="423f73bc-39ff-4388-b50d-92c6a4174ce8"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>makeReservation</con:operation><con:request name="Julien makes same reservation again: SUCCESS" id="e8c43385-360b-429d-9d7d-506243a67df2"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:makeReservationRequest>
+         <com:bookReferenceId>${#TestCase#bookReferenceId}</com:bookReferenceId>
+         <com:librairyId>${#TestCase#librairyId}</com:librairyId>
+         <com:customerId>${#TestCase#customerId}</com:customerId>
+      </com:makeReservationRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="c4985057-528c-4626-94f1-525e2db03283"/><con:assertion type="Schema Compliance" id="9d4cc66e-c2e0-4be3-8c77-386c76504797"><con:configuration/></con:assertion><con:assertion type="SOAP Fault Assertion" id="3b6b57d1-545a-46a9-92ab-57d839300461"/><con:assertion type="XPath Match" id="6d1c049e-0882-4b38-890f-509a401c1304" name="XPath Match"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:makeReservationResponse/ns2:resultCode</path><content>1</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="delay" name="delay: 2 sec" id="21d8aad5-84ca-47b2-94be-2f77dbdfdc5a"><con:settings/><con:config><delay>2000</delay></con:config></con:testStep><con:testStep type="request" name="Pierre makes same reservation: SUCCESS" id="86986afc-d0c0-46ee-a816-f9845f4f677f"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>makeReservation</con:operation><con:request name="Pierre makes same reservation: SUCCESS" id="629e8c9d-302e-46c3-81b0-b475228f1ee0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:makeReservationRequest>
+         <com:bookReferenceId>4</com:bookReferenceId>
+         <com:librairyId>3</com:librairyId>
+         <com:customerId>23</com:customerId>
+      </com:makeReservationRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="15320775-e7fc-4378-a1f6-c3273192d664"/><con:assertion type="XPath Match" id="91e39a40-d54b-4e5b-b2ed-2d582484c5b7" name="XPath Match"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:makeReservationResponse/ns2:resultCode</path><content>1</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="delay" name="Copy of delay: 2 sec" id="a52a0d37-d23a-4f7e-ad0f-461643a7dae1"><con:settings/><con:config><delay>2000</delay></con:config></con:testStep><con:testStep type="request" name="Malika makes same reservation : FAILURE (list full)" id="b30b4732-bd88-4091-b294-0318bb5b43e5"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>makeReservation</con:operation><con:request name="Malika makes same reservation : FAILURE (list full)" id="5ed74532-2ca5-491c-a284-cdd12ad928b1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:makeReservationRequest>
+         <com:bookReferenceId>4</com:bookReferenceId>
+         <com:librairyId>3</com:librairyId>
+         <com:customerId>86</com:customerId>
+      </com:makeReservationRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="b829acb5-e525-46bf-8a1f-bb74610757d6"/><con:assertion type="XPath Match" id="177a3287-3637-473e-818b-ccf812b52a0e" name="XPath Match"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:makeReservationResponse/ns2:resultCode</path><content>-5</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="7f304604-a821-46c9-8158-0cad5fd9eadb" name="getAllOpenLoans"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>getAllOpenLoans</con:operation><con:request name="getAllOpenLoans" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="f4cd1fe4-9c4a-416a-b96e-5b78b6ddd74a"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:getAllOpenLoansRequest/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="71bfac2f-ed7b-43fb-b810-b0fa5e9ca960" name="SOAP Response"/><con:assertion type="XQuery Match" id="eec36683-8f11-485b-9fe7-e1c5ec281985" name="XQuery Match"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+
+ &lt;myresult>
+{
+for $x in //SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:getAllOpenLoansResponse/ns2:loans
+return &lt;id>{data($x/ns2:id)}&lt;/id>
+}
+&lt;/myresult></path><content><![CDATA[<myresult>
+  <id>40</id>
+  <id>231</id>
+  <id>232</id>
+  <id>233</id>
+  <id>167</id>
+  <id>168</id>
+  <id>169</id>
+</myresult>]]></content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/getAllOpenLoansRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="Book matching with resa is returned" id="34779a28-cd89-463e-be6e-7a542b97b597"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>registerBookReturn</con:operation><con:request name="Book matching with resa is returned" id="36148c75-5bd2-4a77-b4be-c99ccf3e6c00"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:registerBookReturnRequest>
+         <com:bookId>148</com:bookId>
+      </com:registerBookReturnRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="7f03b0eb-72fe-4cc6-a97e-e19acd46a7c0"/><con:assertion type="Schema Compliance" id="4f34a7f8-2d4d-45f4-8924-82533e2c5e45"><con:configuration/></con:assertion><con:assertion type="SOAP Fault Assertion" id="73e938b4-bea0-4b4d-8ac2-6038053b8e22"/><con:assertion type="XPath Match" id="4ad83463-911a-44aa-ac38-cdfdead84b2e" name="XPath Match"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:registerBookReturnResponse/ns2:resultCode</path><content>1</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" id="5a0624f4-3e6a-4da5-99c6-c882122a413e" name="getAllOpenLoans after book return"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>getAllOpenLoans</con:operation><con:request name="getAllOpenLoans after book return" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="f4cd1fe4-9c4a-416a-b96e-5b78b6ddd74a"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:getAllOpenLoansRequest/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="71bfac2f-ed7b-43fb-b810-b0fa5e9ca960" name="SOAP Response"/><con:assertion type="XQuery Match" id="eec36683-8f11-485b-9fe7-e1c5ec281985" name="XQuery Match"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+
+ &lt;myresult>
+{
+for $x in //SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:getAllOpenLoansResponse/ns2:loans
+return &lt;id>{data($x/ns2:id)}&lt;/id>
+}
+&lt;/myresult></path><content><![CDATA[<myresult>
+  <id>40</id>
+  <id>232</id>
+  <id>233</id>
+  <id>167</id>
+  <id>168</id>
+  <id>169</id>
+</myresult>]]></content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://com.berthoud.p7/CustomerPort/getAllOpenLoansRequest"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="Malika tries to borrow the reserved book: FAILURE" id="53dc0b5e-2d60-474f-819f-f0abbd694efa"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>registerLoan</con:operation><con:request name="Malika tries to borrow the reserved book: FAILURE" id="3982e2c8-9036-4e5b-a929-86d96946f436"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:registerLoanRequest>
+         <com:customerId>86</com:customerId>
+         <com:bookId>148</com:bookId>
+      </com:registerLoanRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="d11a12e8-79a6-4707-ae2a-3f3b8a818ce4"/><con:assertion type="XPath Match" id="f9d3646b-ce22-4255-9da7-124ba8cae11c" name="XPath Match"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:registerLoanResponse/ns2:resultCode</path><content>-3</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="Pierre tries to borrow the reserved book: FAILURE" id="1c7d7a01-64e0-4f48-88a0-853ecb1d2275"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>registerLoan</con:operation><con:request name="Pierre tries to borrow the reserved book: FAILURE" id="3982e2c8-9036-4e5b-a929-86d96946f436"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:registerLoanRequest>
+         <com:customerId>86</com:customerId>
+         <com:bookId>148</com:bookId>
+      </com:registerLoanRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="d11a12e8-79a6-4707-ae2a-3f3b8a818ce4"/><con:assertion type="XPath Match" id="f9d3646b-ce22-4255-9da7-124ba8cae11c" name="XPath Match"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:registerLoanResponse/ns2:resultCode</path><content>-3</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="Julien tries to borrow the reserved book: SUCCESS" id="1f00f852-3d74-4a32-82ff-f34a04405884"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>registerLoan</con:operation><con:request name="Julien tries to borrow the reserved book: SUCCESS" id="3982e2c8-9036-4e5b-a929-86d96946f436"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:registerLoanRequest>
+         <com:customerId>34</com:customerId>
+         <com:bookId>148</com:bookId>
+      </com:registerLoanRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="d11a12e8-79a6-4707-ae2a-3f3b8a818ce4"/><con:assertion type="XPath Match" id="f9d3646b-ce22-4255-9da7-124ba8cae11c" name="XPath Match"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:registerLoanResponse/ns2:resultCode</path><content>1</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="delay" name="delay: 3 sec" id="bddaf034-c00e-4ee8-8a79-9733204b398c"><con:settings/><con:config><delay>3000</delay></con:config></con:testStep><con:testStep type="request" name="Julien returns the book: SUCCESS" id="3696dc77-e043-4485-835e-7ee6da2d2edb"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>CustomerPortSoap11</con:interface><con:operation>registerBookReturn</con:operation><con:request name="Julien returns the book: SUCCESS" id="391d21e6-31f3-4302-8d08-452aba4d15d5"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/ws</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://com.berthoud.p7">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <com:registerBookReturnRequest>
+         <com:bookId>148</com:bookId>
+      </com:registerBookReturnRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="0b9631ab-b4d6-48e3-ab5c-53a596b073df"/><con:assertion type="XPath Match" id="6a31696b-b04f-4a63-a1b9-47492bf1c519" name="XPath Match"><con:configuration><path>declare namespace SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://com.berthoud.p7';
+/SOAP-ENV:Envelope/SOAP-ENV:Body/ns2:registerBookReturnResponse/ns2:resultCode</path><content>1</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties><con:property><con:name>customerId</con:name><con:value>34</con:value></con:property><con:property><con:name>librairyId</con:name><con:value>3</con:value></con:property><con:property><con:name>bookReferenceId</con:name><con:value>4</con:value></con:property><con:property><con:name>emailCustomer</con:name><con:value>julien_berthoud@yahoo.fr</con:value></con:property><con:property><con:name>password</con:name><con:value>soleil</con:value></con:property><con:property><con:name>reservationId</con:name><con:value>1</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
