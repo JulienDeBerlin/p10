@@ -41,17 +41,17 @@ VALUES ('4', '2019-04-21 17:06:24.222166', '2019-04-27 16:47:50.561', '2019-04-2
 
 INSERT INTO CUSTOMER (id, created_at, updated_at, date_expiration_membership, email, first_name, surname, password, phone, sex, address)
 VALUES
-   ( '23', '2019-04-21 16:37:05.061',	'2019-05-22 19:48:00.23',	'2018-08-23',	'berthoudjulien@gmail.com',	'Pierre' ,	'Dubuquette',	'$2a$12$Inul40jufBwxT9Hajqp2kuFoPML8pzHT1ZiUq6PEvSlctI2DfLFea',	'0385303955',	'M',	'33'),
-   ( '34', '2019-04-21 16:37:05.061',	'2019-05-22 19:48:00.23',	'2020-06-23',	'julien_berthoud@yahoo.fr',	'Julien' ,	'Berthoud',	'$2a$12$Inul40jufBwxT9Hajqp2kuFoPML8pzHT1ZiUq6PEvSlctI2DfLFea',	'0123232344',	'F',	'35'),
-   ( '85',	'2019-04-21 16:37:05.061',	'2019-05-22 19:48:00.23',	'2020-06-23',	'aicha@yahoo.fr',	'Aicha' ,	'Djarir',	'$2a$12$Inul40jufBwxT9Hajqp2kuFoPML8pzHT1ZiUq6PEvSlctI2DfLFea',	'0385303955',	'F',	'33'),
-   ( '86',	'2019-04-21 16:37:05.061',	'2019-05-22 19:48:00.23',	'2021-05-12',	'schatzmeister@berliner-ringer.de',	'Malika' ,	'Djarir',	'$2a$12$Inul40jufBwxT9Hajqp2kuFoPML8pzHT1ZiUq6PEvSlctI2DfLFea',	'004915781870467',	'M',	'33');
+( '23', '2019-04-21 16:37:05.061',	'2019-05-22 19:48:00.23',	'2018-08-23',	'berthoudjulien@gmail.com',	'Pierre' ,	'Dubuquette',	'$2a$12$Inul40jufBwxT9Hajqp2kuFoPML8pzHT1ZiUq6PEvSlctI2DfLFea',	'0385303955',	'M',	'33'),
+( '34', '2019-04-21 16:37:05.061',	'2019-05-22 19:48:00.23',	'2020-06-23',	'julien_berthoud@yahoo.fr',	'Julien' ,	'Berthoud',	'$2a$12$Inul40jufBwxT9Hajqp2kuFoPML8pzHT1ZiUq6PEvSlctI2DfLFea',	'0123232344',	'F',	'35'),
+( '85',	'2019-04-21 16:37:05.061',	'2019-05-22 19:48:00.23',	'2020-06-23',	'aicha@yahoo.fr',	'Aicha' ,	'Djarir',	'$2a$12$Inul40jufBwxT9Hajqp2kuFoPML8pzHT1ZiUq6PEvSlctI2DfLFea',	'0385303955',	'F',	'33'),
+( '86',	'2019-04-21 16:37:05.061',	'2019-05-22 19:48:00.23',	'2021-05-12',	'schatzmeister@berliner-ringer.de',	'Malika' ,	'Djarir',	'$2a$12$Inul40jufBwxT9Hajqp2kuFoPML8pzHT1ZiUq6PEvSlctI2DfLFea',	'004915781870467',	'M',	'33');
 
 
 
 INSERT INTO loan (id, created_at, updated_at, date_back, date_begin, date_end, number_extensions, book_id, customer_id)
 VALUES ('36', '2019-04-21 19:41:27.647', '2019-04-28 01:16:10.72', '2019-04-28', '2019-04-13', '2019-07-16', '3', '7',
         '85'),
-       ('40', '2019-04-21 19:41:27.647', '2019-04-28 01:16:10.72', '1900-01-01', '2019-04-13', '2028-04-23', '0', '8',
+       ('40', '2019-04-21 19:41:27.647', '2019-04-28 01:16:10.72', '1900-01-01', '2019-04-13', '2019-05-13', '0', '8',
         '23'),
        ('88', '2019-04-21 19:41:27.647', '2019-04-28 01:16:10.72', '2019-04-22', '2019-04-13', '2019-04-23', '0', '1',
         '85'),
@@ -109,12 +109,5 @@ VALUES ('1', '1'),
        ('2', '6');
 
 INSERT INTO reservation (id, created_at, updated_at, date_reservation, book_reference_id, customer_id, librairy_id)
-VALUES ('1', '2019-08-11 00:00:00', '2019-08-13 10:08:27.32886', '2019-08-11 00:00:00', '4', '34', '3');
-
-
-
-
-
-
-
+VALUES ('1000', '2019-08-11 00:00:00', '2019-08-13 10:08:27.32886', '2019-08-11 00:00:00', '4', '34', '3');
 
