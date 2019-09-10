@@ -61,9 +61,10 @@ CREATE TABLE public.book (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     date_purchase date NOT NULL,
-    status character varying NOT NULL,
+    status character varying(255) NOT NULL,
     book_reference_id integer,
-    librairy_id integer
+    librairy_id integer,
+    reservation bytea
 );
 
 
@@ -79,7 +80,7 @@ CREATE TABLE public.book_reference (
     updated_at timestamp without time zone NOT NULL,
     author_first_name character varying(255) NOT NULL,
     author_surname character varying(255) NOT NULL,
-    isbn13 character varying(255) NOT NULL,
+    isbn13 character(13) NOT NULL,
     publisher character varying(255) NOT NULL,
     summary character varying(255) NOT NULL,
     title character varying(255) NOT NULL,
@@ -110,11 +111,11 @@ CREATE TABLE public.customer (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     date_expiration_membership date NOT NULL,
-    email character varying(255),
+    email character varying(255) NOT NULL,
     first_name character varying(255) NOT NULL,
     password character varying(255) NOT NULL,
     phone character varying(255),
-    sex character varying(255) NOT NULL,
+    sex character(1) NOT NULL,
     surname character varying(255) NOT NULL,
     address integer
 );
@@ -158,7 +159,7 @@ CREATE TABLE public.librairy (
     id integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    name character varying(255),
+    name character varying(255) NOT NULL,
     address_id integer
 );
 
@@ -173,7 +174,7 @@ CREATE TABLE public.loan (
     id integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    date_back date,
+    date_back date NOT NULL,
     date_begin date NOT NULL,
     date_end date NOT NULL,
     number_extensions integer NOT NULL,
@@ -183,6 +184,26 @@ CREATE TABLE public.loan (
 
 
 ALTER TABLE public.loan OWNER TO admin;
+
+--
+-- Name: reservation; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.reservation (
+    id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    date_book_available_notification timestamp without time zone,
+    date_reservation timestamp without time zone NOT NULL,
+    book_reference_id integer NOT NULL,
+    customer_id integer NOT NULL,
+    librairy_id integer NOT NULL,
+    date_end_reservation timestamp without time zone,
+    book_id integer
+);
+
+
+ALTER TABLE public.reservation OWNER TO admin;
 
 --
 -- Name: tag; Type: TABLE; Schema: public; Owner: admin
@@ -212,18 +233,22 @@ COPY public.address (id, created_at, updated_at, additional_address_field1, addi
 -- Data for Name: book; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-COPY public.book (id, created_at, updated_at, date_purchase, status, book_reference_id, librairy_id) FROM stdin;
-4	2019-04-21 17:06:24.222166	2019-04-27 16:47:50.561	2019-04-21	BORROWED	3	2
-9	2019-04-21 17:06:24.222166	2019-04-27 16:47:50.608	2019-04-21	BORROWED	1	1
-3	2019-04-21 17:06:24.222166	2019-04-27 16:52:27.347	2019-04-21	BORROWED	1	1
-5	2019-04-21 17:06:24.222166	2019-04-28 01:16:10.702	2019-04-21	AVAILABLE	3	2
-6	2019-04-21 17:06:24.222166	2019-04-28 01:16:10.718	2019-04-21	AVAILABLE	3	2
-7	2019-04-21 17:06:24.222166	2019-04-28 01:16:10.719	2019-04-21	AVAILABLE	2	1
-147	2019-04-27 18:11:10.6	2019-04-28 01:25:44.866	2019-03-23	AVAILABLE	1	1
-143	2019-04-27 18:10:17.281	2019-04-28 01:26:06.758	2019-03-23	AVAILABLE	1	1
-8	2019-04-21 17:06:24.222166	2019-04-28 01:16:10.721	2019-04-21	BORROWED	2	1
-1	2019-04-21 17:06:24.222166	2019-04-28 01:18:41.877	2019-04-21	BORROWED	1	1
-2	2019-04-21 17:06:24.222166	2019-04-21 17:06:24.222166	2019-04-21	BOOKED	2	1
+COPY public.book (id, created_at, updated_at, date_purchase, status, book_reference_id, librairy_id, reservation) FROM stdin;
+4	2019-04-21 17:06:24.222166	2019-04-27 16:47:50.561	2019-04-21	BORROWED	3	2	\N
+9	2019-04-21 17:06:24.222166	2019-04-27 16:47:50.608	2019-04-21	BORROWED	1	1	\N
+3	2019-04-21 17:06:24.222166	2019-04-27 16:52:27.347	2019-04-21	BORROWED	1	1	\N
+5	2019-04-21 17:06:24.222166	2019-04-28 01:16:10.702	2019-04-21	AVAILABLE	3	2	\N
+6	2019-04-21 17:06:24.222166	2019-04-28 01:16:10.718	2019-04-21	AVAILABLE	3	2	\N
+7	2019-04-21 17:06:24.222166	2019-04-28 01:16:10.719	2019-04-21	AVAILABLE	2	1	\N
+147	2019-04-27 18:11:10.6	2019-04-28 01:25:44.866	2019-03-23	AVAILABLE	1	1	\N
+143	2019-04-27 18:10:17.281	2019-04-28 01:26:06.758	2019-03-23	AVAILABLE	1	1	\N
+8	2019-04-21 17:06:24.222166	2019-04-28 01:16:10.721	2019-04-21	BORROWED	2	1	\N
+1	2019-04-21 17:06:24.222166	2019-04-28 01:18:41.877	2019-04-21	BORROWED	1	1	\N
+2	2019-04-21 17:06:24.222166	2019-04-21 17:06:24.222166	2019-04-21	BOOKED	2	1	\N
+148	2019-08-11 14:45:37.991054	2019-08-11 15:57:47.496	2019-07-01	BORROWED	4	3	\N
+149	2019-08-17 18:38:44.27041	2019-08-17 18:38:44.27041	2019-08-01	BORROWED	5	3	\N
+150	2019-08-17 18:38:44.27041	2019-08-17 18:38:44.27041	2019-08-01	BORROWED	5	3	\N
+151	2019-09-02 20:09:33.73291	2019-09-02 20:09:33.73291	2019-09-02	AVAILABLE	6	1	\N
 \.
 
 
@@ -235,6 +260,9 @@ COPY public.book_reference (id, created_at, updated_at, author_first_name, autho
 1	2019-04-21 16:59:57.169375	2019-04-21 16:59:57.169375	Jean	Delors	8787878787777	Flammarion	Un classique des récits de voyage.	Mon Italie	1958
 3	2019-04-21 16:59:57.169375	2019-04-21 16:59:57.169375	Jean	Tricot	7776666666666	Sophis	100 recettes végétariennes	La cuisine végétarienne en Italie	2018
 2	2019-04-21 16:59:57.169375	2019-04-21 16:59:57.169375	Pierre 	Sur	5555554444444	Grasset	Un roman initiatique	Les septs collines en Italie	1993
+4	2019-08-11 14:43:53.00139	2019-08-11 14:43:53.00139	Virginia	Woolf	9876565656566	Gallimard	Le destin de 5 amis, le temps d'une journée	Les Vagues	2018
+5	2019-08-17 18:36:29.633225	2019-08-17 18:36:29.633225	Milan	Kundera	8787878798765	Gallimard	Lore ipsem jeuwhd dwhuhdeuwd. 	L'insoutenable légèreté de l'être	2014
+6	2019-09-02 20:09:07.951615	2019-09-02 20:09:07.951615	Mickael	Cunningham	9899999898989	Gallimard	Lore ipsem jeuwhd dwhuhdeuwd. 	Les Heures	1987
 \.
 
 
@@ -260,10 +288,10 @@ COPY public.book_references_tags (book_reference_id, tag_id) FROM stdin;
 --
 
 COPY public.customer (id, created_at, updated_at, date_expiration_membership, email, first_name, password, phone, sex, surname, address) FROM stdin;
-85	2019-04-23 18:20:25.321	2019-05-14 08:13:01.126	2020-06-23	aicha@yahoo.fr	Aicha	$2a$12$NyaSxSCy/M/orYezR8TD9eEzXKhA1pooXNDoP.MmDW/2PyMAV.6FK	0385303955	F	Djarir	33
-34	2019-04-21 18:33:08.365	2019-05-06 16:50:47.581	2020-06-23	malika@yahoo.fr	Malika	$2a$12$OFU2yu0lhR999PG3wiR5Eu9EX4B.DK2Nft7dGN7zdpa/bWPvTIEw6	0385303955	F	Djarir	35
-86	2019-05-12 10:13:14.915201	2019-05-12 10:13:14.915201	2021-05-12	julien_berthoud@yahoo.fr	Julien	soleil	004915781870467	M	Berthoud	33
-23	2019-04-21 16:37:05.061	2019-05-06 17:36:24.351	2018-08-23	julien_berthoud@yahoo.fr	Pierre	$2a$12$tjoS7wFE.z1J3R5yky9EmuzfSlIKnrX7Ljl0lI.WPPX9clbSgYD2e	0385303955	M	Dubuquette	33
+23	2019-04-21 16:37:05.061	2019-09-09 11:00:51.508	2018-08-23	berthoudjulien@gmail.com	Pierre	$2a$12$7hKw7afrJEug/OJk9qnZY.6qxtm3Jn364MPWMkqGCOpPJyjORvWnK	0385303955	M	Dubuquette	33
+86	2019-05-12 10:13:14.915201	2019-09-04 15:25:29.785	2021-05-12	schatzmeister@berliner-ringer.de	Malika	$2a$12$Inul40jufBwxT9Hajqp2kuFoPML8pzHT1ZiUq6PEvSlctI2DfLFea	004915781870467	M	Djarir	33
+85	2019-04-23 18:20:25.321	2019-09-04 15:26:22.105	2020-06-23	aicha@yahoo.fr	Aicha	$2a$12$Inul40jufBwxT9Hajqp2kuFoPML8pzHT1ZiUq6PEvSlctI2DfLFea	0385303955	F	Djarir	33
+34	2019-04-21 18:33:08.365	2019-09-04 15:26:08.653	2020-06-23	julien_berthoud@yahoo.fr	Julien	$2a$12$Inul40jufBwxT9Hajqp2kuFoPML8pzHT1ZiUq6PEvSlctI2DfLFea	0123232344	F	Berthoud	35
 \.
 
 
@@ -271,7 +299,7 @@ COPY public.customer (id, created_at, updated_at, date_expiration_membership, em
 -- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-SELECT pg_catalog.setval('public.hibernate_sequence', 210, true);
+SELECT pg_catalog.setval('public.hibernate_sequence', 473, true);
 
 
 --
@@ -298,7 +326,6 @@ COPY public.librairy (id, created_at, updated_at, name, address_id) FROM stdin;
 
 COPY public.loan (id, created_at, updated_at, date_back, date_begin, date_end, number_extensions, book_id, customer_id) FROM stdin;
 118	2019-04-27 16:34:44.831	2019-04-27 16:45:41.373	2019-04-27	2019-04-27	2019-04-27	0	9	85
-148	2019-04-27 18:35:47.714	2019-04-28 01:16:10.717	2019-04-28	2019-04-27	2019-05-25	0	5	85
 152	2019-04-28 01:13:50.263	2019-04-28 01:16:10.719	2019-04-28	2019-04-28	2019-05-26	0	6	85
 36	2019-04-21 19:41:27.647	2019-04-28 01:16:10.72	2019-04-28	2019-04-13	2019-07-16	3	7	85
 132	2019-04-27 16:57:11.309	2019-04-28 01:18:41.887	2019-04-28	2019-04-27	2019-04-27	0	1	85
@@ -309,14 +336,24 @@ COPY public.loan (id, created_at, updated_at, date_back, date_begin, date_end, n
 92	2019-04-23 19:40:36.988	2019-04-23 19:40:36.988	2019-04-22	2019-04-13	2019-04-23	0	1	85
 88	2019-04-23 18:20:25.516	2019-04-23 18:20:25.516	2019-04-22	2019-04-13	2019-04-23	0	1	85
 111	2019-04-27 14:50:13.795	2019-04-27 14:50:13.795	2019-04-22	2019-04-13	2019-04-23	0	1	85
-115	2019-04-27 16:28:01.336	2019-05-02 17:28:28.102	2019-04-27	2019-04-27	2019-09-14	5	4	34
-164	2019-04-27 16:28:01.336	2019-05-02 17:28:29.471	1900-01-01	2018-04-27	2020-10-14	5	9	34
-162	2019-04-27 16:28:01.336	2019-05-06 17:06:20.654	1900-01-01	2018-04-27	2020-10-14	5	3	34
 167	2019-05-12 10:16:54.879806	2019-05-12 10:16:54.879806	1900-01-01	2019-01-01	2019-05-01	1	1	86
-168	2019-05-12 10:16:54.879806	2019-05-12 10:16:54.879806	1900-01-01	2019-01-01	2019-05-01	1	2	86
 169	2019-05-12 10:16:54.879806	2019-05-12 10:16:54.879806	1900-01-01	2019-01-01	2019-05-01	1	3	86
-166	2019-04-27 16:28:01.336	2019-05-02 17:45:50.349	1900-01-01	2018-04-27	2020-10-14	5	9	34
-40	2019-04-21 19:46:10.713	2019-04-28 01:16:10.721	1900-01-01	2019-04-13	2018-04-23	0	8	23
+115	2019-04-27 16:28:01.336	2019-05-02 17:28:28.102	1900-01-01	2019-04-27	2019-06-14	5	4	34
+231	2019-08-11 15:47:51.753	2019-08-11 15:47:51.753	1900-01-01	2019-08-11	2019-09-08	0	148	85
+40	2019-04-21 19:46:10.713	2019-04-28 01:16:10.721	1900-01-01	2019-04-13	2028-04-23	0	8	23
+232	2019-08-17 18:41:06.602731	2019-08-17 18:41:06.602731	1900-01-01	2019-08-11	2019-09-08	0	149	85
+233	2019-08-17 18:41:06.602731	2019-08-17 18:41:06.602731	1900-01-01	2019-08-11	2019-09-15	0	150	23
+168	2019-05-12 10:16:54.879806	2019-05-12 10:16:54.879806	1900-01-01	2019-01-01	2019-05-01	0	2	86
+148	2019-04-27 18:35:47.714	2019-04-28 01:16:10.717	2019-04-28	2019-04-27	2019-12-25	0	5	85
+\.
+
+
+--
+-- Data for Name: reservation; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+COPY public.reservation (id, created_at, updated_at, date_book_available_notification, date_reservation, book_reference_id, customer_id, librairy_id, date_end_reservation, book_id) FROM stdin;
+1	2019-08-11 00:00:00	2019-08-13 10:08:27.32886	\N	2019-08-11 00:00:00	4	34	3	\N	\N
 \.
 
 
@@ -391,6 +428,14 @@ ALTER TABLE ONLY public.loan
 
 
 --
+-- Name: reservation reservation_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.reservation
+    ADD CONSTRAINT reservation_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: tag tag_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
 --
 
@@ -399,11 +444,27 @@ ALTER TABLE ONLY public.tag
 
 
 --
+-- Name: reservation fk41v6ueo0hiran65w8y1cta2c2; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.reservation
+    ADD CONSTRAINT fk41v6ueo0hiran65w8y1cta2c2 FOREIGN KEY (customer_id) REFERENCES public.customer(id);
+
+
+--
 -- Name: book_references_tags fk5tndkjml6iccyj5d5oe64f6yt; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.book_references_tags
     ADD CONSTRAINT fk5tndkjml6iccyj5d5oe64f6yt FOREIGN KEY (tag_id) REFERENCES public.tag(id);
+
+
+--
+-- Name: reservation fk85wuo9axomae850vkikqgi85j; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.reservation
+    ADD CONSTRAINT fk85wuo9axomae850vkikqgi85j FOREIGN KEY (book_reference_id) REFERENCES public.book_reference(id);
 
 
 --
@@ -447,11 +508,27 @@ ALTER TABLE ONLY public.librairy
 
 
 --
+-- Name: reservation fkirxtcw4s6lhwi6l9ocrk6bjfy; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.reservation
+    ADD CONSTRAINT fkirxtcw4s6lhwi6l9ocrk6bjfy FOREIGN KEY (book_id) REFERENCES public.book(id);
+
+
+--
 -- Name: book fkite71jfuk7sk5f6qxlraxvmy0; Type: FK CONSTRAINT; Schema: public; Owner: admin
 --
 
 ALTER TABLE ONLY public.book
     ADD CONSTRAINT fkite71jfuk7sk5f6qxlraxvmy0 FOREIGN KEY (librairy_id) REFERENCES public.librairy(id);
+
+
+--
+-- Name: reservation fklw8vxju9uego279tdjo1cxq92; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.reservation
+    ADD CONSTRAINT fklw8vxju9uego279tdjo1cxq92 FOREIGN KEY (librairy_id) REFERENCES public.librairy(id);
 
 
 --

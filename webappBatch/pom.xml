@@ -12,7 +12,7 @@
 
     <groupId>com.berthoud</groupId>
     <artifactId>p7-webapp-app</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>2.0</version>
     <name>p7-webapp-app</name>
     <description>Webapp for librairy users</description>
     <packaging>pom</packaging>
@@ -29,6 +29,31 @@
         <module>p7-webapp-model</module>
         <module>p7-batch</module>
     </modules>
+
+
+    <!-- =============================================================== -->
+    <!-- Profiles -->
+    <!-- =============================================================== -->
+
+<!--    <profiles>-->
+<!--        <profile>-->
+<!--            <id>dev</id>-->
+<!--            <properties>-->
+<!--                <activatedProperties>dev</activatedProperties>-->
+<!--            </properties>-->
+<!--            <activation>-->
+<!--                <activeByDefault>true</activeByDefault>-->
+<!--            </activation>-->
+<!--        </profile>-->
+<!--        <profile>-->
+<!--            <id>prod</id>-->
+<!--            <properties>-->
+<!--                <activatedProperties>prod</activatedProperties>-->
+<!--            </properties>-->
+<!--        </profile>-->
+<!--    </profiles>-->
+
+
 
     <dependencies>
 

@@ -1,8 +1,3 @@
-/*.jumbotron-fluid {*/
-    /*background-image: url("../pictures/ilnur-kalimullin-332587-unsplash-original.jpg");*/
-    /*background-size: cover;*/
-    /*background-repeat: no-repeat;*/
-/*}*/
 
 #bg {
     /* The image used */
@@ -54,10 +49,6 @@
     margin-bottom: 0px;
 }
 
-#loginBloc, #researchBloc{
-    width: fit-content;
-
-}
 
 #loginContainer, #researchContainer{
     margin-top: 10%;
@@ -67,7 +58,6 @@
     max-width: 500px;
 
 }
-
 
 
 #researchContainer{
@@ -85,6 +75,10 @@
 }
 
 
+#reservationDetails{
+    font-style: italic;
+    font-size: 80%;
+}
 
 body, html {
     margin: 0;

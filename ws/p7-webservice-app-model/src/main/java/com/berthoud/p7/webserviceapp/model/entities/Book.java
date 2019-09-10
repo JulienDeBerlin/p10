@@ -5,12 +5,11 @@ import java.time.LocalDate;
 import java.util.Set;
 
 
-
 @Entity
 public class Book extends AuditModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(nullable = false)
@@ -33,6 +32,9 @@ public class Book extends AuditModel {
     @ManyToOne
     @JoinColumn(name = "book_reference_id")
     private BookReference bookReference;
+
+//    @OneToOne (mappedBy = "book")
+    private Reservation reservation;
 
     public Book(LocalDate datePurchase, Status status, Librairy librairy, Set<Loan> loans, BookReference bookReference) {
         this.datePurchase = datePurchase;
@@ -92,6 +94,14 @@ public class Book extends AuditModel {
 
     public void setBookReference(BookReference bookReference) {
         this.bookReference = bookReference;
+    }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 }
 

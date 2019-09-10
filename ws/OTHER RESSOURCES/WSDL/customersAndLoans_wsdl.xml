@@ -1,6 +1,7 @@
-<wsdl:definitions targetNamespace="http://com.berthoud.p7">
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://com.berthoud.p7" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://com.berthoud.p7" targetNamespace="http://com.berthoud.p7">
     <wsdl:types>
-        <xs:schema elementFormDefault="qualified" targetNamespace="http://com.berthoud.p7"><!--customer management-->
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://com.berthoud.p7">
+            <!-- customer management -->
             <xs:element name="loginCustomerRequest">
                 <xs:complexType>
                     <xs:sequence>
@@ -15,7 +16,8 @@
                         <xs:element name="customer" type="tns:customerWs"/>
                     </xs:sequence>
                 </xs:complexType>
-            </xs:element><!--customer management-->
+            </xs:element>
+            <!-- customer management -->
             <xs:element name="refreshCustomerRequest">
                 <xs:complexType>
                     <xs:sequence>
@@ -29,7 +31,9 @@
                         <xs:element name="customer" type="tns:customerWs"/>
                     </xs:sequence>
                 </xs:complexType>
-            </xs:element><!--loan management--><!--loan extension-->
+            </xs:element>
+            <!-- loan management -->
+            <!-- loan extension -->
             <xs:element name="extendLoanRequest">
                 <xs:complexType>
                     <xs:sequence>
@@ -43,7 +47,8 @@
                         <xs:element name="resultCode" type="xs:int"/>
                     </xs:sequence>
                 </xs:complexType>
-            </xs:element><!--register new loan-->
+            </xs:element>
+            <!-- register new loan -->
             <xs:element name="registerLoanRequest">
                 <xs:complexType>
                     <xs:sequence>
@@ -58,7 +63,8 @@
                         <xs:element name="resultCode" type="xs:int"/>
                     </xs:sequence>
                 </xs:complexType>
-            </xs:element><!--register book return-->
+            </xs:element>
+            <!-- register book return -->
             <xs:element name="registerBookReturnRequest">
                 <xs:complexType>
                     <xs:sequence>
@@ -72,11 +78,11 @@
                         <xs:element name="resultCode" type="xs:int"/>
                     </xs:sequence>
                 </xs:complexType>
-            </xs:element><!--monitoring loans (all open)-->
+            </xs:element>
+            <!-- monitoring loans (all open) -->
             <xs:element name="getAllOpenLoansRequest">
                 <xs:complexType>
-                    <xs:sequence>
-                    </xs:sequence>
+                    <xs:sequence> </xs:sequence>
                 </xs:complexType>
             </xs:element>
             <xs:element name="getAllOpenLoansResponse">
@@ -85,11 +91,11 @@
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="loans" type="tns:loanWs"/>
                     </xs:sequence>
                 </xs:complexType>
-            </xs:element><!--monitoring loans (in time)-->
+            </xs:element>
+            <!-- monitoring loans (in time) -->
             <xs:element name="getOpenLoansInTimeRequest">
                 <xs:complexType>
-                    <xs:sequence>
-                    </xs:sequence>
+                    <xs:sequence> </xs:sequence>
                 </xs:complexType>
             </xs:element>
             <xs:element name="getOpenLoansInTimeResponse">
@@ -98,11 +104,11 @@
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="loans" type="tns:loanWs"/>
                     </xs:sequence>
                 </xs:complexType>
-            </xs:element><!--monitoring loans (late)-->
+            </xs:element>
+            <!-- monitoring loans (late) -->
             <xs:element name="getOpenLoansLateRequest">
                 <xs:complexType>
-                    <xs:sequence>
-                    </xs:sequence>
+                    <xs:sequence> </xs:sequence>
                 </xs:complexType>
             </xs:element>
             <xs:element name="getOpenLoansLateResponse">
@@ -111,11 +117,11 @@
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="loans" type="tns:loanWs"/>
                     </xs:sequence>
                 </xs:complexType>
-            </xs:element><!--monitoring loans (extended)-->
+            </xs:element>
+            <!-- monitoring loans (extended) -->
             <xs:element name="getOpenLoansExtendedRequest">
                 <xs:complexType>
-                    <xs:sequence>
-                    </xs:sequence>
+                    <xs:sequence> </xs:sequence>
                 </xs:complexType>
             </xs:element>
             <xs:element name="getOpenLoansExtendedResponse">
@@ -124,7 +130,56 @@
                         <xs:element maxOccurs="unbounded" minOccurs="0" name="loans" type="tns:loanWs"/>
                     </xs:sequence>
                 </xs:complexType>
-            </xs:element><!--definition complexe types-->
+            </xs:element>
+            <!-- make a reservation -->
+            <xs:element name="makeReservationRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="bookReferenceId" type="xs:int"/>
+                        <xs:element name="librairyId" type="xs:int"/>
+                        <xs:element name="customerId" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="makeReservationResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="resultCode" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <!--  delete a reservation -->
+            <xs:element name="deleteReservationRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="reservationId" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="deleteReservationResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="resultCode" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <!--  get reservation list -->
+            <xs:element name="getReservationListRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="bookReferenceId" type="xs:int"/>
+                        <xs:element name="librairyId" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getReservationListResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="reservations" type="tns:reservationWs"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <!-- definition complexe types -->
             <xs:complexType name="customerWs">
                 <xs:sequence>
                     <xs:element name="id" type="xs:int"/>
@@ -136,6 +191,7 @@
                     <xs:element name="email" type="xs:string"/>
                     <xs:element name="password" type="xs:string"/>
                     <xs:element maxOccurs="unbounded" minOccurs="0" name="loans" type="tns:loanWs"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="reservations" type="tns:reservationWs"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="loanWs">
@@ -149,6 +205,16 @@
                     <xs:element name="customerWs" type="tns:customerWs"/>
                 </xs:sequence>
             </xs:complexType>
+            <xs:complexType name="reservationWs">
+                <xs:sequence>
+                    <xs:element name="id" type="xs:int"/>
+                    <xs:element name="dateReservation" type="xs:date"/>
+                    <xs:element name="dateBookAvailableNotification" type="xs:date"/>
+                    <xs:element name="customer" type="tns:customerWs"/>
+                    <xs:element name="librairy" type="tns:librairyWs"/>
+                    <xs:element name="bookReference" type="tns:bookReferenceWs"/>
+                </xs:sequence>
+            </xs:complexType>
             <xs:complexType name="bookWs">
                 <xs:sequence>
                     <xs:element name="id" type="xs:int"/>
@@ -156,6 +222,7 @@
                     <xs:element name="status" type="tns:statusWs"/>
                     <xs:element name="librairy" type="tns:librairyWs"/>
                     <xs:element name="bookReference" type="tns:bookReferenceWs"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="loans" type="tns:loanWs"/>
                 </xs:sequence>
             </xs:complexType>
             <xs:simpleType name="statusWs">
@@ -181,140 +248,144 @@
                     <xs:element name="publisher" type="xs:string"/>
                     <xs:element name="summary" type="xs:string"/>
                     <xs:element name="yearPublication" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="books" type="tns:bookWs"/>
                 </xs:sequence>
             </xs:complexType>
         </xs:schema>
     </wsdl:types>
+    <wsdl:message name="deleteReservationResponse">
+        <wsdl:part element="tns:deleteReservationResponse" name="deleteReservationResponse"> </wsdl:part>
+    </wsdl:message>
     <wsdl:message name="getOpenLoansLateResponse">
-        <wsdl:part element="tns:getOpenLoansLateResponse" name="getOpenLoansLateResponse">
-        </wsdl:part>
+        <wsdl:part element="tns:getOpenLoansLateResponse" name="getOpenLoansLateResponse"> </wsdl:part>
     </wsdl:message>
     <wsdl:message name="refreshCustomerResponse">
-        <wsdl:part element="tns:refreshCustomerResponse" name="refreshCustomerResponse">
-        </wsdl:part>
+        <wsdl:part element="tns:refreshCustomerResponse" name="refreshCustomerResponse"> </wsdl:part>
     </wsdl:message>
     <wsdl:message name="getOpenLoansInTimeResponse">
-        <wsdl:part element="tns:getOpenLoansInTimeResponse" name="getOpenLoansInTimeResponse">
-        </wsdl:part>
+        <wsdl:part element="tns:getOpenLoansInTimeResponse" name="getOpenLoansInTimeResponse"> </wsdl:part>
     </wsdl:message>
     <wsdl:message name="getOpenLoansExtendedResponse">
-        <wsdl:part element="tns:getOpenLoansExtendedResponse" name="getOpenLoansExtendedResponse">
-        </wsdl:part>
+        <wsdl:part element="tns:getOpenLoansExtendedResponse" name="getOpenLoansExtendedResponse"> </wsdl:part>
     </wsdl:message>
     <wsdl:message name="extendLoanResponse">
-        <wsdl:part element="tns:extendLoanResponse" name="extendLoanResponse">
-        </wsdl:part>
+        <wsdl:part element="tns:extendLoanResponse" name="extendLoanResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="deleteReservationRequest">
+        <wsdl:part element="tns:deleteReservationRequest" name="deleteReservationRequest"> </wsdl:part>
     </wsdl:message>
     <wsdl:message name="extendLoanRequest">
-        <wsdl:part element="tns:extendLoanRequest" name="extendLoanRequest">
-        </wsdl:part>
+        <wsdl:part element="tns:extendLoanRequest" name="extendLoanRequest"> </wsdl:part>
     </wsdl:message>
     <wsdl:message name="registerLoanResponse">
-        <wsdl:part element="tns:registerLoanResponse" name="registerLoanResponse">
-        </wsdl:part>
+        <wsdl:part element="tns:registerLoanResponse" name="registerLoanResponse"> </wsdl:part>
     </wsdl:message>
     <wsdl:message name="getOpenLoansExtendedRequest">
-        <wsdl:part element="tns:getOpenLoansExtendedRequest" name="getOpenLoansExtendedRequest">
-        </wsdl:part>
+        <wsdl:part element="tns:getOpenLoansExtendedRequest" name="getOpenLoansExtendedRequest"> </wsdl:part>
     </wsdl:message>
     <wsdl:message name="registerBookReturnResponse">
-        <wsdl:part element="tns:registerBookReturnResponse" name="registerBookReturnResponse">
-        </wsdl:part>
+        <wsdl:part element="tns:registerBookReturnResponse" name="registerBookReturnResponse"> </wsdl:part>
     </wsdl:message>
     <wsdl:message name="getAllOpenLoansRequest">
-        <wsdl:part element="tns:getAllOpenLoansRequest" name="getAllOpenLoansRequest">
-        </wsdl:part>
+        <wsdl:part element="tns:getAllOpenLoansRequest" name="getAllOpenLoansRequest"> </wsdl:part>
     </wsdl:message>
     <wsdl:message name="registerLoanRequest">
-        <wsdl:part element="tns:registerLoanRequest" name="registerLoanRequest">
-        </wsdl:part>
+        <wsdl:part element="tns:registerLoanRequest" name="registerLoanRequest"> </wsdl:part>
     </wsdl:message>
     <wsdl:message name="refreshCustomerRequest">
-        <wsdl:part element="tns:refreshCustomerRequest" name="refreshCustomerRequest">
-        </wsdl:part>
+        <wsdl:part element="tns:refreshCustomerRequest" name="refreshCustomerRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="makeReservationRequest">
+        <wsdl:part element="tns:makeReservationRequest" name="makeReservationRequest"> </wsdl:part>
     </wsdl:message>
     <wsdl:message name="registerBookReturnRequest">
-        <wsdl:part element="tns:registerBookReturnRequest" name="registerBookReturnRequest">
-        </wsdl:part>
+        <wsdl:part element="tns:registerBookReturnRequest" name="registerBookReturnRequest"> </wsdl:part>
     </wsdl:message>
     <wsdl:message name="getAllOpenLoansResponse">
-        <wsdl:part element="tns:getAllOpenLoansResponse" name="getAllOpenLoansResponse">
-        </wsdl:part>
+        <wsdl:part element="tns:getAllOpenLoansResponse" name="getAllOpenLoansResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getReservationListRequest">
+        <wsdl:part element="tns:getReservationListRequest" name="getReservationListRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getReservationListResponse">
+        <wsdl:part element="tns:getReservationListResponse" name="getReservationListResponse"> </wsdl:part>
     </wsdl:message>
     <wsdl:message name="loginCustomerRequest">
-        <wsdl:part element="tns:loginCustomerRequest" name="loginCustomerRequest">
-        </wsdl:part>
+        <wsdl:part element="tns:loginCustomerRequest" name="loginCustomerRequest"> </wsdl:part>
     </wsdl:message>
     <wsdl:message name="getOpenLoansInTimeRequest">
-        <wsdl:part element="tns:getOpenLoansInTimeRequest" name="getOpenLoansInTimeRequest">
-        </wsdl:part>
+        <wsdl:part element="tns:getOpenLoansInTimeRequest" name="getOpenLoansInTimeRequest"> </wsdl:part>
     </wsdl:message>
     <wsdl:message name="getOpenLoansLateRequest">
-        <wsdl:part element="tns:getOpenLoansLateRequest" name="getOpenLoansLateRequest">
-        </wsdl:part>
+        <wsdl:part element="tns:getOpenLoansLateRequest" name="getOpenLoansLateRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="makeReservationResponse">
+        <wsdl:part element="tns:makeReservationResponse" name="makeReservationResponse"> </wsdl:part>
     </wsdl:message>
     <wsdl:message name="loginCustomerResponse">
-        <wsdl:part element="tns:loginCustomerResponse" name="loginCustomerResponse">
-        </wsdl:part>
+        <wsdl:part element="tns:loginCustomerResponse" name="loginCustomerResponse"> </wsdl:part>
     </wsdl:message>
     <wsdl:portType name="CustomerPort">
+        <wsdl:operation name="deleteReservation">
+            <wsdl:input message="tns:deleteReservationRequest" name="deleteReservationRequest"> </wsdl:input>
+            <wsdl:output message="tns:deleteReservationResponse" name="deleteReservationResponse"> </wsdl:output>
+        </wsdl:operation>
         <wsdl:operation name="getOpenLoansLate">
-            <wsdl:input message="tns:getOpenLoansLateRequest" name="getOpenLoansLateRequest">
-            </wsdl:input>
-            <wsdl:output message="tns:getOpenLoansLateResponse" name="getOpenLoansLateResponse">
-            </wsdl:output>
+            <wsdl:input message="tns:getOpenLoansLateRequest" name="getOpenLoansLateRequest"> </wsdl:input>
+            <wsdl:output message="tns:getOpenLoansLateResponse" name="getOpenLoansLateResponse"> </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="refreshCustomer">
-            <wsdl:input message="tns:refreshCustomerRequest" name="refreshCustomerRequest">
-            </wsdl:input>
-            <wsdl:output message="tns:refreshCustomerResponse" name="refreshCustomerResponse">
-            </wsdl:output>
+            <wsdl:input message="tns:refreshCustomerRequest" name="refreshCustomerRequest"> </wsdl:input>
+            <wsdl:output message="tns:refreshCustomerResponse" name="refreshCustomerResponse"> </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="getOpenLoansInTime">
-            <wsdl:input message="tns:getOpenLoansInTimeRequest" name="getOpenLoansInTimeRequest">
-            </wsdl:input>
-            <wsdl:output message="tns:getOpenLoansInTimeResponse" name="getOpenLoansInTimeResponse">
-            </wsdl:output>
+            <wsdl:input message="tns:getOpenLoansInTimeRequest" name="getOpenLoansInTimeRequest"> </wsdl:input>
+            <wsdl:output message="tns:getOpenLoansInTimeResponse" name="getOpenLoansInTimeResponse"> </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="getOpenLoansExtended">
-            <wsdl:input message="tns:getOpenLoansExtendedRequest" name="getOpenLoansExtendedRequest">
-            </wsdl:input>
-            <wsdl:output message="tns:getOpenLoansExtendedResponse" name="getOpenLoansExtendedResponse">
-            </wsdl:output>
+            <wsdl:input message="tns:getOpenLoansExtendedRequest" name="getOpenLoansExtendedRequest"> </wsdl:input>
+            <wsdl:output message="tns:getOpenLoansExtendedResponse" name="getOpenLoansExtendedResponse"> </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="extendLoan">
-            <wsdl:input message="tns:extendLoanRequest" name="extendLoanRequest">
-            </wsdl:input>
-            <wsdl:output message="tns:extendLoanResponse" name="extendLoanResponse">
-            </wsdl:output>
+            <wsdl:input message="tns:extendLoanRequest" name="extendLoanRequest"> </wsdl:input>
+            <wsdl:output message="tns:extendLoanResponse" name="extendLoanResponse"> </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="registerLoan">
-            <wsdl:input message="tns:registerLoanRequest" name="registerLoanRequest">
-            </wsdl:input>
-            <wsdl:output message="tns:registerLoanResponse" name="registerLoanResponse">
-            </wsdl:output>
+            <wsdl:input message="tns:registerLoanRequest" name="registerLoanRequest"> </wsdl:input>
+            <wsdl:output message="tns:registerLoanResponse" name="registerLoanResponse"> </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="registerBookReturn">
-            <wsdl:input message="tns:registerBookReturnRequest" name="registerBookReturnRequest">
-            </wsdl:input>
-            <wsdl:output message="tns:registerBookReturnResponse" name="registerBookReturnResponse">
-            </wsdl:output>
+            <wsdl:input message="tns:registerBookReturnRequest" name="registerBookReturnRequest"> </wsdl:input>
+            <wsdl:output message="tns:registerBookReturnResponse" name="registerBookReturnResponse"> </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="getAllOpenLoans">
-            <wsdl:input message="tns:getAllOpenLoansRequest" name="getAllOpenLoansRequest">
-            </wsdl:input>
-            <wsdl:output message="tns:getAllOpenLoansResponse" name="getAllOpenLoansResponse">
-            </wsdl:output>
+            <wsdl:input message="tns:getAllOpenLoansRequest" name="getAllOpenLoansRequest"> </wsdl:input>
+            <wsdl:output message="tns:getAllOpenLoansResponse" name="getAllOpenLoansResponse"> </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="makeReservation">
+            <wsdl:input message="tns:makeReservationRequest" name="makeReservationRequest"> </wsdl:input>
+            <wsdl:output message="tns:makeReservationResponse" name="makeReservationResponse"> </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getReservationList">
+            <wsdl:input message="tns:getReservationListRequest" name="getReservationListRequest"> </wsdl:input>
+            <wsdl:output message="tns:getReservationListResponse" name="getReservationListResponse"> </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="loginCustomer">
-            <wsdl:input message="tns:loginCustomerRequest" name="loginCustomerRequest">
-            </wsdl:input>
-            <wsdl:output message="tns:loginCustomerResponse" name="loginCustomerResponse">
-            </wsdl:output>
+            <wsdl:input message="tns:loginCustomerRequest" name="loginCustomerRequest"> </wsdl:input>
+            <wsdl:output message="tns:loginCustomerResponse" name="loginCustomerResponse"> </wsdl:output>
         </wsdl:operation>
     </wsdl:portType>
     <wsdl:binding name="CustomerPortSoap11" type="tns:CustomerPort">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="deleteReservation">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="deleteReservationRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="deleteReservationResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
         <wsdl:operation name="getOpenLoansLate">
             <soap:operation soapAction=""/>
             <wsdl:input name="getOpenLoansLateRequest">
@@ -384,6 +455,24 @@
                 <soap:body use="literal"/>
             </wsdl:input>
             <wsdl:output name="getAllOpenLoansResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="makeReservation">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="makeReservationRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="makeReservationResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getReservationList">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="getReservationListRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getReservationListResponse">
                 <soap:body use="literal"/>
             </wsdl:output>
         </wsdl:operation>

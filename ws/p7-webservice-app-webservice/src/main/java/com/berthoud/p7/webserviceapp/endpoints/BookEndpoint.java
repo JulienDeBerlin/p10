@@ -6,7 +6,6 @@ import com.berthoud.p7.webserviceapp.model.entities.Book;
 import com.berthoud.p7.webserviceapp.model.entities.BookReference;
 import com.berthoud.p7.webserviceapp.model.entities.Librairy;
 import com.berthoud.p7.webserviceapp.model.entities.Tag;
-import com.berthoud.p7.webserviceapp.utils.Utils;
 import com.berthoud.p7.webserviceapp.ws.books.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,8 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import java.util.List;
+
+import static com.berthoud.p7.webserviceapp.business.Utils.convertLocalDateForXml;
 
 
 @Endpoint
@@ -42,7 +43,6 @@ public class BookEndpoint {
         for (BookReference b : bookReferenceList) {
 
             BookReferenceWs bookReferenceWs = new BookReferenceWs();
-
             BeanUtils.copyProperties(b, bookReferenceWs);
 
             for (Tag tag : b.getTags()) {
@@ -51,7 +51,6 @@ public class BookEndpoint {
                 bookReferenceWs.getTags().add(tagsWs);
             }
 
-
             for (Book book : b.getBooks()) {
                 BookWs bookWs = new BookWs();
                 BeanUtils.copyProperties(book, bookWs);
@@ -59,8 +58,7 @@ public class BookEndpoint {
                 LibrairyWs librairyWs = new LibrairyWs();
                 BeanUtils.copyProperties(book.getLibrairy(), librairyWs);
                 bookWs.setLibrairy(librairyWs);
-                bookWs.setDatePurchase(Utils.convertLocalDateForXml(book.getDatePurchase()));
-
+                bookWs.setDatePurchase(convertLocalDateForXml(book.getDatePurchase()));
 
                 Book.Status status = book.getStatus();
                 switch (status) {
@@ -76,9 +74,7 @@ public class BookEndpoint {
                 }
 
                 bookReferenceWs.getBook().add(bookWs);
-
             }
-
             response.getBookReferences().add(bookReferenceWs);
         }
 
@@ -101,6 +97,26 @@ public class BookEndpoint {
 
         return response;
     }
+
+//    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "bookReferenceRequest")
+//    @ResponsePayload
+//    public BookReferenceResponse getBookReferenceDetails (@RequestPayload BookReferenceRequest r)  {
+//        WebserviceApp.logger.trace("SOAP call getBookReferenceDetails");
+//
+//        BookReferenceResponse response = new BookReferenceResponse();
+//
+//        List<Librairy> librairyList = bookResearchManager.getAllLibrairies();
+//        for (Librairy librairy :librairyList) {
+//            LibrairyWs librairyWs = new LibrairyWs();
+//            BeanUtils.copyProperties(librairy, librairyWs);
+//            response.getLibrairyWs().add(librairyWs);
+//        }
+//
+//        return response;
+//    }
+
+
+
 
 
 }

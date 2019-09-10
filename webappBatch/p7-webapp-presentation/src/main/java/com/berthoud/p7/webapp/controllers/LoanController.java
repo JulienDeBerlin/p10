@@ -35,35 +35,10 @@ public class LoanController {
         WebApp.logger.trace("entering 'extendLoan()");
 
         int resultExtension = loanManager.extendLoan(loanId);
-        String message = new String();
-
-        switch (resultExtension) {
-            case 1:
-                message = "Le prêt a été prolongé";
-                WebApp.logger.info("loan extension successfull");
-
-                break;
-            case 0:
-                message = "Prolongation impossible, veuillez renouveler votre carte de membre.";
-                WebApp.logger.info("failure loan extension / cause: membership expired");
-
-                break;
-            case -1:
-                message = "Vous avez atteint le nombre max. de prolongations autorisées. ";
-                WebApp.logger.info("failure loan extension / cause: max amount of extensions reached");
-
-                break;
-
-            case -3:
-                message = "Un prêt hors délai ne peut pas être prolongé, merci de rapporter l'ouvrage à la bibliothèque! ";
-                WebApp.logger.info("failure loan extension / cause: extension not allowed because loan is already overdue");
-
-                break;
-        }
         user = loginManager.refreshCustomer(user.getEmail());
 
         model.addAttribute("user", user);
-        model.addAttribute("message", message);
+        model.addAttribute("messageResultExtension", resultExtension);
 
         return "memberArea";
     }

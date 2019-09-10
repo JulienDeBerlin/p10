@@ -47,8 +47,6 @@ public class CustomerManager {
                 BusinessLogger.logger.info("failure login with email = " + email + ", cause: wrong password");
                 BusinessLogger.logger.error("ServiceFaultException, login denied");
                 throw new ServiceFaultException("login denied", serviceStatus);
-
-
             }
         } else {
             BusinessLogger.logger.error("RuntimeException, no user registered under this email");

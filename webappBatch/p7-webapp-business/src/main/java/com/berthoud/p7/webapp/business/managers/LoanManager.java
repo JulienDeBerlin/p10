@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import p7.webapp.model.beans.Customer;
 import p7.webapp.model.beans.Loan;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
-
 
 
 @Service
@@ -81,6 +83,62 @@ public class LoanManager {
         }
 
         return customers;
+    }
+
+
+    /**
+     * This method takes as input a list of {@link Loan} objects and remove from the list
+     * all loans which are closed (= book has been returned)
+     *
+     * @param loanList the list of {@link Loan} to be sorted
+     * @return a list with only open Loans.
+     */
+    public List<Loan> removeClosedLoans(List<Loan> loanList) {
+        Iterator<Loan> i = loanList.iterator();
+        LocalDate loanOpen = LocalDate.of(1900, 01, 01);
+        while (i.hasNext()) {
+            Loan loan = i.next();
+            if (!(loan.getDateBack().isEqual(loanOpen))) {
+                i.remove();
+            }
+        }
+        return loanList;
+    }
+
+
+    /**
+     * This method takes as parameter a customer object and filter its Loans.
+     *
+     * @param customer -
+     * @return the customer, with its filtered loans.
+     */
+    public Customer updateLoans(Customer customer) {
+        List<Loan> loans = customer.getLoans();
+        removeClosedLoans(loans);
+        Collections.sort(loans);
+        customer.setLoans(loans);
+        return customer;
+    }
+
+
+    /**
+     * Retrieves a list of all open loans and remove those which do not match a given bookRefernceId or a given librairyId
+     *
+     * @param bookreferenceId -
+     * @param librairyId      -
+     * @return the filtered list of loans
+     */
+    public List<Loan> getListOpenLoansForBookReferenceAndLibrairy(int bookreferenceId, int librairyId) {
+        List<Loan> allOpenLoans = loanDAO.getListOpenLoans();
+
+        Iterator<Loan> iterator = allOpenLoans.iterator();
+        while (iterator.hasNext()) {
+            Loan loan = iterator.next();
+            if (loan.getBook().getBookReference().getId() != bookreferenceId || loan.getBook().getLibrairy().getId() != librairyId) {
+                iterator.remove();
+            }
+        }
+        return allOpenLoans;
     }
 
 }

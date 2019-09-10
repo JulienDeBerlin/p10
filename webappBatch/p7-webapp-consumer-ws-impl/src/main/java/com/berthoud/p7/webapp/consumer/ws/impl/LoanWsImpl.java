@@ -24,4 +24,9 @@ public class LoanWsImpl extends AbstractWsImpl implements LoanDAO {
     public List<Loan> getListOpenLoansLate() {
         return customersAndLoansClientWs.getOpenLoansLateResponseMapped();
     }
+
+    @Override
+    public List<Loan> getListOpenLoans() {
+        return customersAndLoansClientWs.getAllOpenLoansMapped();
+    }
 }

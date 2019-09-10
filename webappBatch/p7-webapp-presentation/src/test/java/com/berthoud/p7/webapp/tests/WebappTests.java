@@ -1,6 +1,8 @@
 package com.berthoud.p7.webapp.tests;
 
 import com.berthoud.p7.webapp.business.managers.BookResearchManager;
+import com.berthoud.p7.webapp.business.managers.LoanManager;
+import com.berthoud.p7.webapp.business.managers.LoginManager;
 import com.berthoud.p7.webapp.clients.BooksClientWs;
 import com.berthoud.p7.webapp.clients.CustomersAndLoansClientWs;
 import com.berthoud.p7.webapp.config.SoapClientConfig;
@@ -12,10 +14,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ws.soap.client.SoapFaultClientException;
 import p7.webapp.model.beans.BookReference;
 import p7.webapp.model.beans.Librairy;
 
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,6 +34,13 @@ public class WebappTests {
     @Autowired
     BookResearchManager bookResearchManager;
 
+    @Autowired
+    LoginManager loginManager;
+
+    @Autowired
+    LoanManager loanManager;
+
+
     @Test
     public void contextLoads() {
     }
@@ -39,7 +51,7 @@ public class WebappTests {
         CustomersAndLoansClientWs client = context.getBean(CustomersAndLoansClientWs.class);
 
         try {
-            LoginCustomerResponse response = client.getCustomerWs("malika@yahoo.fr", "soleiel");
+            LoginCustomerResponse response = client.getCustomerWs("malika@yahoo.fr", "soleil");
 
             System.out.println("Prénom = " + response.getCustomer().getFirstName() + "\n");
             System.out.println("Nom = " + response.getCustomer().getSurname() + "\n");
@@ -47,18 +59,29 @@ public class WebappTests {
 
             response.getCustomer().getLoans().forEach(loanWs -> System.out.println(loanWs.getBook().getBookReference().getTitle()));
 
+            assertEquals(response.getCustomer().getReservations().size(), 2);
+            response.getCustomer().getReservations().forEach(reservationWs -> System.out.println(reservationWs.getBookReference().getTitle()));
+
+
         } catch (SoapFaultClientException e) {
 
             e.getSoapFault().getFaultDetail();
 
 
-
-
-
             System.out.println(e.getMessage());
             }
-
     }
+
+
+    @Test
+    public void loginManager(){
+
+        String email = "malika@yahoo.fr";
+        String password = "soleil";
+
+         loginManager.loginCustomer(email, password);
+    }
+
 
 
     @Test
@@ -71,7 +94,6 @@ public class WebappTests {
 
         librairyList = bookResearchManager.getAllLibrairies();
         assertEquals(librairyList.size(), 3);
-
     }
 
     @Test
@@ -135,6 +157,9 @@ public class WebappTests {
         assertEquals(bookReferenceList9.size(), 2);
 
     }
+
+
+
 
 
 }

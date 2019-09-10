@@ -20,6 +20,12 @@ public class BookResearchManager {
     @Autowired
     BookReferenceDAO bookReferenceDAO;
 
+    @Autowired
+    ReservationManager reservationManager;
+
+    @Autowired
+    LoanManager loanManager;
+
 
     /**
      * @return The method retrieves all librairies available.
@@ -123,14 +129,14 @@ public class BookResearchManager {
     }
 
     /**
-     * This method is used to determine how many {@link Book} of a specific {@link BookReference} are 1/owned and 2/currently available for loan
-     * in each librairy.
+     * This method retrieve a list of {@link Availability} object for the BookReference passed in parameter. The {@link Availability} object
+     * give information about the number of books matching the Bookreference which are owned, available and reserved in each of the librairies.
      *
      * @param bookReference a {@link BookReference} object
-     * @return a {@link BookReference} object with ist attribute {@link Availability} set.
+     * @return a {@link BookReference} object with its attribute {@link Availability} set.
      */
-    public BookReference getAvailabilitiesEachLibrairy(BookReference bookReference) {
-        Utils.loggerWebappBusiness.trace("entering method getAvailabilitiesEachLibrairy with bookReference id = " + bookReference.getId());
+    public BookReference getAvailabilities(BookReference bookReference) {
+        Utils.loggerWebappBusiness.trace("entering method getAvailabilities with bookReference id = " + bookReference.getId());
 
 
         List<Integer> ownedBy = new ArrayList<>();
@@ -151,8 +157,15 @@ public class BookResearchManager {
         for (Librairy l : librairyList) {
             Availability availability = new Availability();
             availability.setLibrairyName(l.getName());
+            availability.setLibrairyId(l.getId());
             availability.setAmountBooks(Collections.frequency(ownedBy, l.getId()));
             availability.setAmountAvailableBooks(Collections.frequency(availableIn, l.getId()));
+
+            List <Reservation> reservationList = reservationManager.reservationDAO.getReservationList(bookReference.getId(), l.getId());
+            availability.setAmountReservations(reservationList.size());
+
+            List <Loan> loanList = loanManager.getListOpenLoansForBookReferenceAndLibrairy(bookReference.getId(), l.getId());
+            availability.setClosedDateEnd(reservationManager.calculateNextReturnDate(loanList));
             bookReference.getAvailabilities().add(availability);
         }
 

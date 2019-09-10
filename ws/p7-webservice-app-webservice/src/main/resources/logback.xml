@@ -12,6 +12,18 @@
         </encoder>
     </appender>
 
+    <appender name="SAVE-TO-FILE" class="ch.qos.logback.core.FileAppender">
+
+        <file>logs/notificationsAfterBookReturn.log</file>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %msg%n
+            </Pattern>
+        </encoder>
+
+    </appender>
+
 
     <root level="info">
         <appender-ref ref="STDOUT"/>
@@ -20,6 +32,16 @@
     <logger name="com.berthoud.p7.webserviceapp" level="info">
         <appender-ref ref="STDOUT" />
     </logger>
+
+    <logger name="com.berthoud.p7.webserviceapp.business.batch.reservation.SendNotificationTask" level="trace">
+        <appender-ref ref="SAVE-TO-FILE" />
+    </logger>
+
+    <logger name="com.berthoud.p7.webserviceapp.business.BusinessLogger" level="info">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+
 
 </configuration>
 

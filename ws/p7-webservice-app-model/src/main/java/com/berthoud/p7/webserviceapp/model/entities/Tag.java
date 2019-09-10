@@ -8,7 +8,7 @@ import java.util.Set;
 public class Tag extends AuditModel{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(nullable=false)

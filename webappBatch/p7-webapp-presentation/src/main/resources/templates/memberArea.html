@@ -41,8 +41,14 @@
 
             <thead>
             <tr>
-                <th scope="col" colspan="5" >Vos emprûnts en cours &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span th:text=" ${message} ?: ''"> </span>
+                <th scope="col" colspan="6">Vos emprûnts en cours&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span th:switch="${messageResultExtension}">
+                        <span style="color: green" th:case="1">Le prêt a été prolongé</span>
+                        <span style="color: darkred" th:case="0">Prolongation impossible, veuillez renouveler votre carte de membre.</span>
+                        <span style="color: darkred" th:case="-1">Vous avez atteint le nombre max. de prolongations autorisées.</span>
+                        <span style="color: darkred" th:case="-3">Un prêt hors délai ne peut pas être prolongé, merci de rapporter l'ouvrage à la bibliothèque!</span>
+                    </span>
+
                 </th>
             </tr>
             </thead>
@@ -51,8 +57,9 @@
             <tr>
                 <th scope="col">Titre</th>
                 <th class="d-none d-sm-table-cell" scope="col">Auteur</th>
+                <th class="d-none d-sm-table-cell" scope="col">Bibliothèque</th>
                 <th class="d-none d-sm-table-cell" scope="col">Date prêt</th>
-                <th scope="col">Expiration prêt </th>
+                <th scope="col">Expiration prêt</th>
                 <th scope="col">Prolonger</th>
             </tr>
             </thead>
@@ -60,17 +67,70 @@
             <tbody>
             <tr th:each="loan: ${session.user.getLoans()}">
                 <td th:text="${loan.getBook().bookReference.title}">Un jardin en ville</td>
-                <td th:text="${loan.getBook().bookReference.authorFirstName + ' ' +  loan.getBook().bookReference.authorSurname }">Jean Loukfi</td>
-                <td class="d-none d-sm-table-cell" th:text="${#temporals.format(loan.getDateBegin(),'dd/MM/yyyy')}">25/03/19</td>
-                <td class="d-none d-sm-table-cell" th:text="${#temporals.format(loan.getDateEnd(),'dd/MM/yyyy')}">25/04/19</td>
+                <td class="d-none d-sm-table-cell"
+                    th:text="${loan.getBook().bookReference.authorFirstName + ' ' +  loan.getBook().bookReference.authorSurname }">
+                    Jean Loukfi
+                </td>
+                <td class="d-none d-sm-table-cell" th:text="${loan.getBook().getLibrairy().name}">Hélène Nathan</td>
+                <td class="d-none d-sm-table-cell" th:text="${#temporals.format(loan.getDateBegin(),'dd/MM/yyyy')}">
+                    25/03/19
+                </td>
+                <td th:text="${#temporals.format(loan.getDateEnd(),'dd/MM/yyyy')}">25/04/19</td>
+                <td><a th:href="@{/extendLoan(loanId=${loan.id})}"> <img th:src="@{pictures/reload.png}"
+                                                                         alt="arrow-reload"> </a></td>
+            </tr>
+            </tbody>
 
-                <td> <a th:href="@{/extendLoan(loanId=${loan.id})}"> <img th:src="@{pictures/reload.png}" alt="arrow-reload"> </a></td>
+        </table>
+    </section>
+
+
+    <section>
+        <table class="table table-sm">
+
+            <thead>
+            <tr>
+                <th scope="col" colspan="6">Vos réservations en cours&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span th:switch="${messageDeleteReservation}">
+                        <span style="color: green" th:case="1">La réservation a été supprimée</span>
+                        <span style="color: darkred" th:case="-1">Oups, la réservation n'a pas pus être supprimée. Essayez plus tard.</span>
+                    </span>
+                </th>
+            </tr>
+            </thead>
+
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Titre</th>
+                <th class="d-none d-sm-table-cell" scope="col">Auteur</th>
+                <th class="d-none d-sm-table-cell" scope="col">Bibliothèque</th>
+                <th class="d-none d-sm-table-cell" scope="col">Retour attendu</th>
+                <th scope="col">Position liste d'attente</th>
+                <th scope="col">Annuler</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="reservation:${session.user.getReservations()}">
+                <td scope="col" th:text="${reservation.getBookReference().title}">Un jardin en ville</td>
+                <td class="d-none d-sm-table-cell" scope="col"
+                    th:text="${reservation.getBookReference().authorFirstName +' '+reservation.getBookReference().authorSurname}">
+                    Jean Loukfi
+                </td>
+                <td class="d-none d-sm-table-cell" scope="col" th:text="${reservation.getLibrairy().name}">Hélène
+                    Nathan
+                </td>
+                <td class="d-none d-sm-table-cell" scope="col"
+                    th:text="${#temporals.format(reservation.getPlannedNextReturn(),'dd/MM/yyyy')}">25/03/19
+                </td>
+                <td scope="col" th:text="${reservation.getPositionInReservationList()}">2</td>
+
+                <td><a scope="col" th:href="@{/deleteReservation(reservationId=${reservation.id})}"> <img
+                        th:src="@{pictures/clear-1.png}" alt="delete-icon"> </a></td>
             </tr>
 
             </tbody>
         </table>
-
-
     </section>
 
 </div>

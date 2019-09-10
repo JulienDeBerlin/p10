@@ -19,6 +19,12 @@ public class LoginManager {
     @Autowired
     CustomerDAO customerDAO;
 
+    @Autowired
+    ReservationManager reservationManager;
+
+    @Autowired
+    LoanManager loanManager;
+
     /**
      * This method is used for the login of a {@link Customer}.
      *
@@ -30,10 +36,8 @@ public class LoginManager {
         Utils.loggerWebappBusiness.trace("entering method loginCustomer with param email = " + email);
 
         Customer customer = customerDAO.getCustomer(email, password);
-        List<Loan> loans = customer.getLoans();
-        removeClosedLoans(loans);
-        Collections.sort(loans);
-        customer.setLoans(loans);
+        loanManager.updateLoans(customer);
+        reservationManager.updateReservationList(customer);
 
         return customer;
     }
@@ -48,33 +52,14 @@ public class LoginManager {
         Utils.loggerWebappBusiness.trace("entering method refreshCustomer with param email = " + email);
 
         Customer customer = customerDAO.refreshCustomer(email);
-        List<Loan> loans = customer.getLoans();
-        removeClosedLoans(loans);
-        Collections.sort(loans);
-        customer.setLoans(loans);
+        loanManager.updateLoans(customer);
+        reservationManager.updateReservationList(customer);
+
         return customer;
     }
 
 
-    /**
-     * This method takes as input a list of {@link Loan} objects and remove from the list
-     * all loans which are closed (= book has been returned)
-     *
-     * @param loanList the list of {@link Loan} to be sorted
-     *
-     * @return a list with only open Loans.
-     */
-    public List<Loan> removeClosedLoans(List<Loan> loanList) {
-        Iterator<Loan> i = loanList.iterator();
-        LocalDate loanOpen = LocalDate.of(1900, 01, 01);
-        while (i.hasNext()) {
-            Loan loan = i.next();
-            if (!(loan.getDateBack().isEqual(loanOpen))){
-                i.remove();
-            }
-        }
-        return loanList;
-    }
+
 
 
 }

@@ -1,4 +1,4 @@
-package com.berthoud.p7.webserviceapp.tests;
+package com.berthoud.p7.webserviceapp;
 
 import com.berthoud.p7.webserviceapp.business.LoanManager;
 import com.berthoud.p7.webserviceapp.consumer.contract.LoanDAO;
@@ -13,13 +13,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class Tests_LoanManagement {
+@Transactional
+public class ITLoanManagement {
 
     @Autowired
     LoanManager loanManager;
@@ -38,8 +40,6 @@ public class Tests_LoanManagement {
 
 
     @Test
-    @Transactional
-    /** ...without this annotation, rollback is like false... ! */
     public void extendLoan() {
 
         // loan id not correct (no active loan)
@@ -72,7 +72,6 @@ public class Tests_LoanManagement {
 
 
     @Test
-    @Transactional
     public void registerNewLoan() {
 
         // membership expired
@@ -94,15 +93,11 @@ public class Tests_LoanManagement {
         // ok
         testValue = loanManager.registerNewLoan(85, 7);
         assertEquals(testValue, 1);
-
-
-
     }
 
 
     @Test
-    @Transactional
-    public void bookBack() {
+    public void bookBack() throws MessagingException {
 
         //book id wrong
         int testValue = loanManager.bookBack(34);
@@ -115,25 +110,17 @@ public class Tests_LoanManagement {
         //return ok
         testValue = loanManager.bookBack(3);
         assertEquals(testValue, 1);
-
     }
 
 
     @Test
     public void testMonitoringLoans() {
 
-        List<Loan> listLoansLate = loanManager.getOpenLoansLate();
-        assertEquals(listLoansLate.size(), 4);
-
-        List<Loan> listLoansInTime = loanManager.getOpenLoansInTime();
-        assertEquals(listLoansInTime.size(), 3);
-
         List<Loan> listAllLoans = loanManager.getAllOpenLoans();
-        assertEquals(listAllLoans.size(), 7);
+        assertEquals(listAllLoans.size(), 9);
 
         List<Loan> listOpenLoansExtended = loanManager.getOpenLoansExtended();
-        assertEquals(listOpenLoansExtended.size(), 6);
-
+        assertEquals(listOpenLoansExtended.size(), 4);
     }
 
 }

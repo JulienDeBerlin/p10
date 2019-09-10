@@ -10,7 +10,7 @@ import p7.webapp.model.beans.BookReference;
 import java.util.ArrayList;
 import java.util.List;
 
-@SessionAttributes(value = "bookReferenceList")
+@SessionAttributes({"bookReferenceList", "selectedBookReference"})
 @Controller
 public class ResearchResultController {
 
@@ -40,12 +40,12 @@ public class ResearchResultController {
             return "home";
 
         } else {
-
             List<String> tagList = new ArrayList<>();
             if (!tagsAsString.isEmpty()) {
                 tagList = bookResearchManager.convertTagsIntoList(tagsAsString);
             }
-            List<BookReference> bookReferenceList = bookResearchManager.getResultBookResearch(authorSurname, titleElement, tagList, librairyId);
+            List<BookReference> bookReferenceList = bookResearchManager.getResultBookResearch(authorSurname,
+                    titleElement, tagList, librairyId);
             bookReferenceList = bookResearchManager.getAmountAvailableBooks(bookReferenceList);
 
             model.addAttribute("bookReferenceList", bookReferenceList);
@@ -65,12 +65,12 @@ public class ResearchResultController {
      */
     @RequestMapping(value = "/bookDetails", method = RequestMethod.GET)
     public String getBookDetails(ModelMap model,
-                                 @RequestParam(value = "bookRef") int bookReferenceId,
+                                 @ModelAttribute(value = "bookReferenceId") int bookReferenceId,
                                  @SessionAttribute(value = "bookReferenceList") List<BookReference> bookReferenceList) {
 
         BookReference selectedBookReference = bookResearchManager.getSelectedBookReference(bookReferenceId, bookReferenceList);
         selectedBookReference.setTagsAsString(bookResearchManager.convertTagsSetIntoString(selectedBookReference.getTags()));
-        selectedBookReference = bookResearchManager.getAvailabilitiesEachLibrairy(selectedBookReference);
+        selectedBookReference = bookResearchManager.getAvailabilities(selectedBookReference);
         model.addAttribute("selectedBookReference", selectedBookReference);
 
         return "researchResultDetails";
